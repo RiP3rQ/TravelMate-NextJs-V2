@@ -1,9 +1,9 @@
 import Head from "next/head";
-import Image from "next/image";
 import Banner from "../../components/Banner";
 import Header from "../../components/Header";
+import SmallCard from "../../components/SmallCard";
 
-export default function Home() {
+export default function Home({ exploreData }) {
   return (
     <div className="">
       <Head>
@@ -17,6 +17,38 @@ export default function Home() {
       <Header />
       {/* Banner */}
       <Banner />
+
+      {/* Nearby places */}
+      <main className="max-w-7xl mx-auto px-8 sm:px-16">
+        <section className="pt-6">
+          <h2 className="text-4xl font-semibold pb-5">Atrakcje w pobliżu</h2>
+
+          {/* Pull some data from a server - API endpoints */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {exploreData?.record?.map((item, index) => (
+              <SmallCard
+                key={index}
+                img={item.img}
+                location={item.location}
+                distance={item.distance}
+              />
+            ))}
+          </div>
+        </section>
+      </main>
     </div>
   );
+}
+
+export async function getStaticProps() {
+  // 1:19:45 structure of the data
+  const exploreData = await fetch(
+    "https://api.jsonbin.io/v3/qs/641a0191ace6f33a22f2eae5"
+  ).then((res) => res.json());
+
+  return {
+    props: {
+      exploreData,
+    },
+  };
 }
