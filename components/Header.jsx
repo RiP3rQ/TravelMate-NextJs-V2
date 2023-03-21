@@ -1,6 +1,12 @@
 import Image from "next/image";
 import React from "react";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import {
+  MagnifyingGlassIcon,
+  LanguageIcon,
+  Bars3Icon,
+  UserCircleIcon,
+  MoonIcon,
+} from "@heroicons/react/24/solid";
 
 const Header = () => {
   return (
@@ -15,7 +21,7 @@ const Header = () => {
         />
       </div>
       {/* Search section (MIDDLE)*/}
-      <div className="flex items-center md:border-2 rounded-full py-2 md:shadow-md">
+      <div className="flex items-center border-2 rounded-full py-2 md:shadow-md">
         <input
           className="pl-5 bg-transparent outline-none flex-grow 
           text-sm text-gray-600 placeholder-gray-400"
@@ -29,6 +35,15 @@ const Header = () => {
       </div>
 
       {/* Login / HamburgerMenu section (RIGHT)*/}
+      <div className="flex items-center space-x-4 justify-end text-gray-500">
+        <MoonIcon className="h-6 cursor-pointer" />
+        <LanguageIcon className="h-6 cursor-pointer" />
+
+        <div className="flex items-center space-x-2 border-2 p-2 rounded-full">
+          <Bars3Icon className="h-6 cursor-pointer" />
+          <UserCircleIcon className="h-6 cursor-pointer" />
+        </div>
+      </div>
     </header>
   );
 };
