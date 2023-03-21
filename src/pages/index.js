@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Banner from "../../components/Banner";
 import Header from "../../components/Header";
+import LargeCard from "../../components/LargeCard";
 import MediumCard from "../../components/MediumCard";
 import SmallCard from "../../components/SmallCard";
 
@@ -53,6 +54,13 @@ export default function Home({ exploreData, cardsData }) {
             ))}
           </div>
         </section>
+
+        <LargeCard
+          image="https://links.papareact.com/4cj"
+          title="Godny nowych przygód?"
+          description="Wyrusz w podróż swojego życia"
+          buttonText="Zainspiruj się"
+        />
       </main>
     </div>
   );
