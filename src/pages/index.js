@@ -1,9 +1,10 @@
 import Head from "next/head";
 import Banner from "../../components/Banner";
 import Header from "../../components/Header";
+import MediumCard from "../../components/MediumCard";
 import SmallCard from "../../components/SmallCard";
 
-export default function Home({ exploreData }) {
+export default function Home({ exploreData, cardsData }) {
   return (
     <div className="">
       <Head>
@@ -23,15 +24,32 @@ export default function Home({ exploreData }) {
         <section className="pt-6">
           <h2 className="text-4xl font-semibold pb-5">Atrakcje w pobliżu</h2>
 
-          {/* Pull some data from a server - API endpoints */}
+          {/* Pull exploreData from a server - API endpoints */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {exploreData?.record?.map((item, index) => (
+            {exploreData?.map((item, index) => (
               <SmallCard
                 key={index}
                 img={item.img}
                 location={item.location}
                 distance={item.distance}
               />
+            ))}
+          </div>
+        </section>
+
+        <section>
+          <h2 className="text-4xl font-semibold py-8">
+            Nocuj gdziekolwiek chcesz
+          </h2>
+
+          {/* Pull cardsData from a server - API endpoints */}
+          <div
+            className="flex space-x-3 overflow-scroll p-3 -ml-3 overflow-y-hidden 
+          scrollbar scrollbar-thumb-red-400 scrollbar-track-red-100 
+          scrollbar-thumb-rounded-xl scrollbar-track-rounded-xl"
+          >
+            {cardsData?.map((item, index) => (
+              <MediumCard key={index} img={item.img} title={item.title} />
             ))}
           </div>
         </section>
@@ -43,12 +61,17 @@ export default function Home({ exploreData }) {
 export async function getStaticProps() {
   // 1:19:45 structure of the data
   const exploreData = await fetch(
-    "https://api.jsonbin.io/v3/qs/641a0191ace6f33a22f2eae5"
+    "https://api.npoint.io/046c5a3ae2b2d2b42a46"
+  ).then((res) => res.json());
+
+  const cardsData = await fetch(
+    "https://api.npoint.io/990f5033b327717ec38a"
   ).then((res) => res.json());
 
   return {
     props: {
       exploreData,
+      cardsData,
     },
   };
 }
