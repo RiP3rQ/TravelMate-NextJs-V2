@@ -8,7 +8,7 @@ import {
   MoonIcon,
   UserIcon,
 } from "@heroicons/react/24/solid";
-import { DateRangePicker } from "react-date-range";
+import { DateRange } from "react-date-range";
 
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
@@ -96,7 +96,7 @@ const Header = ({ placeholder }) => {
       {/* Dropdown menu */}
       {searchInput && (
         <div className="flex flex-col col-span-3 mx-auto">
-          <DateRangePicker
+          <DateRange
             ranges={[selectionRange]}
             minDate={new Date()}
             rangeColors={["#FD5B61"]}
