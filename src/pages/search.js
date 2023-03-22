@@ -4,6 +4,7 @@ import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import { format } from "date-fns";
 import InfoCard from "../../components/InfoCard";
+import MyMap from "../../components/MyMap";
 
 const Search = ({ searchResults }) => {
   const router = useRouter();
@@ -50,6 +51,11 @@ const Search = ({ searchResults }) => {
               />
             ))}
           </div>
+        </section>
+
+        {/* MAP SECTION  */}
+        <section className="hidden xl:inline-flex xl:min-w-[600px]">
+          <MyMap searchResults={searchResults} />
         </section>
       </main>
 
