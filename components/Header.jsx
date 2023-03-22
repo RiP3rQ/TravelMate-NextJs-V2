@@ -7,6 +7,7 @@ import {
   UserCircleIcon,
   MoonIcon,
   UserIcon,
+  ChevronDownIcon,
 } from "@heroicons/react/24/solid";
 import { DateRange } from "react-date-range";
 
@@ -19,6 +20,11 @@ const Header = ({ placeholder }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [numberOfGuests, setNumberOfGuests] = useState(1);
+  const [isOpen, setIsOpen] = useState(false);
+
+  // selection of possible search options
+  const list = ["Noclegi", "Atrakcje", "Szlaki"];
+  const [selectedOption, setSelectedOption] = useState(list[0]);
 
   const router = useRouter();
 
@@ -53,10 +59,10 @@ const Header = ({ placeholder }) => {
   };
 
   return (
-    <header className="sticky top-0 z-50 grid grid-cols-3 bg-white shadow-md p-5 md:px-10">
+    <header className="sticky top-0 z-50 bg-white shadow-md md:p-5 md:px-10 grid lg:grid-cols-12 md:grid-cols-5 sm:grid-cols-4">
       {/* Logo section (LEFT)*/}
       <div
-        className="relative flex items-center h-10 cursor-pointer my-auto"
+        className="relative flex items-center h-10 cursor-pointer my-auto lg:col-span-3 md:col-span-1 sm:col-span-1"
         onClick={() => router.push("/")}
       >
         <Image
@@ -66,8 +72,47 @@ const Header = ({ placeholder }) => {
           style={{ objectFit: "contain", objectPosition: "left" }}
         />
       </div>
+
       {/* Search section (MIDDLE)*/}
-      <div className="flex items-center border-2 rounded-full py-2 md:shadow-md">
+      {/* Selecting items for searching */}
+      <div className="flex flex-col items-center relative md:col-span-1 mr-2 lg:col-span-2 sm:col-span-1">
+        <button
+          className="bg-red-400 p-2 w-full flex items-center justify-center font-bold text-lg 
+        tracking-wider rounded-2xl border-4 border-transparent active:border-red-400 active:bg-white duration-300 z-10"
+          onClick={() => setIsOpen((prev) => !prev)}
+        >
+          {selectedOption}
+          {!isOpen ? (
+            <ChevronDownIcon className="h-6 ml-2 transform duration-200" />
+          ) : (
+            <ChevronDownIcon className="h-6 ml-2 transform rotate-180 duration-200" />
+          )}
+        </button>
+
+        <div className="bg-slate-200 absolute top-8 left-0 flex flex-col items-start rounded-2xl w-full">
+          {isOpen && (
+            <div className="flex flex-col items-center w-full space-y-2 mt-6">
+              {list
+                .filter((item) => item !== selectedOption)
+                .map((item) => (
+                  <button
+                    key={item}
+                    className="bg-red-400 p-2 w-full flex items-center justify-center font-bold text-lg 
+                  tracking-wider rounded-2xl border-4 border-transparent active:border-red-400 active:bg-white duration-300"
+                    onClick={() => {
+                      setSelectedOption(item);
+                      setIsOpen(false);
+                    }}
+                  >
+                    {item}
+                  </button>
+                ))}
+            </div>
+          )}
+        </div>
+      </div>
+      {/* Search bar */}
+      <div className="flex items-center border-2 rounded-2xl py-2 md:shadow-md md:col-span-2 lg:col-span-4 sm:col-span-1">
         <input
           className="pl-5 bg-transparent outline-none flex-grow 
           text-sm text-gray-600 placeholder-gray-400"
@@ -83,7 +128,7 @@ const Header = ({ placeholder }) => {
       </div>
 
       {/* Login / HamburgerMenu section (RIGHT)*/}
-      <div className="flex items-center space-x-4 justify-end text-gray-500">
+      <div className="flex items-center space-x-4 justify-end text-gray-500 lg:col-span-3 md:col-span-1 sm:col-span-1">
         <MoonIcon className="h-6 cursor-pointer" />
         <LanguageIcon className="h-6 cursor-pointer" />
 
@@ -95,7 +140,7 @@ const Header = ({ placeholder }) => {
 
       {/* Dropdown menu */}
       {searchInput && (
-        <div className="flex flex-col col-span-3 mx-auto">
+        <div className="flex flex-col mx-auto lg:col-span-12 md:col-span-5 sm:col-span-4">
           <DateRange
             ranges={[selectionRange]}
             minDate={new Date()}

@@ -15,7 +15,7 @@ const Search = ({ searchResults }) => {
   const range = `${formattedStartDate} - ${formattedEndDate}`;
 
   return (
-    <div className="">
+    <div className="overflow-x-hidden">
       <Header
         placeholder={`${location} | ${range} | ${numberOfGuests} osoby`}
       />
