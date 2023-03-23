@@ -3,11 +3,11 @@ import React, { useState } from "react";
 import {
   MagnifyingGlassIcon,
   LanguageIcon,
-  Bars3Icon,
   UserCircleIcon,
   MoonIcon,
   UserIcon,
   ChevronDownIcon,
+  SunIcon,
 } from "@heroicons/react/24/solid";
 import { DateRange } from "react-date-range";
 
@@ -21,6 +21,10 @@ const Header = ({ placeholder }) => {
   const [endDate, setEndDate] = useState(new Date());
   const [numberOfGuests, setNumberOfGuests] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
+  const [themeOfPage, setThemeOfPage] = useState("Light");
+  const [polishLanguage, setPolishLanguage] = useState(true);
+
+  console.log(polishLanguage);
 
   // selection of possible search options
   const list = ["Noclegi", "Atrakcje", "Szlaki"];
@@ -133,13 +137,25 @@ const Header = ({ placeholder }) => {
 
       {/* Login / HamburgerMenu section (RIGHT)*/}
       <div className="flex items-center space-x-4 justify-end text-gray-500 lg:col-span-3 md:col-span-1 sm:col-span-1">
-        <MoonIcon className="h-6 cursor-pointer" />
-        <LanguageIcon className="h-6 cursor-pointer" />
-
         <div className="flex items-center space-x-2 border-2 p-2 rounded-full">
-          <Bars3Icon className="h-6 cursor-pointer" />
-          <UserCircleIcon className="h-6 cursor-pointer" onClick={login} />
+          {themeOfPage == "Light" ? (
+            <MoonIcon
+              className="h-6 cursor-pointer"
+              onClick={() => setThemeOfPage("Dark")}
+            />
+          ) : (
+            <SunIcon
+              className="h-6 cursor-pointer"
+              onClick={() => setThemeOfPage("Light")}
+            />
+          )}
+          <LanguageIcon
+            className="h-6 cursor-pointer"
+            onClick={() => setPolishLanguage((prev) => !prev)}
+          />
         </div>
+
+        <UserCircleIcon className="h-12 cursor-pointer" onClick={login} />
       </div>
 
       {/* Dropdown menu */}
