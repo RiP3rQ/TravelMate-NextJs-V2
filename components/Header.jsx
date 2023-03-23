@@ -58,6 +58,10 @@ const Header = ({ placeholder }) => {
     });
   };
 
+  const login = () => {
+    router.push("/login");
+  };
+
   return (
     <header className="sticky top-0 z-50 bg-white shadow-md md:p-5 md:px-10 grid lg:grid-cols-12 md:grid-cols-5 sm:grid-cols-4">
       {/* Logo section (LEFT)*/}
@@ -134,7 +138,7 @@ const Header = ({ placeholder }) => {
 
         <div className="flex items-center space-x-2 border-2 p-2 rounded-full">
           <Bars3Icon className="h-6 cursor-pointer" />
-          <UserCircleIcon className="h-6 cursor-pointer" />
+          <UserCircleIcon className="h-6 cursor-pointer" onClick={login} />
         </div>
       </div>
 

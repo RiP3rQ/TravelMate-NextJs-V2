@@ -1,0 +1,11 @@
+1. Dodawanie atrybutu wybrana opcja do wyszukiwania
+2. Wyszukiwanie po wybranej opcji
+3. Modal pokazujący szczegoły po kliknięciu na marker
+4.  ✔️ Ekran logowania ✔️ / Ekran rejestracji
+5. Ciemny/jasny motyw
+6. Zmiana języka
+7. Fetchowanie elementów na stronie głównej
+8. Zmiana logo
+9. Podstrona z planerem podróży
+10. Walidacja ekranu logowanie / Walidacja ekranu rejestracji
+11. Możliwość logowania / Możliwość rejestracji 
