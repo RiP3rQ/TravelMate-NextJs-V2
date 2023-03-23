@@ -6,10 +6,80 @@ import {
 } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState, useRef } from "react";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth, storage } from "../../firebase";
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
 const Register = () => {
   const router = useRouter();
+
+  // form info
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [profilePicture, setProfilePicture] = useState("");
+
+  // ref to file picker
+  const filePickerRef = useRef(null);
+
+  // helpers for storage in firebase
+  const [imgUrl, setImgUrl] = useState(null);
+  const [progresspercent, setProgresspercent] = useState(0);
+
+  // register user using firebase
+  const register = async (e) => {
+    e.preventDefault();
+
+    // register
+    try {
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      // upload profile picture to Firebase storage
+      const storageRef = ref(
+        storage,
+        `profileImages/${profilePicture.name + user.uid}`
+      );
+      const uploadTask = uploadBytesResumable(storageRef, profilePicture);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setProgresspercent(progress);
+        },
+        (error) => {
+          alert(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setImgUrl(downloadURL);
+          });
+        }
+      );
+
+      // set user display name to username
+      await updateProfile(user, { displayName: username, photoURL: imgUrl });
+
+      console.log(user);
+      console.log("User registered successfully");
+    } catch (error) {
+      console.log(error.message);
+    }
+
+    // reset state
+    setEmail("");
+    setPassword("");
+    setUsername("");
+    setProfilePicture("");
+    filePickerRef.current.value = "";
+  };
 
   const goBack = () => {
     router.push("/");
@@ -40,70 +110,81 @@ const Register = () => {
               <h2 className="text-5xl text-center text-white mb-8">
                 Rejestracja
               </h2>
-              <div class="relative z-0 my-6">
+              <div className="relative z-0 my-6">
                 <EnvelopeIcon className="h-6 absolute top-3 right-1 text-white" />
                 <input
                   type="text"
                   id="email"
-                  class="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-white peer"
+                  className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-white peer"
                   placeholder=" "
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
                 <label
-                  for="email"
-                  class="absolute text-sm text-gray-700 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-100 peer-focus:-translate-y-6"
+                  htmlFor="email"
+                  className="absolute text-sm text-gray-700 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-100 peer-focus:-translate-y-6"
                 >
                   EMAIL<span className="text-red-500">*</span>
                 </label>
               </div>
 
-              <div class="relative z-0 my-6">
+              <div className="relative z-0 my-6">
                 <LockClosedIcon className="h-6 absolute top-3 right-1 text-white" />
                 <input
                   type="password"
                   id="password"
-                  class="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-white peer"
+                  className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-white peer"
                   placeholder=" "
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <label
-                  for="password"
-                  class="absolute text-sm text-gray-700 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-100 peer-focus:-translate-y-6"
+                  htmlFor="password"
+                  className="absolute text-sm text-gray-700 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-100 peer-focus:-translate-y-6"
                 >
                   HASŁO<span className="text-red-500">*</span>
                 </label>
               </div>
 
-              <div class="relative z-0 my-6">
+              <div className="relative z-0 my-6">
                 <UserIcon className="h-6 absolute top-3 right-1 text-white" />
                 <input
                   type="text"
                   id="username"
-                  class="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-white peer"
+                  className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-white peer"
                   placeholder=" "
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
                 <label
-                  for="username"
-                  class="absolute text-sm text-gray-700 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-100 peer-focus:-translate-y-6"
+                  htmlFor="username"
+                  className="absolute text-sm text-gray-700 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-100 peer-focus:-translate-y-6"
                 >
                   NAZWA UŻYTKOWNIKA<span className="text-red-500">*</span>
                 </label>
               </div>
-              <div class="relative z-0 my-6">
+              <div className="relative z-0 my-6">
                 <PhotoIcon className="h-6 absolute top-3 right-1 text-white" />
                 <input
                   type="file"
                   id="profile_picture"
-                  class="block py-4 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-white peer"
+                  className="block py-4 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-white peer"
                   placeholder=" "
+                  ref={filePickerRef}
+                  onChange={(e) => setProfilePicture(e.target.files[0])}
                 />
                 <label
-                  for="profile_picture"
-                  class="absolute text-lg text-gray-700 -translate-y-6 scale-75 top-3 -z-10 origin-[0]"
+                  htmlFor="profile_picture"
+                  className="absolute text-lg text-gray-700 -translate-y-6 scale-75 top-3 -z-10 origin-[0]"
                 >
                   ZDJĘCIE PROFILOWE<span className="text-red-500">*</span>
                 </label>
               </div>
 
-              <button className="w-full h-11 rounded-3xl border-0 outline-none cursor-pointer text-xl font-bold bg-white">
+              <button
+                className="w-full h-11 rounded-3xl border-0 outline-none cursor-pointer text-xl font-bold bg-white"
+                onClick={(e) => register(e)}
+              >
                 Zarejestruj
               </button>
             </form>

@@ -14,6 +14,7 @@
     "date-fns": "^2.29.3",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
+    "firebase": "^9.18.0",
     "geolib": "^3.3.3",
     "mapbox-gl": "^2.13.0",
     "next": "13.2.4",
