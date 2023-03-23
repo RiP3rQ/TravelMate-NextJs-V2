@@ -10,6 +10,10 @@ const Login = () => {
     router.push("/");
   };
 
+  const goRegister = () => {
+    router.push("/register");
+  };
+
   return (
     <div className="h-screen w-full relative">
       <Image
@@ -47,7 +51,7 @@ const Login = () => {
                   for="email"
                   class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-100 peer-focus:-translate-y-6"
                 >
-                  EMAIL
+                  EMAIL<span className="text-red-500">*</span>
                 </label>
               </div>
 
@@ -63,7 +67,7 @@ const Login = () => {
                   for="password"
                   class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-100 peer-focus:-translate-y-6"
                 >
-                  HASŁO
+                  HASŁO<span className="text-red-500">*</span>
                 </label>
               </div>
               <button className="w-full h-11 rounded-3xl border-0 outline-none cursor-pointer text-xl font-bold bg-white">
@@ -72,12 +76,12 @@ const Login = () => {
               <div className="font-lg text-white my-5 text-center">
                 <p>
                   Nie masz jeszcze konta?{" "}
-                  <a
-                    href="#"
+                  <span
                     className="cursor-pointer no-underline font-bold text-xl hover:underline"
+                    onClick={goRegister}
                   >
                     Zarejestruj
-                  </a>
+                  </span>
                 </p>
               </div>
             </form>
