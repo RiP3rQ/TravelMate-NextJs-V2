@@ -65,7 +65,7 @@ const Search = ({ searchResults }) => {
 };
 
 export default Search;
-// 3:20:39
+
 export async function getServerSideProps() {
   const searchResults = await fetch(
     "https://api.npoint.io/336fd6854e721dcb338a"

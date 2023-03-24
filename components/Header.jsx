@@ -75,12 +75,13 @@ const Header = ({ placeholder }) => {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [currentUser]);
 
   // sign out user using firebase
   const SignOutHandle = async () => {
     await signOut(auth);
     setAvatarDropdownIsOpen(false);
+    router.reload();
   };
 
   // router for profile settings page
@@ -88,10 +89,8 @@ const Header = ({ placeholder }) => {
     router.push("/profile");
   };
 
-  console.log(currentUser?.photoURL);
-
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-md md:p-5 md:px-10 grid lg:grid-cols-12 md:grid-cols-5 sm:grid-cols-4">
+    <header className="sticky top-0 z-30 bg-white shadow-md md:p-5 md:px-10 grid lg:grid-cols-12 md:grid-cols-5 sm:grid-cols-4">
       {/* Logo section (LEFT)*/}
       <div
         className="relative flex items-center h-10 cursor-pointer my-auto lg:col-span-3 md:col-span-1 sm:col-span-1"

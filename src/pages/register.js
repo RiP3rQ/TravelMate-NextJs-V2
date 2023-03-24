@@ -171,7 +171,7 @@ const Register = () => {
                   htmlFor="profile_picture"
                   className="absolute text-lg text-gray-700 -translate-y-6 scale-75 top-3 -z-10 origin-[0]"
                 >
-                  ZDJĘCIE PROFILOWE<span className="text-red-500">*</span>
+                  ZDJĘCIE PROFILOWE
                 </label>
               </div>
 
