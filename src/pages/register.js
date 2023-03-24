@@ -44,30 +44,19 @@ const Register = () => {
         storage,
         `profileImages/${profilePicture.name + user.uid}`
       );
-      const uploadTask = uploadBytesResumable(storageRef, profilePicture);
+      await uploadBytesResumable(storageRef, profilePicture);
 
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress = Math.round(
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          );
-          setProgresspercent(progress);
-        },
-        (error) => {
-          alert(error);
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setImgUrl(downloadURL);
-          });
-        }
-      );
+      // get download url
+      const downloadUrl = await getDownloadURL(storageRef);
 
       // set user display name to username
-      await updateProfile(user, { displayName: username, photoURL: imgUrl });
+      await updateProfile(user, {
+        displayName: username,
+        photoURL: downloadUrl,
+      });
 
-      router.push("/");
+      //router.push("/");
+      console.log(imgUrl);
     } catch (error) {
       console.log(error.message);
     }

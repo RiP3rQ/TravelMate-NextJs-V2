@@ -173,10 +173,15 @@ const Header = ({ placeholder }) => {
           <UserCircleIcon className="h-12 cursor-pointer" onClick={login} />
         ) : (
           <div
-            className="h-12 w-12 rounded-full bg-red-500 cursor-pointer"
+            className="h-12 w-12 rounded-full cursor-pointer relative"
             onClick={SignOutHandle}
           >
-            ESSA
+            <Image
+              src={currentUser.photoURL}
+              alt="Profile Pic"
+              fill
+              className="absolute rounded-full h-full w-full object-cover"
+            />
           </div>
         )}
       </div>
