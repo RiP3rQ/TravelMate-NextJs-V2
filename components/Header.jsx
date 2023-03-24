@@ -26,6 +26,7 @@ const Header = ({ placeholder }) => {
   const [themeOfPage, setThemeOfPage] = useState("Light");
   const [polishLanguage, setPolishLanguage] = useState(true);
   const [currentUser, setCurrentUser] = useState(null);
+  const [avatarDropdownIsOpen, setAvatarDropdownIsOpen] = useState(false);
 
   // selection of possible search options
   const list = ["Noclegi", "Atrakcje", "Szlaki"];
@@ -79,6 +80,12 @@ const Header = ({ placeholder }) => {
   // sign out user using firebase
   const SignOutHandle = async () => {
     await signOut(auth);
+    setAvatarDropdownIsOpen(false);
+  };
+
+  // router for profile settings page
+  const profilePageHandle = () => {
+    router.push("/profile");
   };
 
   return (
@@ -152,7 +159,7 @@ const Header = ({ placeholder }) => {
 
       {/* Login / HamburgerMenu section (RIGHT)*/}
       <div className="flex items-center space-x-4 justify-end text-gray-500 lg:col-span-3 md:col-span-1 sm:col-span-1">
-        <div className="flex items-center space-x-2 border-2 p-2 rounded-full">
+        <div className="flex items-center space-x-2 border-2 p-2 rounded-full relative">
           {themeOfPage == "Light" ? (
             <MoonIcon
               className="h-6 cursor-pointer"
@@ -174,7 +181,7 @@ const Header = ({ placeholder }) => {
         ) : (
           <div
             className="h-12 w-12 rounded-full cursor-pointer relative"
-            onClick={SignOutHandle}
+            onClick={() => setAvatarDropdownIsOpen(!avatarDropdownIsOpen)}
           >
             <Image
               src={currentUser.photoURL}
@@ -186,7 +193,7 @@ const Header = ({ placeholder }) => {
         )}
       </div>
 
-      {/* Dropdown menu */}
+      {/* Dropdown menu for searching */}
       {searchInput && (
         <div className="flex flex-col mx-auto lg:col-span-12 md:col-span-5 sm:col-span-4">
           <DateRange
@@ -221,6 +228,26 @@ const Header = ({ placeholder }) => {
               onClick={search}
             >
               Search
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Dropdown menu for profile picture */}
+      {avatarDropdownIsOpen && (
+        <div className="absolute top-16 right-10 bg-slate-200 border-4 border-red-400 h-20 w-52 rounded-xl mt-2">
+          <div className="flex flex-col items-center justify-center h-full w-full">
+            <p
+              className="text-lg font-semibold border-b border-gray-500 py-1 cursor-pointer"
+              onClick={profilePageHandle}
+            >
+              Ustawienia profilu
+            </p>
+            <button
+              className="text-lg text-red-500 font-bold py-1 tracking-widest cursor-pointer"
+              onClick={SignOutHandle}
+            >
+              Wyloguj
             </button>
           </div>
         </div>
