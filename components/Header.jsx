@@ -88,6 +88,8 @@ const Header = ({ placeholder }) => {
     router.push("/profile");
   };
 
+  console.log(currentUser?.photoURL);
+
   return (
     <header className="sticky top-0 z-50 bg-white shadow-md md:p-5 md:px-10 grid lg:grid-cols-12 md:grid-cols-5 sm:grid-cols-4">
       {/* Logo section (LEFT)*/}
@@ -184,7 +186,11 @@ const Header = ({ placeholder }) => {
             onClick={() => setAvatarDropdownIsOpen(!avatarDropdownIsOpen)}
           >
             <Image
-              src={currentUser.photoURL}
+              src={
+                currentUser.photoURL
+                  ? currentUser.photoURL
+                  : "https://st3.depositphotos.com/1767687/16607/v/600/depositphotos_166074422-stock-illustration-default-avatar-profile-icon-grey.jpg"
+              }
               alt="Profile Pic"
               fill
               className="absolute rounded-full h-full w-full object-cover"

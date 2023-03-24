@@ -39,24 +39,30 @@ const Register = () => {
         password
       );
 
-      // upload profile picture to Firebase storage
-      const storageRef = ref(
-        storage,
-        `profileImages/${profilePicture.name + user.uid}`
-      );
-      await uploadBytesResumable(storageRef, profilePicture);
+      // upload profile picture to Firebase storage if user has selected one
+      if (profilePicture) {
+        const storageRef = ref(
+          storage,
+          `profileImages/${profilePicture.name + user.uid}`
+        );
+        await uploadBytesResumable(storageRef, profilePicture);
 
-      // get download url
-      const downloadUrl = await getDownloadURL(storageRef);
+        // get download url
+        const downloadUrl = await getDownloadURL(storageRef);
 
-      // set user display name to username
-      await updateProfile(user, {
-        displayName: username,
-        photoURL: downloadUrl,
-      });
+        // set user display name to username and avatar
+        await updateProfile(user, {
+          displayName: username,
+          photoURL: downloadUrl,
+        });
+      } else {
+        // set user display name to username
+        await updateProfile(user, {
+          displayName: username,
+        });
+      }
 
-      //router.push("/");
-      console.log(imgUrl);
+      router.push("/");
     } catch (error) {
       console.log(error.message);
     }
