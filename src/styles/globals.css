@@ -8,3 +8,11 @@
         active:bg-gray-200 transition transform duration-150 ease-out;
   }
 }
+
+.mapboxgl-popup-content {
+  @apply w-96 h-full rounded-xl relative p-2 !important;
+}
+
+.mapboxgl-popup-close-button {
+  @apply flex items-center justify-center text-white text-4xl absolute top-1 bg-red-500 rounded-full h-8 w-8 right-1 !important;
+}

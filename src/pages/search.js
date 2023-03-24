@@ -21,7 +21,7 @@ const Search = ({ searchResults }) => {
       />
 
       <main className="flex">
-        <section className="flex-grow pt-14 px-6">
+        <section className="flex-grow pt-14 px-6 lg:h-screen lg:overflow-y-scroll">
           <p className="text-xs">
             300+ Noclegów - {range} - {numberOfGuests} osób{" "}
           </p>
@@ -54,7 +54,7 @@ const Search = ({ searchResults }) => {
         </section>
 
         {/* MAP SECTION  */}
-        <section className="hidden xl:inline-flex xl:min-w-[600px]">
+        <section className="hidden lg:inline-flex lg:min-w-[350px] 3xl:min-w-[800px] 2xl:min-w-[600px] lg:h-screen">
           <MyMap searchResults={searchResults} />
         </section>
       </main>

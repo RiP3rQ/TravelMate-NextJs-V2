@@ -1,13 +1,17 @@
-1. Dodawanie atrybutu wybrana opcja do wyszukiwania
-2. Wyszukiwanie po wybranej opcji
-3. Modal pokazujący szczegoły po kliknięciu na marker
-4.  ✔️ E̶k̶r̶a̶n̶ ̶l̶o̶g̶o̶w̶a̶n̶i̶a̶  ✔️ / ✔️ E̶k̶r̶a̶n̶ ̶r̶e̶j̶e̶s̶t̶r̶a̶c̶j̶i̶ ✔️
-5. Ciemny/jasny motyw
-6. Zmiana języka
-7. Fetchowanie elementów na stronie głównej
-8. Zmiana logo
-9. Podstrona z planerem podróży
-10. Walidacja ekranu logowanie / Walidacja ekranu rejestracji
-11. Możliwość logowania / ✔️ M̶o̶ż̶l̶i̶w̶o̶ś̶ć̶ ̶r̶e̶j̶e̶s̶t̶r̶a̶c̶j̶i̶ ✔️
-12. Wyświetlanie kalendarza tylko dla noclegów
-13. Wyświetlanie avatar usera zamiast defaultowej ikony
+- Dodawanie atrybutu wybrana opcja do wyszukiwania
+- Wyszukiwanie po wybranej opcji
+- Ciemny motyw
+- Zmiana języka
+- Fetchowanie elementów na stronie głównej
+- Zmiana logo
+- Podstrona z planerem podróży
+- Walidacja ekranu logowanie / Walidacja ekranu rejestracji
+- Wyświetlanie kalendarza tylko dla noclegów
+- dropdown dla profile img
+- strona umożliwiająca zmianę informacji na profilu
+
+
+-  ✔️ E̶k̶r̶a̶n̶ ̶l̶o̶g̶o̶w̶a̶n̶i̶a̶  ✔️ / ✔️ E̶k̶r̶a̶n̶ ̶r̶e̶j̶e̶s̶t̶r̶a̶c̶j̶i̶ ✔️
+- ✔️ ̶M̶o̶ż̶l̶i̶w̶o̶ś̶ć̶ ̶l̶o̶g̶o̶w̶a̶n̶i̶a̶ ✔️ / ✔️ M̶o̶ż̶l̶i̶w̶o̶ś̶ć̶ ̶r̶e̶j̶e̶s̶t̶r̶a̶c̶j̶i̶ ✔️
+- ✔️ W̶y̶ś̶w̶i̶e̶t̶l̶a̶n̶i̶e̶ ̶a̶v̶a̶t̶a̶r̶ ̶u̶s̶e̶r̶a̶ ̶z̶a̶m̶i̶a̶s̶t̶ ̶d̶e̶f̶a̶u̶l̶t̶o̶w̶e̶j̶ ̶i̶k̶o̶n̶y̶ ̶ ✔️
+- ✔️ M̶o̶d̶a̶l̶ ̶p̶o̶k̶a̶z̶u̶j̶ą̶c̶y̶ ̶s̶z̶c̶z̶e̶g̶o̶ł̶y̶ ̶p̶o̶ ̶k̶l̶i̶k̶n̶i̶ę̶c̶i̶u̶ ̶n̶a̶ ̶m̶a̶r̶k̶e̶r̶ ✔️

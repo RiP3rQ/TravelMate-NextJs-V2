@@ -3,9 +3,11 @@ import React, { useState } from "react";
 import Map, { Marker, Popup } from "react-map-gl";
 
 import "mapbox-gl/dist/mapbox-gl.css";
+import MapInfoCard from "./MapInfoCard";
 
 const MyMap = ({ searchResults }) => {
   const [selectedLocation, setSelectedLocation] = useState({});
+
   // Transform the search results object into the {latitude: 52.516272, longitude: 13.377722} object
   const coordinates = searchResults?.map((result) => ({
     longitude: result.long,
@@ -21,6 +23,15 @@ const MyMap = ({ searchResults }) => {
     latitude: center.latitude,
     zoom: 11,
   });
+
+  const flyToMarker = (result) => {
+    setViewport({
+      ...viewport,
+      longitude: result.long,
+      latitude: result.lat,
+      zoom: 11,
+    });
+  };
 
   return (
     <Map
@@ -41,11 +52,41 @@ const MyMap = ({ searchResults }) => {
               className="cursor-pointer text-2xl animate-bounce"
               aria-label="push-pin"
               role="img"
-              onClick={() => setSelectedLocation(result)}
+              onClick={() => {
+                setSelectedLocation(result);
+                flyToMarker(result);
+              }}
             >
               🏡
             </p>
           </Marker>
+          {/* the popup that should show if we click on a Marker */}
+          {selectedLocation.long == result.long ? (
+            <Popup
+              onClose={() => setSelectedLocation({})} // close the popup when we click on the close button
+              longitude={result.long}
+              latitude={result.lat}
+              closeOnClick={false}
+              closeButton={true}
+              anchor="bottom"
+              offset={[-20, -35]}
+              style={{ maxWidth: "384px", position: "relative" }}
+            >
+              <div className="h-full w-full bg-white">
+                <MapInfoCard
+                  img={result.img}
+                  location={result.location}
+                  title={result.title}
+                  description={result.description}
+                  star={result.star}
+                  price={result.price}
+                  total={result.total}
+                />
+              </div>
+            </Popup>
+          ) : (
+            false
+          )}
         </div>
       ))}
     </Map>
