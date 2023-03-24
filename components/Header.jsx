@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   MagnifyingGlassIcon,
   LanguageIcon,
@@ -14,6 +14,8 @@ import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { useRouter } from "next/router";
+import { auth } from "../firebase";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
 const Header = ({ placeholder }) => {
   const [searchInput, setSearchInput] = useState("");
@@ -23,8 +25,7 @@ const Header = ({ placeholder }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [themeOfPage, setThemeOfPage] = useState("Light");
   const [polishLanguage, setPolishLanguage] = useState(true);
-
-  console.log(polishLanguage);
+  const [currentUser, setCurrentUser] = useState(null);
 
   // selection of possible search options
   const list = ["Noclegi", "Atrakcje", "Szlaki"];
@@ -64,6 +65,20 @@ const Header = ({ placeholder }) => {
 
   const login = () => {
     router.push("/login");
+  };
+
+  // check if user is logged in
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  // sign out user using firebase
+  const SignOutHandle = async () => {
+    await signOut(auth);
   };
 
   return (
@@ -154,8 +169,16 @@ const Header = ({ placeholder }) => {
             onClick={() => setPolishLanguage((prev) => !prev)}
           />
         </div>
-
-        <UserCircleIcon className="h-12 cursor-pointer" onClick={login} />
+        {!currentUser ? (
+          <UserCircleIcon className="h-12 cursor-pointer" onClick={login} />
+        ) : (
+          <div
+            className="h-12 w-12 rounded-full bg-red-500 cursor-pointer"
+            onClick={SignOutHandle}
+          >
+            ESSA
+          </div>
+        )}
       </div>
 
       {/* Dropdown menu */}
