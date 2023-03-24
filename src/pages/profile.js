@@ -4,6 +4,7 @@ import {
   onAuthStateChanged,
   reauthenticateWithCredential,
   updateEmail,
+  updatePassword,
   updateProfile,
 } from "firebase/auth";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
@@ -28,6 +29,8 @@ const Profile = () => {
   //popup state
   const [popup, setPopup] = useState(false);
   const [credentials, setCredentials] = useState("");
+  const [changeProfile, setChangeProfile] = useState(false);
+  const [changePassword, setChangePassword] = useState(false);
 
   // dropzone variables
   const onDrop = useCallback((acceptedFiles) => {
@@ -56,7 +59,7 @@ const Profile = () => {
     return () => unsubscribe();
   }, []);
 
-  // get data from popup
+  // change profile data
   const changeDataWithCredentials = async () => {
     const user = auth.currentUser;
 
@@ -100,6 +103,31 @@ const Profile = () => {
       .finally(() => {
         router.reload();
         setPopup(false);
+        setCredentials("");
+        setChangeProfile(false);
+      });
+  };
+
+  // change password
+  const changePasswordWithCredentials = async () => {
+    const user = auth.currentUser;
+
+    // reauthenticate user
+    const credential = EmailAuthProvider.credential(user.email, credentials);
+
+    await reauthenticateWithCredential(user, credential)
+      .then(async (e) => {
+        try {
+          await updatePassword(user, newPassword);
+        } catch (error) {
+          alert(error.message);
+        }
+      })
+      .finally(() => {
+        router.reload();
+        setPopup(false);
+        setCredentials("");
+        setChangeProfile(false);
       });
   };
 
@@ -108,11 +136,33 @@ const Profile = () => {
     e.preventDefault();
 
     setPopup(true);
+    setChangeProfile(true);
+  };
+
+  // change password
+  const changePasswordHandle = async (e) => {
+    e.preventDefault();
+
+    if (
+      newPassword !== newPasswordConfirm ||
+      newPassword.length < 1 ||
+      newPasswordConfirm.length < 1
+    ) {
+      alert("Hasła nie są takie same lub są puste!");
+      return;
+    }
+
+    setPopup(true);
+    setChangePassword(true);
   };
 
   useEffect(() => {
-    if (credentials) {
+    if (credentials && changeProfile) {
       changeDataWithCredentials();
+    }
+
+    if (credentials && changePassword) {
+      changePasswordWithCredentials();
     }
   }, [credentials]);
 
@@ -122,10 +172,11 @@ const Profile = () => {
         <CredentialPopup setPopup={setPopup} setCredentials={setCredentials} />
       )}
       <Header />
-      <div className="flex flex-col max-w-7xl mx-auto mt-8">
+      <div className="flex flex-col max-w-7xl mx-auto mt-4">
         <div className=" w-full">
           <h1 className="text-4xl font-bold mb-6">Ustawienia Profilu:</h1>
         </div>
+        {/* avatar, email, username */}
         <form action="" className="">
           {/* avatar */}
           <div className="relative z-0 my-8 w-full">
@@ -133,7 +184,7 @@ const Profile = () => {
               htmlFor=""
               className="w-full text-sm text-gray-700 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-gray-700 peer-focus:dark:text-gray-700 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-100 peer-focus:-translate-y-6"
             >
-              Avatar:
+              AVATAR:
             </p>
             <div className="grid grid-cols-2 w-full">
               <div className="flex items-center justify-center">
@@ -201,6 +252,51 @@ const Profile = () => {
               onClick={(e) => changeData(e)}
             >
               Zmień dane
+            </button>
+          </div>
+        </form>
+
+        {/* change password */}
+        <form action="" className="">
+          <div className="relative z-0 my-8">
+            <input
+              type="password"
+              id="newPassword"
+              className="block py-2.5 px-0 w-full text-lg text-gray-500 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-gray-400 focus:outline-none focus:ring-0 focus:border-gray-400 peer"
+              placeholder=" "
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+            <label
+              htmlFor="newPassword"
+              className="absolute text-sm text-gray-700 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-gray-700 peer-focus:dark:text-gray-700 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-100 peer-focus:-translate-y-6"
+            >
+              NOWE HASŁO
+            </label>
+          </div>
+          {/* displayName */}
+          <div className="relative z-0 my-8">
+            <input
+              type="password"
+              id="repeatPassword"
+              className="block py-2.5 px-0 w-full text-lg text-gray-500 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-gray-400 focus:outline-none focus:ring-0 focus:border-gray-400 peer"
+              placeholder=" "
+              value={newPasswordConfirm}
+              onChange={(e) => setNewPasswordConfirm(e.target.value)}
+            />
+            <label
+              htmlFor="repeatPassword"
+              className="absolute text-sm text-gray-700 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-gray-700 peer-focus:dark:text-gray-700 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-100 peer-focus:-translate-y-6"
+            >
+              POWTÓRZ HASŁO
+            </label>
+          </div>
+          <div className="relative z-0 my-8 flex items-center justify-center">
+            <button
+              className="w-56 h-16 rounded-3xl border-0 outline-none cursor-pointer text-xl font-bold bg-red-400 text-white hover:bg-red-600 transition duration-300"
+              onClick={(e) => changePasswordHandle(e)}
+            >
+              Zmień hasło
             </button>
           </div>
         </form>
