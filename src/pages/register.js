@@ -67,8 +67,7 @@ const Register = () => {
       // set user display name to username
       await updateProfile(user, { displayName: username, photoURL: imgUrl });
 
-      console.log(user);
-      console.log("User registered successfully");
+      router.push("/");
     } catch (error) {
       console.log(error.message);
     }

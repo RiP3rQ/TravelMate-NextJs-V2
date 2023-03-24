@@ -1,3 +1,4 @@
+import { signOut } from "firebase/auth";
 import Head from "next/head";
 import Banner from "../../components/Banner";
 import Footer from "../../components/Footer";
@@ -5,8 +6,14 @@ import Header from "../../components/Header";
 import LargeCard from "../../components/LargeCard";
 import MediumCard from "../../components/MediumCard";
 import SmallCard from "../../components/SmallCard";
+import { auth } from "../../firebase";
 
 export default function Home({ exploreData, cardsData }) {
+  // sign out user using firebase
+  const SignOut = async () => {
+    await signOut(auth);
+  };
+
   return (
     <div className="overflow-x-hidden">
       <Head>

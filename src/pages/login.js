@@ -1,9 +1,13 @@
 import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/solid";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
+import { auth } from "../../firebase";
 
 const Login = () => {
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
   const router = useRouter();
 
   const goBack = () => {
@@ -12,6 +16,17 @@ const Login = () => {
 
   const goRegister = () => {
     router.push("/register");
+  };
+
+  const loginHandle = async (e) => {
+    e.preventDefault();
+    try {
+      await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      router.push("/");
+    }
   };
 
   return (
@@ -46,6 +61,8 @@ const Login = () => {
                   id="email"
                   className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-white peer"
                   placeholder=" "
+                  value={loginEmail}
+                  onChange={(e) => setLoginEmail(e.target.value)}
                 />
                 <label
                   htmlFor="email"
@@ -62,6 +79,8 @@ const Login = () => {
                   id="password"
                   className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-white peer"
                   placeholder=" "
+                  value={loginPassword}
+                  onChange={(e) => setLoginPassword(e.target.value)}
                 />
                 <label
                   htmlFor="password"
@@ -70,7 +89,10 @@ const Login = () => {
                   HASŁO<span className="text-red-500">*</span>
                 </label>
               </div>
-              <button className="w-full h-11 rounded-3xl border-0 outline-none cursor-pointer text-xl font-bold bg-white">
+              <button
+                className="w-full h-11 rounded-3xl border-0 outline-none cursor-pointer text-xl font-bold bg-white"
+                onClick={(e) => loginHandle(e)}
+              >
                 Zaloguj
               </button>
               <div className="font-lg text-white my-5 text-center">
