@@ -47,7 +47,7 @@ export default function Home({ exploreData, cardsData }) {
           {/* Pull cardsData from a server - API endpoints */}
           <div
             className="flex space-x-3 overflow-scroll p-3 -ml-3 overflow-y-hidden 
-          scrollbar scrollbar-thumb-red-400 scrollbar-track-red-100 
+          scrollbar scrollbar-thumb-[#3F9337] scrollbar-track-red-100 
           scrollbar-thumb-rounded-xl scrollbar-track-rounded-xl"
           >
             {cardsData?.map((item, index) => (

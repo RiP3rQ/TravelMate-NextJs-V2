@@ -40,13 +40,17 @@ const Login = () => {
       <section className="z-50 absolute top-0 left-0 w-full h-screen flex justify-center items-center">
         <div className="relative w-96 h-96 flex justify-center items-center bg-transparent border-2 border-white rounded-3xl backdrop-blur-3xl">
           {/* LOGO */}
-          <div className="absolute -top-16 cursor-pointer">
-            <p
-              className="text-white font-bold text-4xl md:text-6xl font-mono"
-              onClick={goBack}
-            >
-              TravelMate
-            </p>
+          <div
+            className="absolute -top-32 cursor-pointer h-28 w-full flex items-center justify-center "
+            onClick={goBack}
+          >
+            <Image
+              src="/../public/assets/logo.png"
+              alt="logo"
+              fill
+              style={{ objectFit: "cover" }}
+              className=" rounded-3xl"
+            />
           </div>
           <div className="">
             {/* FORM */}

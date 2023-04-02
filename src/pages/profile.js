@@ -197,7 +197,7 @@ const Profile = () => {
               </div>
               <div
                 {...getRootProps()}
-                className="h-full bg-slate-200 flex items-center justify-center border-4 border-dashed  border-red-400  "
+                className="h-full bg-slate-200 flex items-center justify-center border-4 border-dashed  border-[#3F9337]  "
               >
                 <input {...getInputProps()} />
                 {isDragActive ? (
@@ -248,7 +248,7 @@ const Profile = () => {
           </div>
           <div className="relative z-0 my-8 flex items-center justify-center">
             <button
-              className="w-56 h-16 rounded-3xl border-0 outline-none cursor-pointer text-xl font-bold bg-red-400 text-white hover:bg-red-600 transition duration-300"
+              className="w-56 h-16 rounded-3xl border-0 outline-none cursor-pointer text-xl font-bold bg-[#3F9337] text-white hover:bg-green-900 transition duration-300"
               onClick={(e) => changeData(e)}
             >
               Zmień dane
@@ -293,7 +293,7 @@ const Profile = () => {
           </div>
           <div className="relative z-0 my-8 flex items-center justify-center">
             <button
-              className="w-56 h-16 rounded-3xl border-0 outline-none cursor-pointer text-xl font-bold bg-red-400 text-white hover:bg-red-600 transition duration-300"
+              className="w-56 h-16 rounded-3xl border-0 outline-none cursor-pointer text-xl font-bold bg-[#3F9337] text-white hover:bg-green-900 transition duration-300"
               onClick={(e) => changePasswordHandle(e)}
             >
               Zmień hasło

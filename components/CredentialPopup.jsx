@@ -24,7 +24,7 @@ const CredentialPopup = ({ setPopup, setCredentials }) => {
       id="outer"
     >
       <div
-        className="bg-red-100 w-1/2 h-1/2 rounded-md flex flex-col items-center justify-center z-50 cursor-default relative"
+        className="bg-green-300 w-1/2 h-1/2 rounded-md flex flex-col items-center justify-center z-50 cursor-default relative"
         id="inner"
       >
         <div
@@ -59,7 +59,7 @@ const CredentialPopup = ({ setPopup, setCredentials }) => {
         </div>
         {/* PRZYCISK */}
         <button
-          className="bg-red-400 text-white px-4 py-2 rounded-md w-1/4"
+          className="bg-green-800 text-white px-4 py-2 rounded-md w-1/4"
           onClick={handleClick}
         >
           Zaloguj

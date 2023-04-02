@@ -93,11 +93,11 @@ const Header = ({ placeholder }) => {
     <header className="sticky top-0 z-30 bg-white shadow-md md:p-5 md:px-10 grid lg:grid-cols-12 md:grid-cols-5 sm:grid-cols-4">
       {/* Logo section (LEFT)*/}
       <div
-        className="relative flex items-center h-10 cursor-pointer my-auto lg:col-span-3 md:col-span-1 sm:col-span-1"
+        className="relative flex items-center h-full cursor-pointer my-auto lg:col-span-3 md:col-span-1 sm:col-span-1"
         onClick={() => router.push("/")}
       >
         <Image
-          src="https://links.papareact.com/qd3"
+          src="/../public/assets/logo.png"
           alt="logo"
           fill
           style={{ objectFit: "contain", objectPosition: "left" }}
@@ -108,8 +108,8 @@ const Header = ({ placeholder }) => {
       {/* Selecting items for searching */}
       <div className="flex flex-col items-center relative md:col-span-1 mr-2 lg:col-span-2 sm:col-span-1">
         <button
-          className="bg-red-400 p-2 w-full flex items-center justify-center font-bold text-lg 
-        tracking-wider rounded-2xl border-4 border-transparent active:border-red-400 active:bg-white duration-300 z-10"
+          className="bg-[#3F9337] p-2 w-full flex items-center justify-center font-bold text-lg 
+        tracking-wider rounded-2xl border-4 border-transparent active:border-[#3F9337] active:bg-white duration-300 z-10"
           onClick={() => setIsOpen((prev) => !prev)}
         >
           {selectedOption}
@@ -128,8 +128,8 @@ const Header = ({ placeholder }) => {
                 .map((item) => (
                   <button
                     key={item}
-                    className="bg-red-400 p-2 w-full flex items-center justify-center font-bold text-lg 
-                  tracking-wider rounded-2xl border-4 border-transparent active:border-red-400 active:bg-white duration-300"
+                    className="bg-[#3F9337] p-2 w-full flex items-center justify-center font-bold text-lg 
+                  tracking-wider rounded-2xl border-4 border-transparent active:border-[#3F9337] active:bg-white duration-300"
                     onClick={() => {
                       setSelectedOption(item);
                       setIsOpen(false);
@@ -153,7 +153,7 @@ const Header = ({ placeholder }) => {
           onChange={(e) => setSearchInput(e.target.value)}
         />
         <MagnifyingGlassIcon
-          className="hidden h-8 bg-red-400 text-white rounded-full 
+          className="hidden h-8 bg-[#3F9337] text-white rounded-full 
         p-2 cursor-pointer md:inline-flex md:mx-2"
         />
       </div>
@@ -200,22 +200,20 @@ const Header = ({ placeholder }) => {
 
       {/* Dropdown menu for searching */}
       {searchInput && (
-        <div className="flex flex-col mx-auto lg:col-span-12 md:col-span-5 sm:col-span-4">
+        <div className="flex flex-col mx-auto lg:col-span-12 md:col-span-5 sm:col-span-4 mt-1">
           <DateRange
             ranges={[selectionRange]}
             minDate={new Date()}
-            rangeColors={["#FD5B61"]}
+            rangeColors={["#3F9337"]}
             onChange={handleSelect}
           />
           <div className="flex items-center border-b mb-4 px-4">
-            <h2 className="text-2xl flex-grow font-semibold">
-              Number of Guests
-            </h2>
+            <h2 className="text-2xl flex-grow font-semibold">Liczba gości:</h2>
 
             <UserIcon className="h-5" />
             <input
               type="number"
-              className="w-12 pl-2 text-lg outline-none text-red-400"
+              className="w-12 pl-2 text-lg outline-none text-[#3F9337]"
               min={1}
               value={numberOfGuests}
               onChange={(e) => setNumberOfGuests(e.target.value)}
@@ -229,7 +227,7 @@ const Header = ({ placeholder }) => {
               Cancel
             </button>
             <button
-              className="flex-grow text-red-400 font-bold"
+              className="flex-grow text-[#3F9337] font-bold"
               onClick={search}
             >
               Search
@@ -240,7 +238,7 @@ const Header = ({ placeholder }) => {
 
       {/* Dropdown menu for profile picture */}
       {avatarDropdownIsOpen && (
-        <div className="absolute top-16 right-10 bg-slate-200 border-4 border-red-400 h-20 w-52 rounded-xl mt-2">
+        <div className="absolute top-16 right-10 bg-slate-200 border-4 border-[#3F9337] h-20 w-52 rounded-xl mt-2">
           <div className="flex flex-col items-center justify-center h-full w-full">
             <p
               className="text-lg font-semibold border-b border-gray-500 py-1 cursor-pointer"
@@ -249,7 +247,7 @@ const Header = ({ placeholder }) => {
               Ustawienia profilu
             </p>
             <button
-              className="text-lg text-red-500 font-bold py-1 tracking-widest cursor-pointer"
+              className="text-lg text-[#3F9337] font-bold py-1 tracking-widest cursor-pointer"
               onClick={SignOutHandle}
             >
               Wyloguj

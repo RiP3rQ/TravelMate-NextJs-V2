@@ -38,7 +38,7 @@ const MapInfoCard = ({
         <p className="pt-1 text-xs text-gray-500 flex-grow">{description}</p>
 
         <div className="flex justify-between items-end pt-5">
-          <button className="bg-red-500 py-4 px-7 rounded-full text-sm font-bold text-white">
+          <button className="bg-green-800 py-4 px-7 rounded-full text-sm font-bold text-white">
             Rezerwuj
           </button>
           <div className=" -mt-2">
