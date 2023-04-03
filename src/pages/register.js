@@ -95,7 +95,7 @@ const Register = () => {
             onClick={goBack}
           >
             <Image
-              src="/../public/assets/logo.png"
+              src="/assets/logo.png"
               alt="logo"
               fill
               style={{ objectFit: "cover" }}

@@ -97,7 +97,7 @@ const Header = ({ placeholder }) => {
         onClick={() => router.push("/")}
       >
         <Image
-          src="/../public/assets/logo.png"
+          src="/assets/logo.png"
           alt="logo"
           fill
           style={{ objectFit: "contain", objectPosition: "left" }}
