@@ -199,7 +199,7 @@ const Header = ({ placeholder }) => {
       </div>
 
       {/* Dropdown menu for searching */}
-      {searchInput && (
+      {searchInput && selectedOption == "Noclegi" && (
         <div className="flex flex-col mx-auto lg:col-span-12 md:col-span-5 sm:col-span-4 mt-1">
           <DateRange
             ranges={[selectionRange]}
