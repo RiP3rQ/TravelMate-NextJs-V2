@@ -10,14 +10,41 @@ import React, { useState, useRef } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth, storage } from "../../firebase";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
+// password validation
+const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/;
+// min 6 characters, at least one uppercase letter, one lowercase letter and one number
+
+// validation schema
+const validationSchema = Yup.object({
+  email: Yup.string()
+    .email("Niepoprawny adres email")
+    .required("Pole wymagane"),
+  password: Yup.string()
+    .min(6, "Hasło musi mieć conajmniej 6 znaków")
+    .matches( passwordRules, "Hasło musi zawierać conajmniej jedną dużą literę, jedną małą literę i jedną cyfrę")
+    .required("Pole wymagane"),
+  username: Yup.string().min(3, "Nazwa użytkownika musi mieć conajmniej 3 znaki").required("Pole wymagane"),
+});
 
 const Register = () => {
   const router = useRouter();
 
   // form info
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
+  const { values, handleBlur, handleChange, handleSubmit, errors, touched, isSubmitting} = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      username: "",
+    },
+    validationSchema: validationSchema, 
+    onSubmit: async (values, actions) => {
+      await register(values);
+      actions.resetForm();
+    },
+  });
   const [profilePicture, setProfilePicture] = useState("");
 
   // ref to file picker
@@ -28,8 +55,8 @@ const Register = () => {
   const [progresspercent, setProgresspercent] = useState(0);
 
   // register user using firebase
-  const register = async (e) => {
-    e.preventDefault();
+  const register = async (values) => {
+    const { email, password, username } = values;
 
     // register
     try {
@@ -68,9 +95,6 @@ const Register = () => {
     }
 
     // reset state
-    setEmail("");
-    setPassword("");
-    setUsername("");
     setProfilePicture("");
     filePickerRef.current.value = "";
   };
@@ -103,20 +127,23 @@ const Register = () => {
             />
           </div>
           <div className="w-full mx-6">
+
+
             {/* FORM */}
-            <form action="" className="">
+            <form onSubmit={handleSubmit}>
               <h2 className="text-5xl text-center text-white mb-8">
                 Rejestracja
               </h2>
-              <div className="relative z-0 my-6">
+              <div className="relative z-0 my-8">
                 <EnvelopeIcon className="h-6 absolute top-3 right-1 text-white" />
                 <input
                   type="text"
                   id="email"
-                  className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-white peer"
+                  className={`block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-white peer ${errors.email && touched.email && "border-red-500"}`}
                   placeholder=" "
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={values.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 <label
                   htmlFor="email"
@@ -124,17 +151,21 @@ const Register = () => {
                 >
                   EMAIL<span className="text-red-500">*</span>
                 </label>
+                {errors.email && touched.email ? (
+                  <p className="text-red-500 text-sm font-bold absolute">{errors.email}</p>
+                ) : " "}
               </div>
 
-              <div className="relative z-0 my-6">
+              <div className="relative z-0 my-8">
                 <LockClosedIcon className="h-6 absolute top-3 right-1 text-white" />
                 <input
                   type="password"
                   id="password"
-                  className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-white peer"
+                  className={`block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-white peer ${errors.password && touched.password && "border-red-500"}`}
                   placeholder=" "
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={values.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 <label
                   htmlFor="password"
@@ -142,17 +173,21 @@ const Register = () => {
                 >
                   HASŁO<span className="text-red-500">*</span>
                 </label>
+                {errors.password && touched.password ? (
+                  <p className="text-red-500 text-sm font-bold absolute">{errors.password}</p>
+                ) : " "}
               </div>
 
-              <div className="relative z-0 my-6">
+              <div className="relative z-0 my-8">
                 <UserIcon className="h-6 absolute top-3 right-1 text-white" />
                 <input
                   type="text"
                   id="username"
-                  className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-white peer"
+                  className={`block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-white peer ${errors.username && touched.username && "border-red-500"}`}
                   placeholder=" "
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  value={values.username}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 <label
                   htmlFor="username"
@@ -160,6 +195,9 @@ const Register = () => {
                 >
                   NAZWA UŻYTKOWNIKA<span className="text-red-500">*</span>
                 </label>
+                {errors.username && touched.username ? (
+                  <p className="text-red-500 text-sm font-bold absolute">{errors.username}</p>
+                ) : " "}
               </div>
               <div className="relative z-0 my-6">
                 <PhotoIcon className="h-6 absolute top-3 right-1 text-white" />
@@ -180,10 +218,11 @@ const Register = () => {
               </div>
 
               <button
-                className="w-full h-11 rounded-3xl border-0 outline-none cursor-pointer text-xl font-bold bg-white"
-                onClick={(e) => register(e)}
+                className="w-full h-11 rounded-3xl border-0 outline-none cursor-pointer text-xl font-bold bg-white disabled:bg-gray-300 disabled:text-white"
+                type="submit"
+                disabled={isSubmitting}
               >
-                Zarejestruj
+                {isSubmitting ? ("Rejestruje ") : ("Zarejestruj")}  
               </button>
             </form>
           </div>
