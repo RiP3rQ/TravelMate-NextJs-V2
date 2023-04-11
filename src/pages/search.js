@@ -8,25 +8,29 @@ import MyMap from "../../components/MyMap";
 
 const Search = ({ searchResults }) => {
   const router = useRouter();
-  const { location, startDate, endDate, numberOfGuests } = router.query;
+  const { activity, location, startDate, endDate, numberOfGuests } =
+    router.query;
 
-  const formattedStartDate = format(new Date(startDate), "dd MMMM yy");
-  const formattedEndDate = format(new Date(endDate), "dd MMMM yy");
-  const range = `${formattedStartDate} - ${formattedEndDate}`;
+  if (activity == "Noclegi" && startDate && endDate && numberOfGuests) {
+    const formattedStartDate = format(new Date(startDate), "dd MMMM yy");
+    const formattedEndDate = format(new Date(endDate), "dd MMMM yy");
+    const range = `${formattedStartDate} - ${formattedEndDate}`;
+  }
 
   return (
     <div className="overflow-x-hidden">
       <Header
-        placeholder={`${location} | ${range} | ${numberOfGuests} osoby`}
+        // placeholder={`${location} | ${range} | ${numberOfGuests} osoby`}
+        placeholder={`${location} `}
       />
 
       <main className="flex">
         <section className="flex-grow pt-14 px-6 lg:h-screen lg:overflow-y-scroll">
           <p className="text-xs">
-            300+ Noclegów - {range} - {numberOfGuests} osób{" "}
+            {/* 300+ Noclegów - {range} - {numberOfGuests} osób{" "} */}
           </p>
           <h1 className="text-3xl font-semibold mt-2 mb-6">
-            Noclegi w miejscowości: New York
+            {activity} w miejscowości: {location}
           </h1>
 
           <div className="hidden lg:inline-flex mb-5 space-x-3 text-gray-800 whitespace-nowrap">
@@ -54,7 +58,7 @@ const Search = ({ searchResults }) => {
         </section>
 
         {/* MAP SECTION  */}
-        <section className="hidden lg:inline-flex lg:min-w-[350px] 3xl:min-w-[800px] 2xl:min-w-[600px] lg:h-screen">
+        <section className="hidden lg:inline-flex lg:min-w-[600px] 2xl:min-w-[800px] lg:h-screen">
           <MyMap searchResults={searchResults} />
         </section>
       </main>

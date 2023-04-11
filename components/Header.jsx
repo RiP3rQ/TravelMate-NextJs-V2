@@ -56,6 +56,17 @@ const Header = ({ placeholder }) => {
     router.push({
       pathname: "/search",
       query: {
+        activity: selectedOption,
+        location: searchInput,
+      },
+    });
+  };
+
+  const searchFlat = () => {
+    router.push({
+      pathname: "/search",
+      query: {
+        activity: selectedOption,
         location: searchInput,
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
@@ -155,6 +166,7 @@ const Header = ({ placeholder }) => {
         <MagnifyingGlassIcon
           className="hidden h-8 bg-[#3F9337] text-white rounded-full 
         p-2 cursor-pointer md:inline-flex md:mx-2"
+          onClick={search}
         />
       </div>
 
@@ -228,7 +240,7 @@ const Header = ({ placeholder }) => {
             </button>
             <button
               className="flex-grow text-[#3F9337] font-bold"
-              onClick={search}
+              onClick={searchFlat}
             >
               Search
             </button>

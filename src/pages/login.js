@@ -4,10 +4,49 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { auth } from "../../firebase";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
+// password validation
+const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/;
+// min 6 characters, at least one uppercase letter, one lowercase letter and one number
+
+// validation schema
+const validationSchemaData = Yup.object({
+  loginEmail: Yup.string()
+    .email("Niepoprawny adres email")
+    .required("Pole wymagane"),
+  loginPassword: Yup.string()
+    .min(6, "Hasło musi mieć conajmniej 6 znaków")
+    .matches(
+      passwordRules,
+      "Hasło musi zawierać conajmniej jedną dużą literę, jedną małą literę i jedną cyfrę"
+    )
+    .required("Pole wymagane"),
+});
 
 const Login = () => {
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
+  // form info data
+  const {
+    values,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    errors,
+    touched,
+    isSubmitting,
+    setSubmitting,
+  } = useFormik({
+    initialValues: {
+      loginEmail: "",
+      loginPassword: "",
+    },
+    validationSchema: validationSchemaData,
+    onSubmit: (values) => {
+      setSubmitting(true);
+      loginHandle(values);
+    },
+  });
   const router = useRouter();
 
   const goBack = () => {
@@ -18,14 +57,15 @@ const Login = () => {
     router.push("/register");
   };
 
-  const loginHandle = async (e) => {
-    e.preventDefault();
+  const loginHandle = async (values) => {
+    const { loginEmail, loginPassword } = values;
     try {
       await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+      setSubmitting(false);
+      router.push("/");
     } catch (error) {
       console.log(error.message);
-    } finally {
-      router.push("/");
+      setSubmitting(false);
     }
   };
 
@@ -54,50 +94,67 @@ const Login = () => {
           </div>
           <div className="">
             {/* FORM */}
-            <form action="" className="">
+            <form onSubmit={handleSubmit}>
               <h2 className="text-5xl text-center text-white my-8">
                 Logowanie
               </h2>
-              <div className="relative z-0 my-6">
+              <div className="relative z-0 my-8">
                 <EnvelopeIcon className="h-6 absolute top-3 right-1 text-white" />
                 <input
                   type="text"
-                  id="email"
+                  id="loginEmail"
                   className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-white peer"
                   placeholder=" "
-                  value={loginEmail}
-                  onChange={(e) => setLoginEmail(e.target.value)}
+                  value={values.loginEmail}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 <label
-                  htmlFor="email"
+                  htmlFor="loginEmail"
                   className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-100 peer-focus:-translate-y-6"
                 >
                   EMAIL<span className="text-red-500">*</span>
                 </label>
+                {errors.loginEmail && touched.loginEmail ? (
+                  <p className="text-red-500 text-sm font-bold absolute">
+                    {errors.loginEmail}
+                  </p>
+                ) : (
+                  " "
+                )}
               </div>
 
-              <div className="relative z-0 my-6">
+              <div className="relative z-0 my-12">
                 <LockClosedIcon className="h-6 absolute top-3 right-1 text-white" />
                 <input
                   type="password"
-                  id="password"
+                  id="loginPassword"
                   className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-white peer"
                   placeholder=" "
-                  value={loginPassword}
-                  onChange={(e) => setLoginPassword(e.target.value)}
+                  value={values.loginPassword}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 <label
-                  htmlFor="password"
+                  htmlFor="loginPassword"
                   className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-100 peer-focus:-translate-y-6"
                 >
                   HASŁO<span className="text-red-500">*</span>
                 </label>
+                {errors.loginPassword && touched.loginPassword ? (
+                  <p className="text-red-500 text-sm font-bold absolute">
+                    {errors.loginPassword}
+                  </p>
+                ) : (
+                  " "
+                )}
               </div>
               <button
-                className="w-full h-11 rounded-3xl border-0 outline-none cursor-pointer text-xl font-bold bg-white"
-                onClick={(e) => loginHandle(e)}
+                className="w-full h-11 rounded-3xl border-0 outline-none cursor-pointer text-xl font-bold bg-white disabled:bg-gray-300 disabled:text-white"
+                disabled={isSubmitting}
+                type="submit"
               >
-                Zaloguj
+                {isSubmitting ? "LOGOWANIE" : "Zaloguj"}
               </button>
               <div className="font-lg text-white my-5 text-center">
                 <p>

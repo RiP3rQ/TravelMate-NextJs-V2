@@ -14,17 +14,86 @@ import { useDropzone } from "react-dropzone";
 import CredentialPopup from "../../components/CredentialPopup";
 import Header from "../../components/Header";
 import { auth, storage } from "../../firebase";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
+// password validation
+const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/;
+// min 6 characters, at least one uppercase letter, one lowercase letter and one number
+
+// validation schema
+const validationSchemaData = Yup.object({
+  emailAddress: Yup.string()
+    .email("Niepoprawny adres email")
+    .required("Pole wymagane"),
+  displayName: Yup.string()
+    .min(3, "Nazwa użytkownika musi mieć conajmniej 3 znaki")
+    .required("Pole wymagane"),
+});
+
+// validation schema
+const validationSchemaPassword = Yup.object({
+  password: Yup.string()
+    .min(6, "Hasło musi mieć conajmniej 6 znaków")
+    .matches(
+      passwordRules,
+      "Hasło musi zawierać conajmniej jedną dużą literę, jedną małą literę i jedną cyfrę"
+    )
+    .required("Pole wymagane"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password"), null], "Hasła muszą być takie same")
+    .required("Pole wymagane"),
+});
 
 const Profile = () => {
   const router = useRouter();
-  // preview image
-  const [preview, setPreview] = useState();
   // firebase state
   const [avatar, setAvatar] = useState();
-  const [emailAddress, SetEmailAddress] = useState("");
-  const [displayName, setDisplayName] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
+  // preview image
+  const [preview, setPreview] = useState();
+  // form info data (1 form)
+  const {
+    values,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    errors,
+    touched,
+    isSubmitting,
+    setFieldValue,
+    setSubmitting,
+  } = useFormik({
+    initialValues: {
+      emailAddress: "",
+      displayName: "",
+    },
+    validationSchema: validationSchemaData,
+    onSubmit: () => {
+      setSubmitting(true);
+      changeData();
+    },
+  });
+  // form info data (2 form)
+  const {
+    values: values2,
+    handleBlur: handleBlur2,
+    handleChange: handleChange2,
+    handleSubmit: handleSubmit2,
+    errors: errors2,
+    touched: touched2,
+    isSubmitting: isSubmitting2,
+    setSubmitting: setSubmitting2,
+  } = useFormik({
+    initialValues: {
+      password: "",
+      confirmPassword: "",
+    },
+    validationSchema: validationSchemaPassword,
+    onSubmit: () => {
+      setSubmitting2(true);
+      changePasswordHandle();
+    },
+  });
 
   //popup state
   const [popup, setPopup] = useState(false);
@@ -52,16 +121,19 @@ const Profile = () => {
         ? user.photoURL
         : "https://st3.depositphotos.com/1767687/16607/v/600/depositphotos_166074422-stock-illustration-default-avatar-profile-icon-grey.jpg";
       setAvatar(avgImg);
-      SetEmailAddress(user.email);
-      setDisplayName(user.displayName);
+      // set email and display name to form values
+      setFieldValue("emailAddress", user.email);
+      setFieldValue("displayName", user.displayName);
     });
 
     return () => unsubscribe();
   }, []);
 
   // change profile data
-  const changeDataWithCredentials = async () => {
+  const changeDataWithCredentials = async (values) => {
     const user = auth.currentUser;
+    const { displayName, emailAddress } = values;
+    console.log(displayName, emailAddress);
 
     // reauthenticate user
     const credential = EmailAuthProvider.credential(user.email, credentials);
@@ -71,10 +143,7 @@ const Profile = () => {
         try {
           // upload profile data with picture to Firebase storage if user has selected one
           if (preview) {
-            const storageRef = ref(
-              storage,
-              `profileImages/${avatar + user.uid}`
-            );
+            const storageRef = ref(storage, `profileImages/${user.uid}`);
             await uploadBytesResumable(storageRef, avatar);
 
             // get download url
@@ -105,12 +174,15 @@ const Profile = () => {
         setPopup(false);
         setCredentials("");
         setChangeProfile(false);
+        setSubmitting(false);
       });
   };
 
   // change password
-  const changePasswordWithCredentials = async () => {
+  const changePasswordWithCredentials = async (values2) => {
     const user = auth.currentUser;
+    const { password: newPassword } = values2;
+    console.log(newPassword);
 
     // reauthenticate user
     const credential = EmailAuthProvider.credential(user.email, credentials);
@@ -127,42 +199,30 @@ const Profile = () => {
         router.reload();
         setPopup(false);
         setCredentials("");
-        setChangeProfile(false);
+        setChangePassword(false);
+        setSubmitting2(false);
       });
   };
 
   // change data
-  const changeData = async (e) => {
-    e.preventDefault();
-
+  const changeData = () => {
     setPopup(true);
     setChangeProfile(true);
   };
 
   // change password
-  const changePasswordHandle = async (e) => {
-    e.preventDefault();
-
-    if (
-      newPassword !== newPasswordConfirm ||
-      newPassword.length < 1 ||
-      newPasswordConfirm.length < 1
-    ) {
-      alert("Hasła nie są takie same lub są puste!");
-      return;
-    }
-
+  const changePasswordHandle = () => {
     setPopup(true);
     setChangePassword(true);
   };
 
   useEffect(() => {
     if (credentials && changeProfile) {
-      changeDataWithCredentials();
+      changeDataWithCredentials(values);
     }
 
     if (credentials && changePassword) {
-      changePasswordWithCredentials();
+      changePasswordWithCredentials(values2);
     }
   }, [credentials]);
 
@@ -177,7 +237,7 @@ const Profile = () => {
           <h1 className="text-4xl font-bold mb-6">Ustawienia Profilu:</h1>
         </div>
         {/* avatar, email, username */}
-        <form action="" className="">
+        <form onSubmit={handleSubmit}>
           {/* avatar */}
           <div className="relative z-0 my-8 w-full">
             <p
@@ -190,8 +250,7 @@ const Profile = () => {
               <div className="flex items-center justify-center">
                 <img
                   src={preview ? preview : avatar}
-                  alt={displayName}
-                  fill
+                  alt="avatar"
                   className="h-32 w-32 rounded-full"
                 />
               </div>
@@ -216,87 +275,121 @@ const Profile = () => {
           <div className="relative z-0 my-8">
             <input
               type="text"
-              id="email"
+              id="emailAddress"
               className="block py-2.5 px-0 w-full text-lg text-gray-500 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-gray-400 focus:outline-none focus:ring-0 focus:border-gray-400 peer"
               placeholder=" "
-              value={emailAddress}
-              onChange={(e) => SetEmailAddress(e.target.value)}
+              value={values.emailAddress}
+              onChange={handleChange}
+              onBlur={handleBlur}
             />
             <label
-              htmlFor="email"
+              htmlFor="emailAddress"
               className="absolute text-sm text-gray-700 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-gray-700 peer-focus:dark:text-gray-700 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-100 peer-focus:-translate-y-6"
             >
               EMAIL
             </label>
+            {errors.emailAddress && touched.emailAddress ? (
+              <p className="text-red-500 text-sm font-bold absolute">
+                {errors.emailAddress}
+              </p>
+            ) : (
+              " "
+            )}
           </div>
           {/* displayName */}
           <div className="relative z-0 my-8">
             <input
               type="text"
-              id="email"
+              id="displayName"
               className="block py-2.5 px-0 w-full text-lg text-gray-500 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-gray-400 focus:outline-none focus:ring-0 focus:border-gray-400 peer"
               placeholder=" "
-              value={displayName}
-              onChange={(e) => setDisplayName(e.target.value)}
+              value={values.displayName}
+              onChange={handleChange}
+              onBlur={handleBlur}
             />
             <label
-              htmlFor="email"
+              htmlFor="displayName"
               className="absolute text-sm text-gray-700 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-gray-700 peer-focus:dark:text-gray-700 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-100 peer-focus:-translate-y-6"
             >
               NAZWA UŻYTKOWNIKA
             </label>
+            {errors.displayName && touched.displayName ? (
+              <p className="text-red-500 text-sm font-bold absolute">
+                {errors.displayName}
+              </p>
+            ) : (
+              " "
+            )}
           </div>
           <div className="relative z-0 my-8 flex items-center justify-center">
             <button
-              className="w-56 h-16 rounded-3xl border-0 outline-none cursor-pointer text-xl font-bold bg-[#3F9337] text-white hover:bg-green-900 transition duration-300"
-              onClick={(e) => changeData(e)}
+              className="w-56 h-16 rounded-3xl border-0 outline-none cursor-pointer text-xl font-bold bg-[#3F9337] text-white hover:bg-green-900 transition duration-300 disabled:bg-gray-300 disabled:text-white"
+              disabled={isSubmitting}
+              type="submit"
             >
-              Zmień dane
+              {isSubmitting ? "ZMIENIAM DANE" : "Zmień dane"}
             </button>
           </div>
         </form>
 
         {/* change password */}
-        <form action="" className="">
+        <form onSubmit={handleSubmit2}>
           <div className="relative z-0 my-8">
             <input
               type="password"
-              id="newPassword"
+              id="password"
               className="block py-2.5 px-0 w-full text-lg text-gray-500 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-gray-400 focus:outline-none focus:ring-0 focus:border-gray-400 peer"
               placeholder=" "
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
+              value={values2.password}
+              onChange={handleChange2}
+              onBlur={handleBlur2}
             />
             <label
-              htmlFor="newPassword"
+              htmlFor="password"
               className="absolute text-sm text-gray-700 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-gray-700 peer-focus:dark:text-gray-700 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-100 peer-focus:-translate-y-6"
             >
               NOWE HASŁO
             </label>
+            {errors2.password && touched2.password ? (
+              <p className="text-red-500 text-sm font-bold absolute">
+                {errors2.password}
+              </p>
+            ) : (
+              " "
+            )}
           </div>
           {/* displayName */}
           <div className="relative z-0 my-8">
             <input
               type="password"
-              id="repeatPassword"
+              id="confirmPassword"
               className="block py-2.5 px-0 w-full text-lg text-gray-500 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-gray-400 focus:outline-none focus:ring-0 focus:border-gray-400 peer"
               placeholder=" "
-              value={newPasswordConfirm}
-              onChange={(e) => setNewPasswordConfirm(e.target.value)}
+              value={values2.confirmPassword}
+              onChange={handleChange2}
+              onBlur={handleBlur2}
             />
             <label
-              htmlFor="repeatPassword"
+              htmlFor="confirmPassword"
               className="absolute text-sm text-gray-700 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-gray-700 peer-focus:dark:text-gray-700 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-100 peer-focus:-translate-y-6"
             >
               POWTÓRZ HASŁO
             </label>
+            {errors2.confirmPassword && touched2.confirmPassword ? (
+              <p className="text-red-500 text-sm font-bold absolute">
+                {errors2.confirmPassword}
+              </p>
+            ) : (
+              " "
+            )}
           </div>
           <div className="relative z-0 my-8 flex items-center justify-center">
             <button
-              className="w-56 h-16 rounded-3xl border-0 outline-none cursor-pointer text-xl font-bold bg-[#3F9337] text-white hover:bg-green-900 transition duration-300"
-              onClick={(e) => changePasswordHandle(e)}
+              className="w-56 h-16 rounded-3xl border-0 outline-none cursor-pointer text-xl font-bold bg-[#3F9337] text-white hover:bg-green-900 transition duration-300 disabled:bg-gray-300 disabled:text-white"
+              disabled={isSubmitting2}
+              type="submit"
             >
-              Zmień hasło
+              {isSubmitting2 ? "ZMIENIAM HASŁO" : "Zmień hasło"}
             </button>
           </div>
         </form>
