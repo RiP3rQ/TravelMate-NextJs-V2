@@ -9,19 +9,13 @@ import {
   ChevronDownIcon,
   SunIcon,
 } from "@heroicons/react/24/solid";
-import { DateRange } from "react-date-range";
-
-import "react-date-range/dist/styles.css"; // main style file
-import "react-date-range/dist/theme/default.css"; // theme css file
 import { useRouter } from "next/router";
-import { auth } from "../firebase";
-import { onAuthStateChanged, signOut } from "firebase/auth";
 
 const Header = ({ placeholder }) => {
   const [searchInput, setSearchInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
   const [avatarDropdownIsOpen, setAvatarDropdownIsOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   // selection of possible search options
   const list = ["Noclegi", "Atrakcje", "Szlaki"];
@@ -41,22 +35,6 @@ const Header = ({ placeholder }) => {
 
   const login = () => {
     router.push("/login");
-  };
-
-  // check if user is logged in
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
-    });
-
-    return () => unsubscribe();
-  }, [currentUser]);
-
-  // sign out user using firebase
-  const SignOutHandle = async () => {
-    await signOut(auth);
-    setAvatarDropdownIsOpen(false);
-    router.reload();
   };
 
   // router for profile settings page

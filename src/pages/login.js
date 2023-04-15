@@ -1,9 +1,6 @@
 import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/solid";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
-import { auth } from "../../firebase";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -59,14 +56,6 @@ const Login = () => {
 
   const loginHandle = async (values) => {
     const { loginEmail, loginPassword } = values;
-    try {
-      await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
-      setSubmitting(false);
-      router.push("/");
-    } catch (error) {
-      console.log(error.message);
-      setSubmitting(false);
-    }
   };
 
   return (

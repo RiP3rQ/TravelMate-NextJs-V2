@@ -5,28 +5,9 @@ import Header from "../../components/Header";
 import InfoCard from "../../components/InfoCard";
 import MyMap from "../../components/MyMap";
 
-import { db } from "../../firebase";
-
-import { useEffect, useState } from "react";
-import { onSnapshot, collection, query } from "firebase/firestore";
-
 const Search = () => {
   const router = useRouter();
   const { location, activity } = router.query;
-
-  const [posts, setPosts] = useState([]);
-
-  useEffect(
-    () =>
-      onSnapshot(query(collection(db, "properties")), (snapshot) => {
-        snapshot.docs.map((doc) => {
-          setPosts((posts) => [...posts, doc.data()]);
-        });
-      }),
-    [db]
-  );
-
-  console.log(posts);
 
   return (
     <div className="overflow-x-hidden">
