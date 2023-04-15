@@ -6,11 +6,12 @@ import {
 } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
 // password validation
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/;
@@ -35,6 +36,7 @@ const validationSchema = Yup.object({
 
 const Register = () => {
   const router = useRouter();
+  const { data: session } = useSession();
 
   // form info
   const {
@@ -76,6 +78,13 @@ const Register = () => {
   const goBack = () => {
     router.push("/");
   };
+
+  useEffect(() => {
+    if (session !== undefined && session !== null) {
+      toast.success("Jesteś już zalogowany");
+      router.push("/");
+    }
+  }, [session]);
 
   return (
     <div className="h-screen w-full relative">

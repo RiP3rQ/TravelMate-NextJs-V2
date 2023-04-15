@@ -1,21 +1,11 @@
-import { XMarkIcon } from "@heroicons/react/24/solid";
-import {
-  EmailAuthProvider,
-  onAuthStateChanged,
-  reauthenticateWithCredential,
-  updateEmail,
-  updatePassword,
-  updateProfile,
-} from "firebase/auth";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useRouter } from "next/router";
 import React, { useEffect, useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import CredentialPopup from "../../components/CredentialPopup";
 import Header from "../../components/Header";
-import { auth, storage } from "../../firebase";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useSession } from "next-auth/react";
 
 // password validation
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/;
@@ -47,8 +37,11 @@ const validationSchemaPassword = Yup.object({
 
 const Profile = () => {
   const router = useRouter();
+  const { data: session } = useSession();
   // firebase state
-  const [avatar, setAvatar] = useState();
+  const [avatar, setAvatar] = useState(
+    "https://st3.depositphotos.com/1767687/16607/v/600/depositphotos_166074422-stock-illustration-default-avatar-profile-icon-grey.jpg"
+  );
   // preview image
   const [preview, setPreview] = useState();
   // form info data (1 form)
@@ -109,99 +102,30 @@ const Profile = () => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-  // get data about user
-  useEffect(() => {
-    if (!auth.currentUser) {
-      router.push("/");
-      return;
-    }
-
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      const avgImg = user.photoURL
-        ? user.photoURL
-        : "https://st3.depositphotos.com/1767687/16607/v/600/depositphotos_166074422-stock-illustration-default-avatar-profile-icon-grey.jpg";
-      setAvatar(avgImg);
-      // set email and display name to form values
-      setFieldValue("emailAddress", user.email);
-      setFieldValue("displayName", user.displayName);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
   // change profile data
   const changeDataWithCredentials = async (values) => {
-    const user = auth.currentUser;
     const { displayName, emailAddress } = values;
-    console.log(displayName, emailAddress);
 
-    // reauthenticate user
-    const credential = EmailAuthProvider.credential(user.email, credentials);
-
-    await reauthenticateWithCredential(user, credential)
-      .then(async (e) => {
-        try {
-          // upload profile data with picture to Firebase storage if user has selected one
-          if (preview) {
-            const storageRef = ref(storage, `profileImages/${user.uid}`);
-            await uploadBytesResumable(storageRef, avatar);
-
-            // get download url
-            const downloadUrl = await getDownloadURL(storageRef);
-
-            // set user display name to username and avatar
-            await updateProfile(user, {
-              photoURL: downloadUrl,
-            });
-          } else {
-          }
-
-          if (displayName) {
-            await updateProfile(user, {
-              displayName: displayName,
-            });
-          }
-
-          if (emailAddress) {
-            await updateEmail(user, emailAddress);
-          }
-        } catch (error) {
-          alert(error.message);
-        }
-      })
-      .finally(() => {
-        router.reload();
-        setPopup(false);
-        setCredentials("");
-        setChangeProfile(false);
-        setSubmitting(false);
-      });
+    // .finally(() => {
+    //   router.reload();
+    //   setPopup(false);
+    //   setCredentials("");
+    //   setChangeProfile(false);
+    //   setSubmitting(false);
+    // });
   };
 
   // change password
   const changePasswordWithCredentials = async (values2) => {
-    const user = auth.currentUser;
     const { password: newPassword } = values2;
-    console.log(newPassword);
 
-    // reauthenticate user
-    const credential = EmailAuthProvider.credential(user.email, credentials);
-
-    await reauthenticateWithCredential(user, credential)
-      .then(async (e) => {
-        try {
-          await updatePassword(user, newPassword);
-        } catch (error) {
-          alert(error.message);
-        }
-      })
-      .finally(() => {
-        router.reload();
-        setPopup(false);
-        setCredentials("");
-        setChangePassword(false);
-        setSubmitting2(false);
-      });
+    // .finally(() => {
+    //   router.reload();
+    //   setPopup(false);
+    //   setCredentials("");
+    //   setChangePassword(false);
+    //   setSubmitting2(false);
+    // });
   };
 
   // change data
@@ -225,6 +149,12 @@ const Profile = () => {
       changePasswordWithCredentials(values2);
     }
   }, [credentials]);
+
+  useEffect(() => {
+    if (!session) {
+      router.push("/login");
+    }
+  }, []);
 
   return (
     <div className=" h-screen">

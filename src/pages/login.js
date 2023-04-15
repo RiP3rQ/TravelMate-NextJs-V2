@@ -3,8 +3,9 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
+import { useEffect } from "react";
 
 // password validation
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/;
@@ -25,6 +26,7 @@ const validationSchemaData = Yup.object({
 });
 
 const Login = () => {
+  const { data: session } = useSession();
   // form info data
   const {
     values,
@@ -75,7 +77,12 @@ const Login = () => {
     });
   };
 
-  console.log(isSubmitting);
+  useEffect(() => {
+    if (session !== undefined && session !== null) {
+      toast.success("Jesteś już zalogowany");
+      router.push("/");
+    }
+  }, [session]);
 
   return (
     <div className="h-screen w-full relative">
