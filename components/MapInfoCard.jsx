@@ -3,15 +3,7 @@ import React from "react";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/solid";
 
-const MapInfoCard = ({
-  img,
-  location,
-  title,
-  description,
-  star,
-  price,
-  total,
-}) => {
+const MapInfoCard = ({ img, location, title, description, star, price }) => {
   return (
     <div className="py-2 px-2 relative grid grid-cols-7 bg-slate-200 rounded-xl">
       {/* LEFT */}
@@ -27,10 +19,6 @@ const MapInfoCard = ({
           <h4 className="text-base text-gray-900 font-bold flex-grow">
             {title}
           </h4>
-          <p className="flex items-center justify-between pr-1">
-            <StarIcon className="h-4 text-red-400" />
-            <span className="text-sm font-bold">{star}</span>
-          </p>
         </div>
 
         <div className="border-b w-40 pt-1" />
@@ -42,8 +30,11 @@ const MapInfoCard = ({
             Rezerwuj
           </button>
           <div className=" -mt-2">
-            <p className="text-lg font-semibold lg:text-2xl">{price}</p>
-            <p className="text-right font-extralight text-sm">{total}</p>
+            <p className="flex items-center justify-center pr-1">
+              <StarIcon className="h-4 text-red-400" />
+              <span className="text-sm font-bold">{star}</span>
+            </p>
+            <p className="text-lg font-semibold lg:text-2xl">{price} zł</p>
           </div>
         </div>
       </div>

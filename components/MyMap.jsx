@@ -1,4 +1,3 @@
-import { getCenter } from "geolib";
 import React, { useState } from "react";
 import Map, { Marker, Popup } from "react-map-gl";
 
@@ -8,19 +7,11 @@ import MapInfoCard from "./MapInfoCard";
 const MyMap = ({ searchResults }) => {
   const [selectedLocation, setSelectedLocation] = useState({});
 
-  // Transform the search results object into the {latitude: 52.516272, longitude: 13.377722} object
-  const coordinates = searchResults?.map((result) => ({
-    longitude: result.long,
-    latitude: result.lat,
-  }));
-
-  // center the map view to the coordinates from the search results
-  const center = getCenter(coordinates);
   const [viewport, setViewport] = useState({
     width: "100%",
     height: "100%",
-    longitude: center.longitude,
-    latitude: center.latitude,
+    longitude: 17.926126,
+    latitude: 50.671062,
     zoom: 11,
   });
 
@@ -40,7 +31,7 @@ const MyMap = ({ searchResults }) => {
       mapboxAccessToken="pk.eyJ1IjoicmlwM3JxIiwiYSI6ImNsZmsxOXFkZjA2ZWo0NG10ZWQzMjJ3ZTEifQ.jigvVhdTvtnv675Fyi4OMA"
       onMove={(e) => setViewport(e.viewport)}
     >
-      {searchResults.map((result) => (
+      {searchResults?.map((result) => (
         <div key={result.long}>
           {/* Placing markers all over the map make sure to import css file for mapbox */}
           <Marker
@@ -74,13 +65,11 @@ const MyMap = ({ searchResults }) => {
             >
               <div className="h-full w-full bg-white">
                 <MapInfoCard
-                  img={result.img}
-                  location={result.location}
+                  img={result.imageSrc}
                   title={result.title}
                   description={result.description}
-                  star={result.star}
                   price={result.price}
-                  total={result.total}
+                  star={result.star}
                 />
               </div>
             </Popup>

@@ -19,12 +19,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 
 const Header = ({ placeholder }) => {
   const [searchInput, setSearchInput] = useState("");
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [numberOfGuests, setNumberOfGuests] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
-  const [themeOfPage, setThemeOfPage] = useState("Light");
-  const [polishLanguage, setPolishLanguage] = useState(true);
   const [currentUser, setCurrentUser] = useState(null);
   const [avatarDropdownIsOpen, setAvatarDropdownIsOpen] = useState(false);
 
@@ -34,43 +29,12 @@ const Header = ({ placeholder }) => {
 
   const router = useRouter();
 
-  const selectionRange = {
-    startDate: startDate,
-    endDate: endDate,
-    key: "selection",
-  };
-
-  const handleSelect = (ranges) => {
-    setStartDate(ranges.selection.startDate);
-    setEndDate(ranges.selection.endDate);
-  };
-
-  const resetInput = () => {
-    setSearchInput("");
-    setStartDate(new Date());
-    setEndDate(new Date());
-    setNumberOfGuests(1);
-  };
-
   const search = () => {
     router.push({
       pathname: "/search",
       query: {
         activity: selectedOption,
         location: searchInput,
-      },
-    });
-  };
-
-  const searchFlat = () => {
-    router.push({
-      pathname: "/search",
-      query: {
-        activity: selectedOption,
-        location: searchInput,
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString(),
-        numberOfGuests,
       },
     });
   };
@@ -173,21 +137,7 @@ const Header = ({ placeholder }) => {
       {/* Login / HamburgerMenu section (RIGHT)*/}
       <div className="flex items-center space-x-4 justify-end text-gray-500 lg:col-span-3 md:col-span-1 sm:col-span-1">
         <div className="flex items-center space-x-2 border-2 p-2 rounded-full relative">
-          {themeOfPage == "Light" ? (
-            <MoonIcon
-              className="h-6 cursor-pointer"
-              onClick={() => setThemeOfPage("Dark")}
-            />
-          ) : (
-            <SunIcon
-              className="h-6 cursor-pointer"
-              onClick={() => setThemeOfPage("Light")}
-            />
-          )}
-          <LanguageIcon
-            className="h-6 cursor-pointer"
-            onClick={() => setPolishLanguage((prev) => !prev)}
-          />
+          <p className="hidden md:inline">Dodaj {selectedOption}</p>
         </div>
         {!currentUser ? (
           <UserCircleIcon className="h-12 cursor-pointer" onClick={login} />
@@ -209,44 +159,6 @@ const Header = ({ placeholder }) => {
           </div>
         )}
       </div>
-
-      {/* Dropdown menu for searching */}
-      {searchInput && selectedOption == "Noclegi" && (
-        <div className="flex flex-col mx-auto lg:col-span-12 md:col-span-5 sm:col-span-4 mt-1">
-          <DateRange
-            ranges={[selectionRange]}
-            minDate={new Date()}
-            rangeColors={["#3F9337"]}
-            onChange={handleSelect}
-          />
-          <div className="flex items-center border-b mb-4 px-4">
-            <h2 className="text-2xl flex-grow font-semibold">Liczba gości:</h2>
-
-            <UserIcon className="h-5" />
-            <input
-              type="number"
-              className="w-12 pl-2 text-lg outline-none text-[#3F9337]"
-              min={1}
-              value={numberOfGuests}
-              onChange={(e) => setNumberOfGuests(e.target.value)}
-            />
-          </div>
-          <div className="flex ">
-            <button
-              className="flex-grow text-gray-500 font-bold"
-              onClick={resetInput}
-            >
-              Cancel
-            </button>
-            <button
-              className="flex-grow text-[#3F9337] font-bold"
-              onClick={searchFlat}
-            >
-              Search
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* Dropdown menu for profile picture */}
       {avatarDropdownIsOpen && (

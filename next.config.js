@@ -6,6 +6,7 @@ const nextConfig = {
       "links.papareact.com",
       "firebasestorage.googleapis.com",
       "st3.depositphotos.com",
+      "res.cloudinary.com",
     ],
   },
 };
