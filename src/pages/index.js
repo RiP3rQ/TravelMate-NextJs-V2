@@ -5,8 +5,11 @@ import Header from "../../components/Header";
 import LargeCard from "../../components/LargeCard";
 import MediumCard from "../../components/MediumCard";
 import SmallCard from "../../components/SmallCard";
+import { useSession } from "next-auth/react";
 
 export default function Home({ exploreData, cardsData }) {
+  const { data: session } = useSession();
+
   return (
     <div className="overflow-x-hidden">
       <Head>
@@ -17,7 +20,7 @@ export default function Home({ exploreData, cardsData }) {
       </Head>
 
       {/* Header */}
-      <Header />
+      <Header session={session} />
       {/* Banner */}
       <Banner />
 

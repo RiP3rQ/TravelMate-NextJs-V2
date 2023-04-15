@@ -3,6 +3,8 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { signIn } from "next-auth/react";
+import { toast } from "react-hot-toast";
 
 // password validation
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/;
@@ -32,16 +34,15 @@ const Login = () => {
     errors,
     touched,
     isSubmitting,
-    setSubmitting,
   } = useFormik({
     initialValues: {
       loginEmail: "",
       loginPassword: "",
     },
     validationSchema: validationSchemaData,
-    onSubmit: (values) => {
-      setSubmitting(true);
-      loginHandle(values);
+    onSubmit: async (values, actions) => {
+      actions.setSubmitting(true);
+      await loginHandle(values);
     },
   });
   const router = useRouter();
@@ -55,7 +56,20 @@ const Login = () => {
   };
 
   const loginHandle = async (values) => {
-    const { loginEmail, loginPassword } = values;
+    signIn("credentials", {
+      email: values.loginEmail,
+      password: values.loginPassword,
+      redirect: false,
+    }).then((callback) => {
+      if (callback?.ok) {
+        toast.success("Zalogowano pomyślnie");
+        router.push("/");
+      }
+
+      if (callback?.error) {
+        toast.error("Nie udało się zalogować");
+      }
+    });
   };
 
   return (

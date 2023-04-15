@@ -10,7 +10,7 @@ import React, { useState, useRef } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 // password validation
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/;
@@ -66,7 +66,7 @@ const Register = () => {
     axios
       .post("/api/register", values)
       .then(() => {
-        router.push("/");
+        router.push("/login");
         toast.success("Użytkownik został zarejestrowany");
       })
       .catch((err) => {
@@ -81,7 +81,6 @@ const Register = () => {
 
   return (
     <div className="h-screen w-full relative">
-      <Toaster />
       <Image
         src="/assets/login_background.jpg"
         alt="background"

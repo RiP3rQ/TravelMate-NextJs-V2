@@ -11,11 +11,11 @@ import {
 } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
 
-const Header = ({ placeholder }) => {
+const Header = ({ placeholder, session }) => {
   const [searchInput, setSearchInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [avatarDropdownIsOpen, setAvatarDropdownIsOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(session?.user || null);
 
   // selection of possible search options
   const list = ["Noclegi", "Atrakcje", "Szlaki"];
@@ -40,6 +40,10 @@ const Header = ({ placeholder }) => {
   // router for profile settings page
   const profilePageHandle = () => {
     router.push("/profile");
+  };
+
+  const SignOutHandle = () => {
+    router.push("/login");
   };
 
   return (

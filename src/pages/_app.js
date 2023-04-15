@@ -1,6 +1,8 @@
 import "@/styles/globals.css";
 import ProgressBar from "@badrap/bar-of-progress";
 import Router from "next/router";
+import { SessionProvider } from "next-auth/react";
+import { Toaster } from "react-hot-toast";
 
 const progress = new ProgressBar({
   size: 7,
@@ -13,6 +15,14 @@ Router.events.on("routeChangeStart", progress.start);
 Router.events.on("routeChangeComplete", progress.finish);
 Router.events.on("routeChangeError", progress.finish);
 
-export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}) {
+  return (
+    <SessionProvider session={session}>
+      <Toaster />
+      <Component {...pageProps} />
+    </SessionProvider>
+  );
 }
