@@ -40,9 +40,9 @@ const Login = () => {
       loginPassword: "",
     },
     validationSchema: validationSchemaData,
-    onSubmit: async (values, actions) => {
+    onSubmit: (values, actions) => {
       actions.setSubmitting(true);
-      await loginHandle(values);
+      loginHandle(values, actions);
     },
   });
   const router = useRouter();
@@ -55,7 +55,7 @@ const Login = () => {
     router.push("/register");
   };
 
-  const loginHandle = async (values) => {
+  const loginHandle = async (values, actions) => {
     signIn("credentials", {
       email: values.loginEmail,
       password: values.loginPassword,
@@ -64,13 +64,18 @@ const Login = () => {
       if (callback?.ok) {
         toast.success("Zalogowano pomyślnie");
         router.push("/");
+        actions.setSubmitting(false);
+        actions.resetForm();
       }
 
       if (callback?.error) {
         toast.error("Nie udało się zalogować");
+        actions.setSubmitting(false);
       }
     });
   };
+
+  console.log(isSubmitting);
 
   return (
     <div className="h-screen w-full relative">

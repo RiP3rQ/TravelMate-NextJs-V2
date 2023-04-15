@@ -10,6 +10,8 @@ import {
   SunIcon,
 } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
+import { signOut } from "next-auth/react";
+import { toast } from "react-hot-toast";
 
 const Header = ({ placeholder, session }) => {
   const [searchInput, setSearchInput] = useState("");
@@ -43,7 +45,10 @@ const Header = ({ placeholder, session }) => {
   };
 
   const SignOutHandle = () => {
-    router.push("/login");
+    signOut().then(() => {
+      toast.success("Wylogowano pomyślnie");
+      router.push("/");
+    });
   };
 
   return (

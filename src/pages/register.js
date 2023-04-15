@@ -52,26 +52,24 @@ const Register = () => {
       username: "",
     },
     validationSchema: validationSchema,
-    onSubmit: async (values, actions) => {
+    onSubmit: (values, actions) => {
       actions.setSubmitting(true);
-      await register(values).finally(() => {
-        actions.setSubmitting(false);
-        actions.resetForm();
-      });
+      register(values, actions);
     },
   });
 
   // register user using firebase
-  const register = async (values) => {
+  const register = async (values, actions) => {
     axios
       .post("/api/register", values)
       .then(() => {
         router.push("/login");
         toast.success("Użytkownik został zarejestrowany");
+        actions.setSubmitting(false);
       })
       .catch((err) => {
         toast.error("Nie udało się zarejestrować użytkownika");
-        return err;
+        actions.setSubmitting(false);
       });
   };
 
@@ -197,7 +195,7 @@ const Register = () => {
                 type="submit"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Rejestruje " : "Zarejestruj"}
+                {isSubmitting ? "REJESTRUJE" : "Zarejestruj"}
               </button>
             </form>
           </div>
