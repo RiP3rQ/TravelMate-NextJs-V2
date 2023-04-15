@@ -1,11 +1,13 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState, useCallback } from "react";
-import { useDropzone } from "react-dropzone";
 import CredentialPopup from "../../components/CredentialPopup";
 import Header from "../../components/Header";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import { CldUploadWidget } from "next-cloudinary";
+import axios from "axios";
+import { toast } from "react-hot-toast";
 
 // password validation
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/;
@@ -62,7 +64,6 @@ const Profile = () => {
     },
     validationSchema: validationSchemaData,
     onSubmit: () => {
-      setSubmitting(true);
       changeData();
     },
   });
@@ -83,7 +84,6 @@ const Profile = () => {
     },
     validationSchema: validationSchemaPassword,
     onSubmit: () => {
-      setSubmitting2(true);
       changePasswordHandle();
     },
   });
@@ -94,38 +94,84 @@ const Profile = () => {
   const [changeProfile, setChangeProfile] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
 
-  // dropzone variables
-  const onDrop = useCallback((acceptedFiles) => {
-    setPreview(URL.createObjectURL(acceptedFiles[0]));
-    setAvatar(acceptedFiles[0]);
-  }, []);
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
-
   // change profile data
   const changeDataWithCredentials = async (values) => {
     const { displayName, emailAddress } = values;
 
-    // .finally(() => {
-    //   router.reload();
-    //   setPopup(false);
-    //   setCredentials("");
-    //   setChangeProfile(false);
-    //   setSubmitting(false);
-    // });
+    if (preview) {
+      axios
+        .post("/api/auth/update", {
+          credentials: credentials,
+          name: displayName,
+          newEmail: emailAddress,
+          oldEmail: session.user.email,
+          image: avatar,
+        })
+        .then(() => {
+          toast.success("Zmieniono dane");
+          signOut();
+          router.push("/login");
+        })
+        .catch((err) => {
+          toast.error("Wystąpił błąd");
+        })
+        .finally(() => {
+          setPopup(false);
+          setCredentials("");
+          setChangeProfile(false);
+          setSubmitting(false);
+        });
+    }
+
+    if (!preview) {
+      axios
+        .post("/api/auth/update", {
+          credentials: credentials,
+          name: displayName,
+          newEmail: emailAddress,
+          oldEmail: session.user.email,
+        })
+        .then(() => {
+          toast.success("Zmieniono dane");
+          signOut();
+          router.push("/login");
+        })
+        .catch((err) => {
+          toast.error("Wystąpił błąd");
+        })
+        .finally(() => {
+          setPopup(false);
+          setCredentials("");
+          setChangeProfile(false);
+          setSubmitting(false);
+        });
+    }
   };
 
   // change password
   const changePasswordWithCredentials = async (values2) => {
     const { password: newPassword } = values2;
 
-    // .finally(() => {
-    //   router.reload();
-    //   setPopup(false);
-    //   setCredentials("");
-    //   setChangePassword(false);
-    //   setSubmitting2(false);
-    // });
+    axios
+      .post("/api/auth/updatePassword", {
+        credentials: credentials,
+        newPassword: newPassword,
+        email: session.user.email,
+      })
+      .then(() => {
+        toast.success("Zmieniono hasło");
+        signOut();
+        router.push("/login");
+      })
+      .catch((err) => {
+        toast.error("Wystąpił błąd");
+      })
+      .finally(() => {
+        setPopup(false);
+        setCredentials("");
+        setChangePassword(false);
+        setSubmitting2(false);
+      });
   };
 
   // change data
@@ -150,11 +196,34 @@ const Profile = () => {
     }
   }, [credentials]);
 
+  // set initial values
   useEffect(() => {
-    if (!session) {
+    if (session) {
+      setFieldValue("emailAddress", session.user.email);
+      setFieldValue("displayName", session.user.name);
+      if (session.user.image) {
+        setAvatar(session.user.image);
+      }
+    }
+  }, [session]);
+
+  // upload image
+  const uploadImage = useCallback(
+    (file) => {
+      setAvatar(file.info.secure_url);
+      setPreview(file.info.secure_url);
+    },
+    [setAvatar, setPreview]
+  );
+
+  // check if user is logged in
+  useEffect(() => {
+    if (session === undefined || session === null) {
       router.push("/login");
     }
-  }, []);
+  }, [session]);
+
+  console.log(session);
 
   return (
     <div className=" h-screen">
@@ -184,20 +253,25 @@ const Profile = () => {
                   className="h-32 w-32 rounded-full"
                 />
               </div>
-              <div
-                {...getRootProps()}
-                className="h-full bg-slate-200 flex items-center justify-center border-4 border-dashed  border-[#3F9337]  "
+
+              <CldUploadWidget
+                onUpload={uploadImage}
+                uploadPreset="my-uploads"
+                options={{
+                  maxFiles: 1,
+                }}
               >
-                <input {...getInputProps()} />
-                {isDragActive ? (
-                  <p>Upuść plik tutaj ...</p>
-                ) : (
-                  <p className="text-center">
-                    Kliknij, aby dodać zdjęcie lub <br />
-                    przeciągnij plik tutaj...
-                  </p>
-                )}
-              </div>
+                {({ open }) => {
+                  return (
+                    <div
+                      className="h-full bg-slate-200 flex items-center justify-center border-4 border-dashed border-[#3F9337] cursor-pointer"
+                      onClick={() => open?.()}
+                    >
+                      <p className="text-center">Kliknij, aby dodać zdjęcie</p>
+                    </div>
+                  );
+                }}
+              </CldUploadWidget>
             </div>
           </div>
 

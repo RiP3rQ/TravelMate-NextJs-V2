@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import prisma from "../../../libs/prismadb";
 
 export default async function handler(req, res) {
-  const { email, name, password } = req.body;
+  const { email, username: name, password } = req.body;
 
   const hashedPassword = await bcrypt.hash(password, 12);
 

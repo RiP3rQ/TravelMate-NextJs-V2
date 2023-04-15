@@ -79,10 +79,9 @@ const Login = () => {
 
   useEffect(() => {
     if (session !== undefined && session !== null) {
-      toast.success("Jesteś już zalogowany");
       router.push("/");
     }
-  }, [session]);
+  }, [session, router]);
 
   return (
     <div className="h-screen w-full relative">

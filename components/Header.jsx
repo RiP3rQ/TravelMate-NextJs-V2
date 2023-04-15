@@ -10,10 +10,11 @@ import {
   SunIcon,
 } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
 
-const Header = ({ placeholder, session }) => {
+const Header = ({ placeholder }) => {
+  const { data: session } = useSession();
   const [searchInput, setSearchInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [avatarDropdownIsOpen, setAvatarDropdownIsOpen] = useState(false);
@@ -135,8 +136,8 @@ const Header = ({ placeholder, session }) => {
           >
             <Image
               src={
-                currentUser.photoURL
-                  ? currentUser.photoURL
+                currentUser.image
+                  ? currentUser.image
                   : "https://st3.depositphotos.com/1767687/16607/v/600/depositphotos_166074422-stock-illustration-default-avatar-profile-icon-grey.jpg"
               }
               alt="Profile Pic"

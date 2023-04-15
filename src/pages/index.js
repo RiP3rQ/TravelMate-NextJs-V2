@@ -8,8 +8,6 @@ import SmallCard from "../../components/SmallCard";
 import { useSession } from "next-auth/react";
 
 export default function Home({ exploreData, cardsData }) {
-  const { data: session } = useSession();
-
   return (
     <div className="overflow-x-hidden">
       <Head>
@@ -20,7 +18,7 @@ export default function Home({ exploreData, cardsData }) {
       </Head>
 
       {/* Header */}
-      <Header session={session} />
+      <Header />
       {/* Banner */}
       <Banner />
 

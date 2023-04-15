@@ -81,7 +81,6 @@ const Register = () => {
 
   useEffect(() => {
     if (session !== undefined && session !== null) {
-      toast.success("Jesteś już zalogowany");
       router.push("/");
     }
   }, [session]);
