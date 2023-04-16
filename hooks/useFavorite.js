@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import { toast } from "react-hot-toast";
 
-const useFavorite = ({ listingId, currentUser }) => {
+const useFavorite = ({ listingId, currentUser, refetchUser }) => {
   const router = useRouter();
 
   const hasFavorited = useMemo(() => {
@@ -25,20 +25,28 @@ const useFavorite = ({ listingId, currentUser }) => {
 
         if (hasFavorited) {
           request = () =>
-            axios.post(`http://localhost:3000/api/favorites/${listingId}`, {
-              listingId: listingId,
-              action: "unlike",
-            });
+            axios
+              .post(`http://localhost:3000/api/favorites/${listingId}`, {
+                listingId: listingId,
+                action: "unlike",
+              })
+              .then(() => {
+                toast.success("Usunięto z ulubionych!");
+              });
         } else {
           request = () =>
-            axios.post(`http://localhost:3000/api/favorites/${listingId}`, {
-              listingId: listingId,
-              action: "like",
-            });
+            axios
+              .post(`http://localhost:3000/api/favorites/${listingId}`, {
+                listingId: listingId,
+                action: "like",
+              })
+              .then(() => {
+                toast.success("Dodano do ulubionych!");
+              });
         }
 
         await request();
-        toast.success("Success");
+        refetchUser();
       } catch (error) {
         toast.error("Something went wrong.");
       }

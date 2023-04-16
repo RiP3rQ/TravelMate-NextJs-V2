@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import InfoCard from "../../components/InfoCard";
@@ -11,7 +11,6 @@ import axios from "axios";
 
 const Search = ({ listings }) => {
   const [currentUser, setCurrentUser] = useState(null);
-  // const [favorites, setFavorites] = useState(null);
   const router = useRouter();
   const { location, activity } = router.query;
 
@@ -26,20 +25,12 @@ const Search = ({ listings }) => {
     }
   };
 
-  // const favorite = async () => {
-  //   const res = await axios.get(
-  //     "http://localhost:3000//api/favorites/getFavoriteListings"
-  //   );
-  //   if (res.data.message === "Not logged In!") {
-  //     return;
-  //   } else {
-  //     setFavorites(res.data);
-  //   }
-  // };
-
   useMemo(() => {
     user();
-    // favorite();
+  }, []);
+
+  const refetchUser = useCallback(() => {
+    user();
   }, []);
 
   // filtrujemy listingi , jeżeli nie ma to zwracamy loader
@@ -82,6 +73,7 @@ const Search = ({ listings }) => {
                 price={item.price}
                 star={item.star}
                 currentUser={currentUser}
+                refetchUser={refetchUser}
               />
             ))}
           </div>

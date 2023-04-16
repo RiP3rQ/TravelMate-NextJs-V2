@@ -12,6 +12,7 @@ const InfoCard = ({
   price,
   star,
   currentUser,
+  refetchUser,
 }) => {
   return (
     <div
@@ -32,7 +33,11 @@ const InfoCard = ({
       <div className="flex flex-col flex-grow pl-5">
         <div className="flex justify-between">
           <h4 className="text-lg">{title}</h4>
-          <HeartButton listingId={id} currentUser={currentUser} />
+          <HeartButton
+            listingId={id}
+            currentUser={currentUser}
+            refetchUser={refetchUser}
+          />
         </div>
 
         <div className="border-b w-10 pt-2" />
