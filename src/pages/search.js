@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useCallback, useMemo, useState } from "react";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
@@ -6,13 +6,12 @@ import InfoCard from "../../components/InfoCard";
 import MyMap from "../../components/MyMap";
 import getListings from "../../actions/getListings";
 import EmptyState from "../../components/EmptyState";
-import { useSession } from "next-auth/react";
 import axios from "axios";
 
 const Search = ({ listings }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const router = useRouter();
-  const { location, activity } = router.query;
+  const location = useSearchParams().get("location");
 
   const user = async () => {
     const res = await axios.get(
@@ -48,13 +47,16 @@ const Search = ({ listings }) => {
       <Header placeholder={`${location} `} />
 
       <main className="flex">
-        <section className="flex-grow pt-14 px-6 lg:h-screen lg:overflow-y-scroll">
-          <p className="text-xs"></p>
-          <h1 className="text-3xl font-semibold mt-2 mb-6">
-            {activity} w miejscowości: {location}
+        <section className="flex-grow pt-14 px-6 h-screen">
+          <p className="text-xs text-gray-400"> {listings.length} noclegów </p>
+          <h1 className="text-3xl font-semibold mb-6">
+            Noclegi w miejscowości: {location.toUpperCase()}
           </h1>
 
-          <div className="hidden lg:inline-flex mb-5 space-x-3 text-gray-800 whitespace-nowrap">
+          <div
+            className="hidden lg:inline-flex mb-5 space-x-3 text-gray-800 whitespace-nowrap pb-2
+          border-b-2 border-gray-200 w-full"
+          >
             <span className="button_search">Możliwość rezygnacji</span>
             <span className="button_search">Typ miejsca</span>
             <span className="button_search">Cena</span>
@@ -62,7 +64,12 @@ const Search = ({ listings }) => {
             <span className="button_search">Więcej filtrów</span>
           </div>
 
-          <div className="flex flex-col">
+          <div
+            className="flex flex-col lg:overflow-y-scroll h-4/5
+            scrollbar scrollbar-thumb-[#3F9337] scrollbar-track-red-100 
+            scrollbar-thumb-rounded-xl scrollbar-track-rounded-xl
+          "
+          >
             {listings?.map((item, index) => (
               <InfoCard
                 key={index}

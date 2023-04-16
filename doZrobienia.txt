@@ -10,7 +10,7 @@ Wyszukiwanie atrakcji po kategoriach
 Możliwość dodawania atrakcji turystycznych do ulubionych
 
 
-Możliwość dodawania noclegów do ulubionych 
+✔️ Możliwość dodawania noclegów do ulubionych ✔️
 
 
 Podstrona umożliwiająca zarządzanie polubionymi noclegami 
@@ -32,3 +32,15 @@ Galeria zdjęć dla danej atrakcji oraz noclegu
 
 
 Możliwość dodawania recenzji danej atrakcji oraz noclegu
+
+
+
+
+
+
+
+DO NASTĘPNEGO BACKLOGU:
+
+Podstrona umożliwiająca zarządzanie rezerwacjami noclegów
+
+Podstrona umożliwiająca zarządzanie rezerwacjami płatnych atrakcji

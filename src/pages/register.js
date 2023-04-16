@@ -5,7 +5,7 @@ import {
   UserIcon,
 } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React, { useState, useRef, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";

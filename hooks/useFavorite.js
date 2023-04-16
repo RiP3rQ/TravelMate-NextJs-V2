@@ -17,7 +17,7 @@ const useFavorite = ({ listingId, currentUser, refetchUser }) => {
       e.stopPropagation();
 
       if (!currentUser) {
-        return loginModal.onOpen();
+        return toast.error("Musisz się zalogować, aby dodać do ulubionych!");
       }
 
       try {

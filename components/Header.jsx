@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import {
   MagnifyingGlassIcon,
   UserCircleIcon,
@@ -8,10 +8,11 @@ import {
 import { GiMountainClimbing } from "react-icons/gi";
 import { MdOutlineBedroomParent } from "react-icons/md";
 import { AiFillThunderbolt } from "react-icons/ai";
-import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import useRentModal from "../hooks/useRentModal";
+import axios from "axios";
 
 export const list = [
   {
@@ -32,12 +33,26 @@ export const list = [
 ];
 
 const Header = ({ placeholder }) => {
-  const { data: session } = useSession();
   const [searchInput, setSearchInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [avatarDropdownIsOpen, setAvatarDropdownIsOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState(session?.user || null);
+  const [currentUser, setCurrentUser] = useState(null);
   const rentModal = useRentModal();
+
+  const user = async () => {
+    const res = await axios.get(
+      "http://localhost:3000/api/auth/getCurrentUser"
+    );
+    if (res.data.message === "Not logged In!") {
+      return;
+    } else {
+      setCurrentUser(res.data);
+    }
+  };
+
+  useMemo(() => {
+    user();
+  }, []);
 
   // selection of possible search options
   const [selectedOption, setSelectedOption] = useState(list[0].label);
@@ -45,13 +60,23 @@ const Header = ({ placeholder }) => {
   const router = useRouter();
 
   const search = () => {
-    router.push({
-      pathname: "/search",
-      query: {
-        activity: selectedOption,
-        location: searchInput,
-      },
-    });
+    if (!searchInput) return;
+    if (selectedOption === "Noclegi") {
+      router.push({
+        pathname: "/search",
+        query: {
+          location: searchInput,
+        },
+      });
+    }
+    if (selectedOption === "Atrakcje") {
+      router.push({
+        pathname: "/searchAttractions",
+        query: {
+          location: searchInput,
+        },
+      });
+    }
   };
 
   const login = () => {
