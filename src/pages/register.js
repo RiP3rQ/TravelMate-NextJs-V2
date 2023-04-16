@@ -63,7 +63,7 @@ const Register = () => {
   // register user using firebase
   const register = async (values, actions) => {
     axios
-      .post("/api/register", values)
+      .post("/api/auth/register", values)
       .then(() => {
         router.push("/login");
         toast.success("Użytkownik został zarejestrowany");

@@ -65,9 +65,9 @@ const Login = () => {
     }).then((callback) => {
       if (callback?.ok) {
         toast.success("Zalogowano pomyślnie");
-        router.push("/");
         actions.setSubmitting(false);
         actions.resetForm();
+        router.push("/");
       }
 
       if (callback?.error) {
@@ -81,7 +81,7 @@ const Login = () => {
     if (session !== undefined && session !== null) {
       router.push("/");
     }
-  }, [session, router]);
+  }, [session]);
 
   return (
     <div className="h-screen w-full relative">

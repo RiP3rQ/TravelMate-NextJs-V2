@@ -1,13 +1,56 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useMemo, useState } from "react";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import InfoCard from "../../components/InfoCard";
 import MyMap from "../../components/MyMap";
+import getListings from "../../actions/getListings";
+import EmptyState from "../../components/EmptyState";
+import { useSession } from "next-auth/react";
+import axios from "axios";
 
-const Search = () => {
+const Search = ({ listings }) => {
+  const [currentUser, setCurrentUser] = useState(null);
+  // const [favorites, setFavorites] = useState(null);
   const router = useRouter();
   const { location, activity } = router.query;
+
+  const user = async () => {
+    const res = await axios.get(
+      "http://localhost:3000/api/auth/getCurrentUser"
+    );
+    if (res.data.message === "Not logged In!") {
+      return;
+    } else {
+      setCurrentUser(res.data);
+    }
+  };
+
+  // const favorite = async () => {
+  //   const res = await axios.get(
+  //     "http://localhost:3000//api/favorites/getFavoriteListings"
+  //   );
+  //   if (res.data.message === "Not logged In!") {
+  //     return;
+  //   } else {
+  //     setFavorites(res.data);
+  //   }
+  // };
+
+  useMemo(() => {
+    user();
+    // favorite();
+  }, []);
+
+  // filtrujemy listingi , jeżeli nie ma to zwracamy loader
+  if (listings === undefined || listings === null || listings.length === 0) {
+    return (
+      <div className="overflow-x-hidden">
+        <Header placeholder={`${location} `} />
+        <EmptyState showReset />
+      </div>
+    );
+  }
 
   return (
     <div className="overflow-x-hidden">
@@ -29,14 +72,16 @@ const Search = () => {
           </div>
 
           <div className="flex flex-col">
-            {posts?.map((item, index) => (
+            {listings?.map((item, index) => (
               <InfoCard
                 key={index}
+                id={item.id}
                 img={item.imageSrc}
                 title={item.title}
                 description={item.description}
                 price={item.price}
                 star={item.star}
+                currentUser={currentUser}
               />
             ))}
           </div>
@@ -44,7 +89,7 @@ const Search = () => {
 
         {/* MAP SECTION  */}
         <section className="hidden lg:inline-flex lg:min-w-[600px] 2xl:min-w-[800px] lg:h-screen">
-          {posts && <MyMap searchResults={posts} />}
+          <MyMap searchResults={listings} />
         </section>
       </main>
 
@@ -54,3 +99,13 @@ const Search = () => {
 };
 
 export default Search;
+
+export async function getServerSideProps(context) {
+  const listings = await getListings();
+
+  return {
+    props: {
+      listings,
+    }, // will be passed to the page component as props
+  };
+}

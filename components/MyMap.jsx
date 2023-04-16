@@ -37,7 +37,9 @@ const MyMap = ({ searchResults, rentModal, onClickRentModal }) => {
           lat: e.lngLat.lat,
           long: e.lngLat.lng,
         });
-        onClickRentModal(e.lngLat.lng, e.lngLat.lat);
+        if (rentModal) {
+          onClickRentModal(e.lngLat.lng, e.lngLat.lat);
+        }
       }}
     >
       {searchResults?.map((result) => (

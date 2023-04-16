@@ -2,8 +2,17 @@ import Image from "next/image";
 import React from "react";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/solid";
+import HeartButton from "./HeartButton";
 
-const InfoCard = ({ img, title, description, price, star }) => {
+const InfoCard = ({
+  img,
+  id,
+  title,
+  description,
+  price,
+  star,
+  currentUser,
+}) => {
   return (
     <div
       className="flex py-7 px-2 border-b cursor-pointer 
@@ -23,7 +32,7 @@ const InfoCard = ({ img, title, description, price, star }) => {
       <div className="flex flex-col flex-grow pl-5">
         <div className="flex justify-between">
           <h4 className="text-lg">{title}</h4>
-          <HeartIcon className="h-7 cursor-pointer" />
+          <HeartButton listingId={id} currentUser={currentUser} />
         </div>
 
         <div className="border-b w-10 pt-2" />
@@ -33,7 +42,7 @@ const InfoCard = ({ img, title, description, price, star }) => {
         <div className="flex justify-between items-end pt-5">
           <p className="flex items-center text-lg font-semibold pb-2 lg:text-2xl">
             <StarIcon className="h-8 text-red-400" />
-            {star}
+            {star !== "0" ? star : "Brak ocen"}
           </p>
 
           <p className="text-lg font-semibold pb-2 lg:text-2xl">{price} zł</p>
