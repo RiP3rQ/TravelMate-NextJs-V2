@@ -52,7 +52,8 @@ model Listing {
   roomCount         Int
   bathroomCount     Int
   guestCount        Int
-  locationValue     String
+  lat               String
+  long              String
   userId            String @db.ObjectId
   price             Int
   user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -78,7 +79,8 @@ model Attraction {
   imageSrc          String
   createdAt         DateTime @default(now())
   category          String
-  locationValue     String
+  lat               String
+  long              String
   userId            String @db.ObjectId
   price             Int
   user              User @relation(fields: [userId], references: [id], onDelete: Cascade)

@@ -256,7 +256,7 @@ const Profile = () => {
 
               <CldUploadWidget
                 onUpload={uploadImage}
-                uploadPreset="my-uploads"
+                uploadPreset="places-uplouds"
                 options={{
                   maxFiles: 1,
                 }}

@@ -8,6 +8,11 @@ import CategoryInput from "../inputs/CategoryInput";
 import { useForm } from "react-hook-form";
 import MyMap from "../MyMap";
 import Counter from "../inputs/Counter";
+import ImageUpload from "../inputs/ImageUpload";
+import Input from "../inputs/Input";
+import { useRouter } from "next/router";
+import axios from "axios";
+import { toast } from "react-hot-toast";
 
 const STEPS = {
   CATEGORY: 0,
@@ -20,10 +25,12 @@ const STEPS = {
 };
 
 const RentModal = () => {
+  const router = useRouter();
   // global state of rent modal using zustand
   const rentModal = useRentModal();
   // steps of the modal
   const [step, setStep] = useState(STEPS.CATEGORY);
+  const [isLoading, setIsLoading] = useState(false);
 
   // ------------------------------------ form state for nocleg ------------------------------------
   const {
@@ -68,6 +75,13 @@ const RentModal = () => {
   const guestCount = watch("guestCount");
   const roomCount = watch("roomCount");
   const bathroomCount = watch("bathroomCount");
+  // step 5 - images
+  const imageSrc = watch("imageSrc");
+  // step 6 - description
+  const title = watch("title");
+  const description = watch("description");
+  // step 7 - price
+  const price = watch("price");
 
   // ------------------------------------ actions ------------------------------------
   // go back to previous step
@@ -78,6 +92,30 @@ const RentModal = () => {
   // go to next step
   const onNext = () => {
     setStep((prev) => prev + 1);
+  };
+
+  // --------------- submit logic
+  const onSubmit = (data) => {
+    if (step !== STEPS.PRICE) {
+      return onNext();
+    }
+
+    setIsLoading(true);
+
+    axios
+      .post("/api/listings", data)
+      .then((res) => {
+        toast.success("Listing Created!");
+        reset();
+        rentModal.onClose();
+        setStep(STEPS.CATEGORY);
+      })
+      .catch((err) => {
+        toast.error("Something went wrong!");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   // ------------------------------------ button labels ------------------------------------
@@ -228,11 +266,78 @@ const RentModal = () => {
     );
   }
 
+  // content of the modal based on step 5 - images
+  if (step === STEPS.IMAGES) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Dodaj zdjęcia swojego miejsca."
+          subtitle="Pokaż użytkownikom na co się piszą!"
+        />
+        <ImageUpload
+          onChange={(value) => setCustomValue("imageSrc", value)}
+          value={imageSrc}
+        />
+      </div>
+    );
+  }
+
+  // content of the modal based on step 6 - description
+  if (step === STEPS.DESCRIPTION) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Opisz swoje miejsce."
+          subtitle="Krótko, zwięźle i na temat!"
+        />
+        <Input
+          id="title"
+          label="Tytuł"
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+          required
+        />
+        <hr />
+        <Input
+          id="description"
+          label="Opis"
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+          required
+        />
+      </div>
+    );
+  }
+
+  // content of the modal based on step 7 - price
+  if (step === STEPS.PRICE) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Już prawie skończone! Podaj cenę swojego miejsca."
+          subtitle="Ile chcesz pobierać za jedną noc?"
+        />
+        <Input
+          id="price"
+          label="Cena"
+          formatPrice
+          type="number"
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+          required
+        />
+      </div>
+    );
+  }
+
   return (
     <Modal
       isOpen={rentModal.isOpen}
       onClose={rentModal.onClose}
-      onSubmit={onNext}
+      onSubmit={handleSubmit(onSubmit)}
       title="Zostań Mate-em"
       body={bodyContent}
       actionLabel={actionLabel}
