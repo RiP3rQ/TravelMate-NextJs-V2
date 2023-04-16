@@ -1,16 +1,13 @@
 import prisma from "../../../../libs/prismadb";
-import { getServerSession } from "next-auth/next";
 
 export default async function handler(req, res) {
-  const session = await getServerSession(req, res);
+  const { email } = req.body;
 
-  if (!session) {
-    return res.status(200).json({ message: "Not logged In!" });
-  }
+  console.log(email);
 
   let currentUser = await prisma.user.findUnique({
     where: {
-      email: session.user.email,
+      email: email,
     },
   });
 
@@ -27,5 +24,5 @@ export default async function handler(req, res) {
     createdAt: favorite.createdAt.toString(),
   }));
 
-  res.status(200).json(safeFavorites);
+  return res.status(200).json(safeFavorites);
 }

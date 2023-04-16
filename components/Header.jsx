@@ -59,6 +59,7 @@ const Header = ({ placeholder }) => {
 
   const router = useRouter();
 
+  // router for search page
   const search = () => {
     if (!searchInput) return;
     if (selectedOption === "Noclegi") {
@@ -79,6 +80,7 @@ const Header = ({ placeholder }) => {
     }
   };
 
+  // router for login page
   const login = () => {
     router.push("/login");
   };
@@ -88,6 +90,17 @@ const Header = ({ placeholder }) => {
     router.push("/profile");
   };
 
+  // router for profile settings page
+  const favoritePageHandle = () => {
+    router.push({
+      pathname: "/favorites",
+      query: {
+        currentUser: currentUser,
+      },
+    });
+  };
+
+  // sign out functionallity
   const SignOutHandle = () => {
     signOut().then(() => {
       toast.success("Wylogowano pomyślnie");
@@ -95,6 +108,7 @@ const Header = ({ placeholder }) => {
     });
   };
 
+  // open rent modal
   const onRent = useCallback(() => {
     if (!currentUser) {
       return;
@@ -215,20 +229,29 @@ const Header = ({ placeholder }) => {
 
       {/* Dropdown menu for profile picture */}
       {avatarDropdownIsOpen && (
-        <div className="absolute top-16 right-10 bg-slate-200 border-4 border-[#3F9337] h-20 w-52 rounded-xl mt-2">
+        <div className="absolute top-16 right-10 bg-slate-200 border-4 border-[#3F9337] w-52 rounded-xl mt-2">
           <div className="flex flex-col items-center justify-center h-full w-full">
             <p
-              className="text-lg font-semibold border-b border-gray-500 py-1 cursor-pointer"
+              className="text-lg font-semibold border-b border-gray-500 py-1 cursor-pointer w-full rounded-lg text-center
+              hover:bg-green-400 hover:text-white "
               onClick={profilePageHandle}
             >
               Ustawienia profilu
             </p>
-            <button
-              className="text-lg text-[#3F9337] font-bold py-1 tracking-widest cursor-pointer"
+            <p
+              className="text-lg font-semibold border-b border-gray-500 py-1 cursor-pointer w-full rounded-lg text-center
+              hover:bg-green-400 hover:text-white "
+              onClick={favoritePageHandle}
+            >
+              Polubione
+            </p>
+            <p
+              className="text-xl text-[#3F9337] font-extrabold py-1 tracking-widest cursor-pointer w-full rounded-lg text-center
+              hover:bg-green-400 hover:text-white"
               onClick={SignOutHandle}
             >
               Wyloguj
-            </button>
+            </p>
           </div>
         </div>
       )}

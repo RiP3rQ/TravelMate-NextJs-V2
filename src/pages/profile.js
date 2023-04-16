@@ -223,8 +223,6 @@ const Profile = () => {
     }
   }, [session]);
 
-  console.log(session);
-
   return (
     <div className=" h-screen">
       {popup && (

@@ -123,10 +123,10 @@ const RentModal = () => {
   // button main label based on step for navigation purposes (next or create)
   const actionLabel = useMemo(() => {
     if (step === STEPS.PRICE) {
-      return "Create";
+      return "Dodaj";
     }
 
-    return "Next";
+    return "Następny krok";
   }, [step]);
 
   // button secondary label based on step for navigation purposes (back or undefined)
@@ -135,7 +135,7 @@ const RentModal = () => {
       return undefined;
     }
 
-    return "Back";
+    return "Powrót";
   }, [step]);
 
   // ------------------------------------ body content ------------------------------------
