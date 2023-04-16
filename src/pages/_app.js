@@ -3,6 +3,7 @@ import ProgressBar from "@badrap/bar-of-progress";
 import Router from "next/router";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "react-hot-toast";
+import RentModal from "../../components/modals/RentModal";
 
 const progress = new ProgressBar({
   size: 7,
@@ -22,6 +23,7 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <Toaster />
+      <RentModal />
       <Component {...pageProps} />
     </SessionProvider>
   );

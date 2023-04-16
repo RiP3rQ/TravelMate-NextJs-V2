@@ -1,17 +1,35 @@
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   MagnifyingGlassIcon,
-  LanguageIcon,
   UserCircleIcon,
-  MoonIcon,
-  UserIcon,
   ChevronDownIcon,
-  SunIcon,
 } from "@heroicons/react/24/solid";
+import { GiMountainClimbing } from "react-icons/gi";
+import { MdOutlineBedroomParent } from "react-icons/md";
+import { AiFillThunderbolt } from "react-icons/ai";
 import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
+import useRentModal from "../hooks/useRentModal";
+
+export const list = [
+  {
+    label: "Noclegi",
+    icon: MdOutlineBedroomParent,
+    description: "Znajdź miejsce na nocleg",
+  },
+  {
+    label: "Atrakcje",
+    icon: AiFillThunderbolt,
+    description: "Przeżyj coś nowego",
+  },
+  {
+    label: "Szlaki",
+    icon: GiMountainClimbing,
+    description: "Zdobądź nowe szczyty",
+  },
+];
 
 const Header = ({ placeholder }) => {
   const { data: session } = useSession();
@@ -19,10 +37,10 @@ const Header = ({ placeholder }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [avatarDropdownIsOpen, setAvatarDropdownIsOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(session?.user || null);
+  const rentModal = useRentModal();
 
   // selection of possible search options
-  const list = ["Noclegi", "Atrakcje", "Szlaki"];
-  const [selectedOption, setSelectedOption] = useState(list[0]);
+  const [selectedOption, setSelectedOption] = useState(list[0].label);
 
   const router = useRouter();
 
@@ -51,6 +69,15 @@ const Header = ({ placeholder }) => {
       router.push("/");
     });
   };
+
+  const onRent = useCallback(() => {
+    if (!currentUser) {
+      return;
+    }
+
+    // open rent modal
+    rentModal.onOpen();
+  }, [currentUser, rentModal]);
 
   return (
     <header className="sticky top-0 z-30 bg-white shadow-md md:p-5 md:px-10 grid lg:grid-cols-12 md:grid-cols-5 sm:grid-cols-4">
@@ -94,11 +121,11 @@ const Header = ({ placeholder }) => {
                     className="bg-[#3F9337] p-2 w-full flex items-center justify-center font-bold text-lg 
                   tracking-wider rounded-2xl border-4 border-transparent active:border-[#3F9337] active:bg-white duration-300"
                     onClick={() => {
-                      setSelectedOption(item);
+                      setSelectedOption(item.label);
                       setIsOpen(false);
                     }}
                   >
-                    {item}
+                    {item.label}
                   </button>
                 ))}
             </div>
@@ -123,13 +150,26 @@ const Header = ({ placeholder }) => {
       </div>
 
       {/* Login / HamburgerMenu section (RIGHT)*/}
-      <div className="flex items-center space-x-4 justify-end text-gray-500 lg:col-span-3 md:col-span-1 sm:col-span-1">
-        <div className="flex items-center space-x-2 border-2 p-2 rounded-full relative">
-          <p className="hidden md:inline">Dodaj {selectedOption}</p>
+      {!currentUser ? (
+        <div className="flex items-center space-x-4 justify-end text-gray-500 lg:col-span-3 md:col-span-1 sm:col-span-1">
+          <div
+            className="flex items-center space-x-2 pl-4 border-2 rounded-full relative cursor-pointer"
+            onClick={login}
+          >
+            <p className="hidden md:inline font-semibold text-lg">Zaloguj</p>
+            <UserCircleIcon className="h-12" />
+          </div>
         </div>
-        {!currentUser ? (
-          <UserCircleIcon className="h-12 cursor-pointer" onClick={login} />
-        ) : (
+      ) : (
+        <div className="flex items-center space-x-4 justify-end text-gray-500 lg:col-span-3 md:col-span-1 sm:col-span-1 ">
+          <div
+            className="flex items-center space-x-2 p-2 border-2 rounded-full relative cursor-pointer hover:bg-green-600 hover:text-white"
+            onClick={onRent}
+          >
+            <p className="hidden md:inline font-semibold text-lg">
+              Zostań Mate-em
+            </p>
+          </div>
           <div
             className="h-12 w-12 rounded-full cursor-pointer relative"
             onClick={() => setAvatarDropdownIsOpen(!avatarDropdownIsOpen)}
@@ -145,8 +185,8 @@ const Header = ({ placeholder }) => {
               className="absolute rounded-full h-full w-full object-cover"
             />
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Dropdown menu for profile picture */}
       {avatarDropdownIsOpen && (

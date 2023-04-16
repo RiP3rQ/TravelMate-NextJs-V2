@@ -3,9 +3,11 @@ import Map, { Marker, Popup } from "react-map-gl";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 import MapInfoCard from "./MapInfoCard";
+import { RiMapPinFill } from "react-icons/ri";
 
-const MyMap = ({ searchResults }) => {
+const MyMap = ({ searchResults, rentModal, onClickRentModal }) => {
   const [selectedLocation, setSelectedLocation] = useState({});
+  const [clickedLocation, setClickedLocation] = useState({});
 
   const [viewport, setViewport] = useState({
     width: "100%",
@@ -30,6 +32,13 @@ const MyMap = ({ searchResults }) => {
       mapStyle="mapbox://styles/rip3rq/clfk003pa000q01qzsp20ktft"
       mapboxAccessToken="pk.eyJ1IjoicmlwM3JxIiwiYSI6ImNsZmsxOXFkZjA2ZWo0NG10ZWQzMjJ3ZTEifQ.jigvVhdTvtnv675Fyi4OMA"
       onMove={(e) => setViewport(e.viewport)}
+      onClick={(e) => {
+        setClickedLocation({
+          lat: e.lngLat.lat,
+          long: e.lngLat.lng,
+        });
+        onClickRentModal(e.lngLat.lng, e.lngLat.lat);
+      }}
     >
       {searchResults?.map((result) => (
         <div key={result.long}>
@@ -78,6 +87,17 @@ const MyMap = ({ searchResults }) => {
           )}
         </div>
       ))}
+
+      {/* display marker on click if rentModal is open */}
+      {rentModal && clickedLocation.lat ? (
+        <Marker
+          longitude={clickedLocation.long}
+          latitude={clickedLocation.lat}
+          offset={[0, -20]}
+        >
+          <RiMapPinFill size={40} color="red" />
+        </Marker>
+      ) : null}
     </Map>
   );
 };
