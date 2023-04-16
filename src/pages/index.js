@@ -5,7 +5,70 @@ import Header from "../../components/Header";
 import LargeCard from "../../components/LargeCard";
 import MediumCard from "../../components/MediumCard";
 import SmallCard from "../../components/SmallCard";
-import { useSession } from "next-auth/react";
+
+import { FaMonument, FaWater } from "react-icons/fa";
+import {
+  GiCastle,
+  GiForestCamp,
+  GiHutsVillage,
+  GiModernCity,
+} from "react-icons/gi";
+import { IoDiamond } from "react-icons/io5";
+import { TbBeach, TbPool } from "react-icons/tb";
+import { FaSkiing } from "react-icons/fa";
+
+export const types = [
+  {
+    label: "Blisko plaży",
+    icon: TbBeach,
+    description: "Ta posiadłość jest blisko plaży!",
+  },
+  {
+    label: "Nowoczesne",
+    icon: GiModernCity,
+    description: "Ta posiadłość jest w stylu nowoczesnym!",
+  },
+  {
+    label: "Wiejskie",
+    icon: GiHutsVillage,
+    description: "Ta posiadłość jest na wsi!",
+  },
+  {
+    label: "Z basenem",
+    icon: TbPool,
+    description: "Ta posiadłość ma piękny basen!",
+  },
+  {
+    label: "Zabytkowe",
+    icon: FaMonument,
+    description: "Ta posiadłość jest zabytkiem!",
+  },
+  {
+    label: "W górach",
+    icon: FaSkiing,
+    description: "Ta posiadłość jest w górach!",
+  },
+  {
+    label: "Zamek",
+    icon: GiCastle,
+    description: "Ta posiadłość jest zamkiem!",
+  },
+  {
+    label: "Camping",
+    icon: GiForestCamp,
+    description: "Ta posiadłość oferuje miejsca campingowe!",
+  },
+  {
+    label: "Luksusowe",
+    icon: IoDiamond,
+    description: "Ta posiadłość jest nowa oraz posiada luksusowe wnętrze!",
+  },
+  {
+    label: "Nad jeziorem",
+    icon: FaWater,
+    description: "Ta posiadłość znajduje się nad jeziorem!",
+  },
+];
 
 export default function Home({ exploreData, cardsData }) {
   return (

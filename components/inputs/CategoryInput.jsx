@@ -1,8 +1,10 @@
-const CategoryInput = ({ icon: Icon, label, selected, onClick }) => {
+const CategoryInput = ({ icon: Icon, label, selected, onClick, grid }) => {
   return (
     <div
       onClick={() => onClick(label)}
-      className={`h-max w-1/2 bg-green-300 m-2 flex items-center justify-center p-4 border-4 rounded-xl cursor-pointer relative ${
+      className={`${
+        grid ? "w-full" : "w-1/2"
+      } h-max  bg-green-300 my-2 flex items-center justify-center p-4 border-4 rounded-xl cursor-pointer relative ${
         selected ? "border-black" : "border-slate-300"
       }`}
     >

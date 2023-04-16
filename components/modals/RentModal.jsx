@@ -1,23 +1,21 @@
 import React, { useMemo, useState } from "react";
 import Modal from "./Modal";
 import useRentModal from "../../hooks/useRentModal";
-import Counter from "../inputs/Counter";
-import axios from "axios";
-import { toast } from "react-hot-toast";
-import { useRouter } from "next/navigation";
 import Heading from "./Heading";
 import { list } from "../Header";
+import { types } from "../../src/pages/index";
 import CategoryInput from "../inputs/CategoryInput";
 import { useForm } from "react-hook-form";
 import MyMap from "../MyMap";
 
 const STEPS = {
   CATEGORY: 0,
-  LOCATION: 1,
-  INFO: 2,
-  IMAGES: 3,
-  DESCRIPTION: 4,
-  PRICE: 5,
+  TYPE: 1,
+  LOCATION: 2,
+  INFO: 3,
+  IMAGES: 4,
+  DESCRIPTION: 5,
+  PRICE: 6,
 };
 
 const RentModal = () => {
@@ -37,6 +35,7 @@ const RentModal = () => {
   } = useForm({
     defaultValues: {
       category: "",
+      type: "",
       lat: null,
       long: null,
       guestCount: 1,
@@ -59,7 +58,9 @@ const RentModal = () => {
   };
   // step 1 - category
   const category = watch("category");
-  // step 2 - location
+  // step 2 - type
+  const type = watch("type");
+  // step 3 - location
   const lat = watch("lat");
   const long = watch("long");
 
@@ -133,7 +134,43 @@ const RentModal = () => {
     </div>
   );
 
-  // content of the modal based on step 2 - location
+  // content of the modal based on step 2 - type
+  if (step === STEPS.TYPE) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Podaj typ miejsca, które chcesz dodać do TravelMate."
+          subtitle="Pokaż użytkownikom czym cechuje się Twojego miejsca"
+        />
+        <div
+          className="
+          grid 
+          grid-cols-1 
+          md:grid-cols-2 
+          gap-3
+          max-h-[50vh]
+          overflow-y-auto
+        "
+        >
+          {types.map((item) => (
+            <div key={item.label} className="col-span-1">
+              <CategoryInput
+                onClick={(type) => {
+                  setCustomValue("type", type);
+                }}
+                selected={type === item.label}
+                label={item.label}
+                icon={item.icon}
+                grid
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // content of the modal based on step 3 - location
   if (step === STEPS.LOCATION) {
     bodyContent = (
       <div className="flex flex-col gap-8">
