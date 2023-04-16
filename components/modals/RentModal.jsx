@@ -7,6 +7,7 @@ import { types } from "../../src/pages/index";
 import CategoryInput from "../inputs/CategoryInput";
 import { useForm } from "react-hook-form";
 import MyMap from "../MyMap";
+import Counter from "../inputs/Counter";
 
 const STEPS = {
   CATEGORY: 0,
@@ -63,6 +64,10 @@ const RentModal = () => {
   // step 3 - location
   const lat = watch("lat");
   const long = watch("long");
+  // step 4 - info
+  const guestCount = watch("guestCount");
+  const roomCount = watch("roomCount");
+  const bathroomCount = watch("bathroomCount");
 
   // ------------------------------------ actions ------------------------------------
   // go back to previous step
@@ -187,6 +192,38 @@ const RentModal = () => {
             }}
           />
         </div>
+      </div>
+    );
+  }
+
+  // content of the modal based on step 4 - info
+  if (step === STEPS.INFO) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Podaj podstawowe informacje o miejscu."
+          subtitle="Pokaż użytkownikom liczbę gości, pokoje i łazienki"
+        />
+        <Counter
+          onChange={(value) => setCustomValue("guestCount", value)}
+          value={guestCount}
+          title="Liczba gości"
+          subtitle="Ile gości może pomieścić posiadłość?"
+        />
+        <hr />
+        <Counter
+          onChange={(value) => setCustomValue("roomCount", value)}
+          value={roomCount}
+          title="Liczba pokoi"
+          subtitle="Ile posiada pokoi?"
+        />
+        <hr />
+        <Counter
+          onChange={(value) => setCustomValue("bathroomCount", value)}
+          value={bathroomCount}
+          title="Liczba łazienek"
+          subtitle="Ile łazienek ma posiadłość?"
+        />
       </div>
     );
   }
