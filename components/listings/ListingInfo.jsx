@@ -45,7 +45,7 @@ const ListingInfo = ({
         </div>
       )}
       <hr />
-      <div className="h-[30vh] w-full mb-12">
+      <div className="h-[30vh] w-full">
         <MyMap isListingMap lat={lat} long={long} />
       </div>
     </div>

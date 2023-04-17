@@ -1,12 +1,11 @@
-import axios from "axios";
 import { differenceInCalendarDays, eachDayOfInterval } from "date-fns";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Range } from "react-date-range";
-import { toast } from "react-hot-toast";
+import { useEffect, useMemo, useState } from "react";
 import { types } from "../../src/pages/index";
 import ListingHead from "./ListingHead";
 import ListingInfo from "./ListingInfo";
+import ListingReservation from "./ListingReservation";
+import { toast } from "react-hot-toast";
 
 const initialDateRange = {
   startDate: new Date(),
@@ -14,9 +13,32 @@ const initialDateRange = {
   key: "selection",
 };
 
-const ListingClient = ({ listing, currentUser, refetchUser }) => {
+const ListingClient = ({
+  reservations = [],
+  listing,
+  currentUser,
+  refetchUser,
+}) => {
+  // ----------------------- router
   const router = useRouter();
 
+  // ----------------------- disabled dates using date-fns
+  const disabledDates = useMemo(() => {
+    let dates = [];
+
+    reservations.forEach((reservation) => {
+      const range = eachDayOfInterval({
+        start: new Date(reservation.startDate),
+        end: new Date(reservation.endDate),
+      });
+
+      dates = [...dates, ...range];
+    });
+
+    return dates;
+  }, [reservations]);
+
+  // ----------------------- states + date range price calculation
   const [isLoading, setIsLoading] = useState(false);
   const [totalPrice, setTotalPrice] = useState(listing.price);
   const [dateRange, setDateRange] = useState(initialDateRange);
@@ -36,6 +58,7 @@ const ListingClient = ({ listing, currentUser, refetchUser }) => {
     }
   }, [dateRange, listing.price]);
 
+  // ----------------------- display with types from index.js applies to listing
   const category = useMemo(() => {
     return types.find((item) => item.label === listing.category);
   }, [listing.category]);
@@ -64,6 +87,19 @@ const ListingClient = ({ listing, currentUser, refetchUser }) => {
               long={listing.long}
               lat={listing.lat}
             />
+            <div className="order-first mb-10 md:order-last md:col-span-3">
+              <ListingReservation
+                price={listing.price}
+                totalPrice={totalPrice}
+                onChangeDate={(value) => setDateRange(value)}
+                dateRange={dateRange}
+                onSubmit={() => {
+                  toast.success("Tu w przyszłość będzie rezerwacja");
+                }}
+                disabled={isLoading}
+                disabledDates={disabledDates}
+              />
+            </div>
           </div>
         </div>
       </div>

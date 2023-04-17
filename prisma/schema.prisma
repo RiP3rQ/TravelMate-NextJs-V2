@@ -23,6 +23,7 @@ model User {
   listings        Listing[]
   reservations    Reservation[]
   attractions     Attraction[]
+  tickets         Ticket_for_Attraction[]
 }
 
 model Account {
@@ -83,7 +84,18 @@ model Attraction {
   lat               String
   long              String
   userId            String @db.ObjectId
-  price             Int
+  paid              Boolean
+  price             Int?
   star              String
+  user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tickets           Ticket_for_Attraction[]
+}
+
+model Ticket_for_Attraction {
+  id                String @id @default(auto()) @map("_id") @db.ObjectId
+  attractionId      String @db.ObjectId
+  userId            String @db.ObjectId
+  createdAt         DateTime @default(now())
+  attraction        Attraction @relation(fields: [attractionId], references: [id], onDelete: Cascade)
   user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

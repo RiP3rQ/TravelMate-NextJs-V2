@@ -1,3 +1,5 @@
+--------------------------------✔️  GOTOWE  ✔️-----------------------------------
+
 ✔️ Możliwość dodawania noclegów do ulubionych ✔️
 
 
@@ -6,18 +8,25 @@
 
 ✔️ Pobieranie noclegów z bazy danych ✔️ 
 
-----------------------------------------------------------------------------------
+
+✔️ Podstrona wyświetlająca szczegóły noclegów ✔️
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------   W trakcie realizacji    ------------------------------------
+
+
 
 Podstrona wyświetlająca szczegóły atrakcji 
-
-
-Podstrona wyświetlająca szczegóły noclegów
- 
-
-Wyszukiwanie noclegów po kategoriach
-
-
-Wyszukiwanie atrakcji po kategoriach 
 
 
 Możliwość dodawania atrakcji turystycznych do ulubionych
@@ -35,8 +44,16 @@ Lista recenzji danego noclegu
 Podstrona umożliwiająca zarządzanie polubionymi atrakcjami 
 
 
-Galeria zdjęć dla danej atrakcji oraz noclegu
 
+
+
+----- Mniejszy priorytet --------
+
+Wyszukiwanie noclegów po kategoriach
+
+Wyszukiwanie atrakcji po kategoriach 
+
+Galeria zdjęć dla danej atrakcji oraz noclegu
 
 Możliwość dodawania recenzji danej atrakcji oraz noclegu
 
@@ -45,9 +62,9 @@ Możliwość dodawania recenzji danej atrakcji oraz noclegu
 
 
 
-
-DO NASTĘPNEGO BACKLOGU:
---------------------------------------------------------------------
+----------------------------------------------------------------------------------
+                            DO NASTĘPNEGO BACKLOGU:
+----------------------------------------------------------------------------------
 
 Możliwość rezerwacji noclegu
 
@@ -56,3 +73,18 @@ Możliwość kupienia biletów na atrackję, jeżeli płatna
 Podstrona umożliwiająca zarządzanie rezerwacjami noclegów
 
 Podstrona umożliwiająca zarządzanie rezerwacjami płatnych atrakcji
+
+Po najechaniu na nocleg pokaż na mapie
+
+Po najechaniu na atrakcje pokaż na mapie
+
+Google autocorrect location w pasku wyszukiwania
+
+Pobieranie danych lokalizacji z autokorekty i środkowanie mapy na tych koordach
+
+Mozliwość logowania / rejestracji poprzez Google/Fb  
+
+Dodawania rezecji do bazy 
+
+Obliczanie średniej oceny do atrakcji / noclegu
+

@@ -20,8 +20,8 @@ const InfoCard = ({
   return (
     <div
       className="flex py-7 px-2 border-b cursor-pointer 
-    hover:opacity-40 hover:shadow-lg pr-4 transition duration-200 ease-out
-    first:border-t"
+    hover:opacity-70 hover:shadow-lg hover:bg-gray-200 hover:rounded-xl pr-4 transition duration-200 ease-out 
+    first:border-t "
       onClick={() => router.push(`/listings/${id}`)}
     >
       <div className="relative h-24 w-40 md:h-52 md:w-80 flex-shrink-0">
