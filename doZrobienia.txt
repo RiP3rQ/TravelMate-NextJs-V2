@@ -1,5 +1,7 @@
 --------------------------------✔️  GOTOWE  ✔️-----------------------------------
 
+--- noclegi
+
 ✔️ Możliwość dodawania noclegów do ulubionych ✔️
 
 
@@ -9,12 +11,12 @@
 ✔️ Pobieranie noclegów z bazy danych ✔️ 
 
 
-✔️ Podstrona wyświetlająca szczegóły noclegów ✔️
+✔️ Podstrona wyświetlająca szczegóły noclegów 
 
 
+--- atrackje
 
-
-
+✔️ Pobieranie atrakcji z bazy danych ✔️
 
 
 
@@ -30,9 +32,6 @@ Podstrona wyświetlająca szczegóły atrakcji
 
 
 Możliwość dodawania atrakcji turystycznych do ulubionych
-
-
-Pobieranie atrakcji z bazy danych 
 
 
 Lista recenzji danej atrakcji 
@@ -65,6 +64,10 @@ Możliwość dodawania recenzji danej atrakcji oraz noclegu
 ----------------------------------------------------------------------------------
                             DO NASTĘPNEGO BACKLOGU:
 ----------------------------------------------------------------------------------
+
+Możliwość dodawania nowych noclegów
+
+Możliwość dodawnia nowych atrakcji
 
 Możliwość rezerwacji noclegu
 

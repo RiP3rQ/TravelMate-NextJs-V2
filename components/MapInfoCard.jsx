@@ -47,14 +47,26 @@ const MapInfoCard = ({
             Szczegóły
           </button>
           <div className="flex flex-col">
-            {star !== "0" && (
-              <p className="flex flex-row justify-end">
-                <StarIcon className="h-4 text-red-400" />
-                <span className="text-sm font-bold">{star}</span>
+            <p className="flex flex-row justify-end">
+              {star === "0" ? (
+                <span className="text-sm font-bold text-red-400">
+                  Brak ocen
+                </span>
+              ) : (
+                <>
+                  <StarIcon className="h-4 text-red-400" />
+                  <span className="text-sm font-bold">{star}</span>
+                </>
+              )}
+            </p>
+
+            {!price ? (
+              <p className="text-base font-semibold">Bezpłatna</p>
+            ) : (
+              <p className="text-lg font-semibold lg:text-2xl text-right">
+                {price} zł
               </p>
             )}
-
-            <p className="text-lg font-semibold lg:text-2xl">{price} zł</p>
           </div>
         </div>
       </div>
