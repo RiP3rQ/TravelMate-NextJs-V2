@@ -8,8 +8,8 @@ const CategoryInput = ({ icon: Icon, label, selected, onClick, grid }) => {
         selected ? "border-black" : "border-slate-300"
       }`}
     >
-      <div className="absolute top-3 left-5">
-        <Icon size={30} />
+      <div className="absolute top-3.5 left-3">
+        <Icon size={24} className="hidden 2xl:block" />
       </div>
 
       <div className="font-semibold">{label}</div>

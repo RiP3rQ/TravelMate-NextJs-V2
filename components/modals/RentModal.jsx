@@ -3,7 +3,7 @@ import Modal from "./Modal";
 import useRentModal from "../../hooks/useRentModal";
 import Heading from "./Heading";
 import { list } from "../Header";
-import { types } from "../../src/pages/index";
+import { attractionTypes, types } from "../../src/pages/index";
 import CategoryInput from "../inputs/CategoryInput";
 import { useForm } from "react-hook-form";
 import MyMap from "../MyMap";
@@ -46,13 +46,14 @@ const RentModal = () => {
       type: "",
       lat: null,
       long: null,
-      guestCount: 1,
-      roomCount: 1,
-      bathroomCount: 1,
+      guestCount: 1, // wartość potrzebna do zapisu noclegu [1]
+      roomCount: 1, // wartość potrzebna do zapisu noclegu [1]
+      bathroomCount: 1, // wartość potrzebna do zapisu noclegu [1]
       imageSrc: "",
-      price: 1,
       title: "",
       description: "",
+      paid: false, // wartość potrzebna do zapisu atrakcji [2]
+      price: 1,
     },
   });
 
@@ -71,7 +72,7 @@ const RentModal = () => {
   // step 3 - location
   const lat = watch("lat");
   const long = watch("long");
-  // step 4 - info
+  // step 4 - info (guests, rooms, bathrooms) dla noclegu [1]
   const guestCount = watch("guestCount");
   const roomCount = watch("roomCount");
   const bathroomCount = watch("bathroomCount");
@@ -81,11 +82,16 @@ const RentModal = () => {
   const title = watch("title");
   const description = watch("description");
   // step 7 - price
+  const paid = watch("paid"); // dla atrakcji [2]
   const price = watch("price");
 
   // ------------------------------------ actions ------------------------------------
   // go back to previous step
   const onBack = () => {
+    if (step === STEPS.IMAGES && category === "Atrakcje") {
+      return setStep(STEPS.LOCATION);
+    }
+
     setStep((prev) => prev - 1);
   };
 
@@ -97,25 +103,51 @@ const RentModal = () => {
   // --------------- submit logic
   const onSubmit = (data) => {
     if (step !== STEPS.PRICE) {
+      if (step === STEPS.LOCATION && category === "Atrakcje") {
+        return setStep(STEPS.IMAGES);
+      }
+
       return onNext();
     }
 
     setIsLoading(true);
 
-    axios
-      .post("/api/listings/addListing", data)
-      .then((res) => {
-        toast.success("Listing Created!");
-        reset();
-        rentModal.onClose();
-        setStep(STEPS.CATEGORY);
-      })
-      .catch((err) => {
-        toast.error("Something went wrong!");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    // ------------------------------------ zapisywanie do bazy danych NOCLEGU ------------------------------------
+    if (category === "Noclegi") {
+      axios
+        .post("/api/listings/addListing", data)
+        .then((res) => {
+          toast.success("Pomyślnie dodano nocleg do bazy!");
+          reset();
+          rentModal.onClose();
+          setStep(STEPS.CATEGORY);
+        })
+        .catch((err) => {
+          toast.error("Coś poszło nie tak...");
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+
+    // ------------------------------------ zapisywanie do bazy danych ATRAKCJI ------------------------------------
+
+    if (category === "Atrakcje") {
+      axios
+        .post("/api/attractions/addAttraction", data)
+        .then((res) => {
+          toast.success("Pomyślnie dodano atrakcję do bazy!");
+          reset();
+          rentModal.onClose();
+          setStep(STEPS.CATEGORY);
+        })
+        .catch((err) => {
+          toast.error("Coś poszło nie tak...");
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
   };
 
   // ------------------------------------ button labels ------------------------------------
@@ -138,7 +170,7 @@ const RentModal = () => {
     return "Powrót";
   }, [step]);
 
-  // ------------------------------------ body content ------------------------------------
+  // ------------------------------------ body content ------------------------------------     dla noclegów [1]
   // content of the modal based on step 1 - category
   let bodyContent = (
     <div className="flex flex-col gap-8">
@@ -178,7 +210,7 @@ const RentModal = () => {
   );
 
   // content of the modal based on step 2 - type
-  if (step === STEPS.TYPE) {
+  if (step === STEPS.TYPE && category === "Noclegi") {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
@@ -235,7 +267,7 @@ const RentModal = () => {
   }
 
   // content of the modal based on step 4 - info
-  if (step === STEPS.INFO) {
+  if (step === STEPS.INFO && category === "Noclegi") {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
@@ -329,6 +361,89 @@ const RentModal = () => {
           errors={errors}
           required
         />
+      </div>
+    );
+  }
+
+  // ------------------------------------ body content ------------------------------------     dla atrakcji [2]
+  // step 1 - category [taki sam bez zmiany]
+
+  // step 2 - type
+  if (step === STEPS.TYPE && category === "Atrakcje") {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Podaj typ miejsca, które chcesz dodać do TravelMate."
+          subtitle="Pokaż użytkownikom czym cechuje się Twojego miejsca"
+        />
+        <div
+          className="
+          grid 
+          grid-cols-1 
+          md:grid-cols-2 
+          gap-3
+          max-h-[50vh]
+          overflow-y-auto
+          xl:text-sm
+        "
+        >
+          {attractionTypes.map((item) => (
+            <div key={item.label} className="col-span-1">
+              <CategoryInput
+                onClick={(type) => {
+                  setCustomValue("type", type);
+                }}
+                selected={type === item.label}
+                label={item.label}
+                icon={item.icon}
+                grid
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // step 7 - price
+  const [isFree, setIsFree] = useState(true);
+  if (step === STEPS.PRICE && category === "Atrakcje") {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Już prawie skończone! Podaj cenę swojego miejsca."
+          subtitle="Jeżeli atrakcje jest bezpłatna zaznacz opcje bezpłatna"
+        />
+        <select
+          className="w-full p-4 bg-gray-500 border-2 rounded-md outline-none text-2xl font-bold text-white text-center"
+          onChange={(e) => {
+            if (e.target.value === "free") {
+              setIsFree(true);
+              setCustomValue("paid", false);
+            } else {
+              setIsFree(false);
+              setCustomValue("paid", true);
+            }
+            console.log(isFree);
+          }}
+        >
+          <option value="free">Bezpłatna</option>
+          <option value="paid">Płatna</option>
+        </select>
+        {isFree ? (
+          " "
+        ) : (
+          <Input
+            id="price"
+            label="Cena"
+            formatPrice
+            type="number"
+            disabled={isLoading}
+            register={register}
+            errors={errors}
+            required
+          />
+        )}
       </div>
     );
   }

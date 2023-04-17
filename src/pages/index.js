@@ -6,16 +6,23 @@ import LargeCard from "../../components/LargeCard";
 import MediumCard from "../../components/MediumCard";
 import SmallCard from "../../components/SmallCard";
 
-import { FaMonument, FaWater } from "react-icons/fa";
+import { FaLeaf, FaMonument, FaWater, FaSkiing, FaMusic } from "react-icons/fa";
 import {
   GiCastle,
   GiForestCamp,
   GiHutsVillage,
   GiModernCity,
+  GiNightSleep,
 } from "react-icons/gi";
 import { IoDiamond } from "react-icons/io5";
 import { TbBeach, TbPool } from "react-icons/tb";
-import { FaSkiing } from "react-icons/fa";
+import {
+  MdAir,
+  MdFamilyRestroom,
+  MdSportsKabaddi,
+  MdSportsVolleyball,
+} from "react-icons/md";
+import { AiOutlineBook, AiOutlineShoppingCart } from "react-icons/ai";
 
 export const types = [
   {
@@ -67,6 +74,61 @@ export const types = [
     label: "Nad jeziorem",
     icon: FaWater,
     description: "Ta posiadłość znajduje się nad jeziorem!",
+  },
+];
+
+export const attractionTypes = [
+  {
+    label: "Zabytki i miejsca historyczne",
+    icon: GiCastle,
+    description:
+      "Ta atrakcja jest związana z zabytkami lub miejscami historycznymi!",
+  },
+  {
+    label: "Przyroda i krajobrazy",
+    icon: FaLeaf,
+    description:
+      "Ta atrakcja jest związana z przyrodą lub krajobrazem okolicy!",
+  },
+  {
+    label: "Rozrywka i atrakcje dla rodzin",
+    icon: MdFamilyRestroom,
+    description: "Ta atrakcja jest związana z rozrywką dla rodziny!",
+  },
+  {
+    label: "Sport i rekreacja",
+    icon: MdSportsVolleyball,
+    description: "Ta atrakcja jest związana z sportem lub rekreacją!",
+  },
+  {
+    label: "Ekstremalne",
+    icon: MdSportsKabaddi,
+    description: "Ta atrakcja jest uznawana za ekstremalną!",
+  },
+  {
+    label: "Zakupy",
+    icon: AiOutlineShoppingCart,
+    description: "Ta atrakcja jest związana z możliwością zakupu dóbr!",
+  },
+  {
+    label: "Muzyka i sztuka",
+    icon: FaMusic,
+    description: "Ta atrakcja jest związana z muzyką lub sztuką!",
+  },
+  {
+    label: "Relaks i odprężenie",
+    icon: GiNightSleep,
+    description: "Ta atrakcja jest związana z relaksem oraz odpoczynkiem!",
+  },
+  {
+    label: "Na świeżym powietrzu",
+    icon: MdAir,
+    description: "Ta atrakcja jest związana ze świeżym powietrzem!",
+  },
+  {
+    label: "Edukacja i nauka",
+    icon: AiOutlineBook,
+    description: "Ta atrakcja jest związana z edukacją lub nauką!",
   },
 ];
 
