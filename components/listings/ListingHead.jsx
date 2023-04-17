@@ -2,6 +2,9 @@ import Heading from "../modals/Heading";
 import Image from "next/image";
 import HeartButton from "../HeartButton";
 import { StarIcon } from "@heroicons/react/24/solid";
+import useReviewModal from "../../hooks/useReviewModal";
+import { useCallback } from "react";
+import { toast } from "react-hot-toast";
 
 const ListingHead = ({
   title,
@@ -11,14 +14,33 @@ const ListingHead = ({
   currentUser,
   refetchUser,
   star,
+  page,
 }) => {
+  const reviewModal = useReviewModal();
+
+  // open review modal
+  const onReview = useCallback(() => {
+    if (!currentUser) {
+      return toast.error("Musisz się zalogować, aby móc ocenić miejsce");
+    }
+
+    console.log("review modal open");
+    // open rent modal
+    reviewModal.setPage(page);
+    reviewModal.setItemId(id);
+    reviewModal.onOpen();
+  }, [currentUser, reviewModal]);
+
   return (
     <>
       <div className=" flex items-center justify-between gap-9">
         <Heading title={title} subtitle={description} />
         <div className="w-80">
           {star === "0" ? (
-            <div className="flex flex-col items-center justify-center mt-2 cursor-pointer bg-slate-200 rounded-xl py-1">
+            <div
+              className="flex flex-col items-center justify-center mt-2 cursor-pointer bg-slate-200 rounded-xl py-1"
+              onClick={onReview}
+            >
               <span className="text-3xl font-bold text-red-400">Brak ocen</span>
               <span className="text-gray-400 hover:underline">
                 {" "}

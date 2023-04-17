@@ -25,6 +25,8 @@ model User {
   reservations    Reservation[]
   attractions     Attraction[]
   tickets         Ticket_for_Attraction[]
+  listing_reviews         Listing_Review[]
+  attraction_reviews      Attraction_Review[]
 }
 
 model Account {
@@ -61,6 +63,7 @@ model Listing {
   star              String
   user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
   reservations      Reservation[]
+  listing_reviews           Listing_Review[]
 }
 
 model Reservation {
@@ -90,6 +93,7 @@ model Attraction {
   star              String
   user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
   tickets           Ticket_for_Attraction[]
+  attraction_reviews        Attraction_Review[]
 }
 
 model Ticket_for_Attraction {
@@ -97,6 +101,32 @@ model Ticket_for_Attraction {
   attractionId      String @db.ObjectId
   userId            String @db.ObjectId
   createdAt         DateTime @default(now())
+  attraction        Attraction @relation(fields: [attractionId], references: [id], onDelete: Cascade)
+  user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Listing_Review {
+  id                String @id @default(auto()) @map("_id") @db.ObjectId
+  listingId         String @db.ObjectId
+  userId            String @db.ObjectId
+  createdAt         DateTime @default(now())
+  title             String
+  description       String
+  star              String
+  imageSrc          String?
+  listing           Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Attraction_Review {
+  id                String @id @default(auto()) @map("_id") @db.ObjectId
+  attractionId      String @db.ObjectId
+  userId            String @db.ObjectId
+  createdAt         DateTime @default(now())
+  title             String
+  description       String
+  star              String
+  imageSrc          String?
   attraction        Attraction @relation(fields: [attractionId], references: [id], onDelete: Cascade)
   user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

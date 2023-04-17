@@ -46,7 +46,7 @@ const IndividualListingPage = () => {
     }
     const fetchListingData = async () => {
       await axios
-        .post(`http://localhost:3000/api/listings/getListingById`, {
+        .post(`${process.env.NEXT_PUBLIC_URL}/api/listings/getListingById`, {
           listingId,
         })
         .then((res) => {
@@ -59,8 +59,6 @@ const IndividualListingPage = () => {
     };
     fetchListingData();
   }, [listingId]);
-
-  console.log(listingData);
 
   // ------------------------------------- render loader
   if (isLoading) {

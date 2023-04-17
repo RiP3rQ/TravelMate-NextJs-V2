@@ -11,10 +11,15 @@
 ✔️ Pobieranie noclegów z bazy danych ✔️ 
 
 
-✔️ Podstrona wyświetlająca szczegóły noclegów 
+✔️ Podstrona wyświetlająca szczegóły noclegów ✔️
 
 
---- atrackje
+✔️ ożliwość dodawania recenzji do noclegów ✔️
+
+
+
+
+--- atrakcje
 
 ✔️ Pobieranie atrakcji z bazy danych 
 
@@ -23,6 +28,14 @@
 
 
 ✔️ Podstrona wyświetlająca szczegóły atrakcji ✔️
+
+
+✔️ Podstrona umożliwiająca zarządzanie polubionymi atrakcjami ✔️
+
+
+✔️ Możliwość dodawania recenzji do atrakcji ✔️
+
+
 
 
 -----------------------   W trakcie realizacji    ------------------------------------
@@ -34,11 +47,6 @@ Lista recenzji danej atrakcji
 Lista recenzji danego noclegu
 
 
-Podstrona umożliwiająca zarządzanie polubionymi atrakcjami 
-
-
-
-
 
 ----- Mniejszy priorytet --------
 
@@ -46,9 +54,7 @@ Wyszukiwanie noclegów po kategoriach
 
 Wyszukiwanie atrakcji po kategoriach 
 
-Galeria zdjęć dla danej atrakcji oraz noclegu
-
-Możliwość dodawania recenzji danej atrakcji oraz noclegu
+Galeria zdjęć dla danej atrakcji oraz noclegu    ( możliwe przeniesienia do nastepnego sprintu )
 
 
 
@@ -84,4 +90,6 @@ Mozliwość logowania / rejestracji poprzez Google/Fb
 Dodawania rezecji do bazy 
 
 Obliczanie średniej oceny do atrakcji / noclegu
+
+Połączenie ze sobą tabel w prismie
 
