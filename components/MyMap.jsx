@@ -5,16 +5,29 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import MapInfoCard from "./MapInfoCard";
 import { RiMapPinFill } from "react-icons/ri";
 
-const MyMap = ({ searchResults, rentModal, onClickRentModal }) => {
+const MyMap = ({
+  searchResults,
+  rentModal,
+  onClickRentModal,
+  isListingMap,
+  lat,
+  long,
+  currentUser,
+  refetchUser,
+}) => {
   const [selectedLocation, setSelectedLocation] = useState({});
   const [clickedLocation, setClickedLocation] = useState({});
+
+  const viewportLong = isListingMap ? long : 17.926126;
+  const viewportLat = isListingMap ? lat : 50.671062;
+  const viewportZoom = isListingMap ? 14 : 11;
 
   const [viewport, setViewport] = useState({
     width: "100%",
     height: "100%",
-    longitude: 17.926126,
-    latitude: 50.671062,
-    zoom: 11,
+    longitude: viewportLong,
+    latitude: viewportLat,
+    zoom: viewportZoom,
   });
 
   const flyToMarker = (result) => {
@@ -76,11 +89,14 @@ const MyMap = ({ searchResults, rentModal, onClickRentModal }) => {
             >
               <div className="h-full w-full bg-white">
                 <MapInfoCard
+                  id={result.id}
                   img={result.imageSrc}
                   title={result.title}
                   description={result.description}
                   price={result.price}
                   star={result.star}
+                  currentUser={currentUser}
+                  refetchUser={refetchUser}
                 />
               </div>
             </Popup>
@@ -97,6 +113,13 @@ const MyMap = ({ searchResults, rentModal, onClickRentModal }) => {
           latitude={clickedLocation.lat}
           offset={[0, -20]}
         >
+          <RiMapPinFill size={40} color="red" />
+        </Marker>
+      ) : null}
+
+      {/* display marker on listing page */}
+      {isListingMap && lat && long ? (
+        <Marker longitude={long} latitude={lat} offset={[0, -20]}>
           <RiMapPinFill size={40} color="red" />
         </Marker>
       ) : null}

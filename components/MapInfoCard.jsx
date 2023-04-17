@@ -2,14 +2,31 @@ import Image from "next/image";
 import React from "react";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/solid";
+import { useRouter } from "next/navigation";
+import HeartButton from "./HeartButton";
 
-const MapInfoCard = ({ img, title, description, star, price }) => {
+const MapInfoCard = ({
+  id,
+  img,
+  title,
+  description,
+  star,
+  price,
+  currentUser,
+  refetchUser,
+}) => {
+  const router = useRouter();
+
   return (
     <div className="py-2 px-2 relative grid grid-cols-7 bg-slate-200 rounded-xl">
       {/* LEFT */}
       <div className="flex flex-col col-span-5 relative p-1 w-60">
-        <div className="flex justify-between">
-          <HeartIcon className="h-7 cursor-pointer absolute top-0 right-0" />
+        <div className="absolute top-0 right-0">
+          <HeartButton
+            listingId={id}
+            currentUser={currentUser}
+            refetchUser={refetchUser}
+          />
         </div>
 
         <div className="flex">
@@ -23,7 +40,10 @@ const MapInfoCard = ({ img, title, description, star, price }) => {
         <p className="pt-1 text-xs text-gray-500 flex-grow">{description}</p>
 
         <div className="flex justify-between items-end pt-5">
-          <button className="bg-green-800 py-4 px-7 rounded-full text-sm font-bold text-white">
+          <button
+            className="bg-green-800 py-4 px-7 rounded-full text-sm font-bold text-white"
+            onClick={() => router.push(`/listings/${id}`)}
+          >
             Szczegóły
           </button>
           <div className="flex flex-col">

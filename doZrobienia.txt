@@ -1,5 +1,18 @@
-Podstrona wyświetlająca szczegóły atrakcji oraz noclegów
+✔️ Możliwość dodawania noclegów do ulubionych ✔️
 
+
+✔️ Podstrona umożliwiająca zarządzanie polubionymi noclegami  ✔️ 
+
+
+✔️ Pobieranie noclegów z bazy danych ✔️ 
+
+----------------------------------------------------------------------------------
+
+Podstrona wyświetlająca szczegóły atrakcji 
+
+
+Podstrona wyświetlająca szczegóły noclegów
+ 
 
 Wyszukiwanie noclegów po kategoriach
 
@@ -10,22 +23,16 @@ Wyszukiwanie atrakcji po kategoriach
 Możliwość dodawania atrakcji turystycznych do ulubionych
 
 
-✔️ Możliwość dodawania noclegów do ulubionych ✔️
-
-
-Podstrona umożliwiająca zarządzanie polubionymi noclegami 
-
-
-✔️ Pobieranie noclegów z bazy danych ✔️ 
-
-
 Pobieranie atrakcji z bazy danych 
 
 
-Lista recenzji danej atrakcji oraz noclegu
+Lista recenzji danej atrakcji 
 
 
-Podstrona umożliwiająca zarządzanie polubionymi atrakcjami
+Lista recenzji danego noclegu
+
+
+Podstrona umożliwiająca zarządzanie polubionymi atrakcjami 
 
 
 Galeria zdjęć dla danej atrakcji oraz noclegu
@@ -40,6 +47,11 @@ Możliwość dodawania recenzji danej atrakcji oraz noclegu
 
 
 DO NASTĘPNEGO BACKLOGU:
+--------------------------------------------------------------------
+
+Możliwość rezerwacji noclegu
+
+Możliwość kupienia biletów na atrackję, jeżeli płatna
 
 Podstrona umożliwiająca zarządzanie rezerwacjami noclegów
 

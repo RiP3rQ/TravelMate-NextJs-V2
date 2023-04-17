@@ -88,7 +88,11 @@ const Search = ({ listings }) => {
 
         {/* MAP SECTION  */}
         <section className="hidden lg:inline-flex lg:min-w-[600px] 2xl:min-w-[800px] lg:h-screen">
-          <MyMap searchResults={listings} />
+          <MyMap
+            searchResults={listings}
+            currentUser={currentUser}
+            refetchUser={refetchUser}
+          />
         </section>
       </main>
 
