@@ -156,7 +156,7 @@ const Header = ({ placeholder }) => {
                 .filter((item) => item !== selectedOption)
                 .map((item) => (
                   <button
-                    key={item}
+                    key={item.label}
                     className="bg-[#3F9337] p-2 w-full flex items-center justify-center font-bold text-lg 
                   tracking-wider rounded-2xl border-4 border-transparent active:border-[#3F9337] active:bg-white duration-300"
                     onClick={() => {

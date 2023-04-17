@@ -3,14 +3,23 @@ import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import { toast } from "react-hot-toast";
 
-const useFavorite = ({ listingId, currentUser, refetchUser }) => {
+const useFavorite = ({ listingId, currentUser, refetchUser, page }) => {
   const router = useRouter();
 
-  const hasFavorited = useMemo(() => {
-    const list = currentUser?.favoriteIds || [];
+  let hasFavorited;
+  if (page === "Listings") {
+    hasFavorited = useMemo(() => {
+      const list = currentUser?.favoriteIds || [];
 
-    return list.includes(listingId);
-  }, [currentUser, listingId]);
+      return list.includes(listingId);
+    }, [currentUser, listingId]);
+  } else if (page === "Attractions") {
+    hasFavorited = useMemo(() => {
+      const list = currentUser?.favoriteAttractionsIds || [];
+
+      return list.includes(listingId);
+    }, [currentUser, listingId]);
+  }
 
   const toggleFavorite = useCallback(
     async (e) => {
@@ -23,26 +32,64 @@ const useFavorite = ({ listingId, currentUser, refetchUser }) => {
       try {
         let request;
 
-        if (hasFavorited) {
-          request = () =>
-            axios
-              .post(`http://localhost:3000/api/favorites/${listingId}`, {
-                listingId: listingId,
-                action: "unlike",
-              })
-              .then(() => {
-                toast.success("Usunięto z ulubionych!");
-              });
-        } else {
-          request = () =>
-            axios
-              .post(`http://localhost:3000/api/favorites/${listingId}`, {
-                listingId: listingId,
-                action: "like",
-              })
-              .then(() => {
-                toast.success("Dodano do ulubionych!");
-              });
+        if (page === "Listings") {
+          if (hasFavorited) {
+            request = () =>
+              axios
+                .post(
+                  `${process.env.NEXT_PUBLIC_URL}/api/favorites/${listingId}`,
+                  {
+                    listingId: listingId,
+                    action: "unlike",
+                  }
+                )
+                .then(() => {
+                  toast.success("Usunięto nocleg z ulubionych!");
+                });
+          } else {
+            request = () =>
+              axios
+                .post(
+                  `${process.env.NEXT_PUBLIC_URL}/api/favorites/${listingId}`,
+                  {
+                    listingId: listingId,
+                    action: "like",
+                  }
+                )
+                .then(() => {
+                  toast.success("Dodano nocleg do ulubionych!");
+                });
+          }
+        }
+
+        if (page === "Attractions") {
+          if (hasFavorited) {
+            request = () =>
+              axios
+                .post(
+                  `${process.env.NEXT_PUBLIC_URL}/api/favorites/attractions/${listingId}`,
+                  {
+                    attractionId: listingId,
+                    action: "unlike",
+                  }
+                )
+                .then(() => {
+                  toast.success("Usunięto atrakcję z ulubionych!");
+                });
+          } else {
+            request = () =>
+              axios
+                .post(
+                  `${process.env.NEXT_PUBLIC_URL}/api/favorites/attractions/${listingId}`,
+                  {
+                    attractionId: listingId,
+                    action: "like",
+                  }
+                )
+                .then(() => {
+                  toast.success("Dodano atrakcję do ulubionych!");
+                });
+          }
         }
 
         await request();

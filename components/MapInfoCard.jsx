@@ -14,6 +14,7 @@ const MapInfoCard = ({
   price,
   currentUser,
   refetchUser,
+  page,
 }) => {
   const router = useRouter();
 
@@ -26,6 +27,7 @@ const MapInfoCard = ({
             listingId={id}
             currentUser={currentUser}
             refetchUser={refetchUser}
+            page={page}
           />
         </div>
 

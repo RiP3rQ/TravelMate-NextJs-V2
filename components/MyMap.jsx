@@ -14,6 +14,7 @@ const MyMap = ({
   long,
   currentUser,
   refetchUser,
+  page,
 }) => {
   const [selectedLocation, setSelectedLocation] = useState({});
   const [clickedLocation, setClickedLocation] = useState({});
@@ -97,6 +98,7 @@ const MyMap = ({
                   star={result.star}
                   currentUser={currentUser}
                   refetchUser={refetchUser}
+                  page={page}
                 />
               </div>
             </Popup>

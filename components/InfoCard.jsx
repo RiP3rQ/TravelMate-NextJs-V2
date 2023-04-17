@@ -51,6 +51,7 @@ const InfoCard = ({
             listingId={id}
             currentUser={currentUser}
             refetchUser={refetchUser}
+            page={page}
           />
         </div>
 

@@ -1,11 +1,12 @@
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import useFavorite from "../hooks/useFavorite";
 
-const HeartButton = ({ listingId, currentUser, refetchUser }) => {
+const HeartButton = ({ listingId, currentUser, refetchUser, page }) => {
   const { hasFavorited, toggleFavorite } = useFavorite({
     listingId,
     currentUser,
     refetchUser,
+    page,
   });
 
   return (
