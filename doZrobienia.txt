@@ -16,9 +16,10 @@
 
 --- atrackje
 
-✔️ Pobieranie atrakcji z bazy danych ✔️
+✔️ Pobieranie atrakcji z bazy danych 
 
 
+✔️ Możliwość dodawania atrakcji turystycznych do ulubionych ✔️
 
 
 
@@ -29,9 +30,6 @@
 
 
 Podstrona wyświetlająca szczegóły atrakcji 
-
-
-Możliwość dodawania atrakcji turystycznych do ulubionych
 
 
 Lista recenzji danej atrakcji 

@@ -4,6 +4,7 @@ import { HeartIcon } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
 import HeartButton from "./HeartButton";
+import { fi } from "date-fns/locale";
 
 const MapInfoCard = ({
   id,
@@ -17,6 +18,14 @@ const MapInfoCard = ({
   page,
 }) => {
   const router = useRouter();
+
+  const handleClick = () => {
+    if (page === "Listings") {
+      router.push(`/listings/${id}`);
+    } else if (page === "Attractions") {
+      router.push(`/attractions/${id}`);
+    }
+  };
 
   return (
     <div className="py-2 px-2 relative grid grid-cols-7 bg-slate-200 rounded-xl">
@@ -44,7 +53,7 @@ const MapInfoCard = ({
         <div className="flex justify-between items-end pt-5">
           <button
             className="bg-green-800 py-4 px-7 rounded-full text-sm font-bold text-white"
-            onClick={() => router.push(`/listings/${id}`)}
+            onClick={handleClick}
           >
             Szczegóły
           </button>
