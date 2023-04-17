@@ -9,10 +9,10 @@ export default async function handler(req, res) {
     },
   });
 
-  const favorites = await prisma.listing.findMany({
+  const favorites = await prisma.attraction.findMany({
     where: {
       id: {
-        in: [...(currentUser.favoriteIds || [])],
+        in: [...(currentUser.favoriteAttractionsIds || [])],
       },
     },
   });

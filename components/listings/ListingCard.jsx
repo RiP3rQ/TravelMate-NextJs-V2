@@ -14,6 +14,7 @@ const ListingCard = ({
   actionId = "",
   currentUser,
   refetchUser,
+  page,
 }) => {
   const router = useRouter();
 
@@ -67,6 +68,7 @@ const ListingCard = ({
               listingId={data.id}
               currentUser={currentUser}
               refetchUser={refetchUser}
+              page={page}
             />
           </div>
         </div>
@@ -76,8 +78,10 @@ const ListingCard = ({
             {reservationDate || data.category}
           </div>
           <div className="flex flex-row items-center gap-1">
-            <div className="font-semibold">{price}zł</div>
-            {!reservation && <div className="font-light">/noc</div>}
+            <div className="font-semibold">
+              {price ? `${price} zł` : "Darmowa"}
+            </div>
+            {!reservation && price && <div className="font-light">/noc</div>}
           </div>
         </div>
         {onAction && actionLabel && (

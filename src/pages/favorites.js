@@ -7,10 +7,13 @@ import ListingCard from "../../components/listings/ListingCard";
 import Heading from "../../components/modals/Heading";
 
 const favorites = () => {
+  // ----------------------------- States ----------------------------- //
   const router = useRouter();
   const [favoriteListings, setFavoriteListings] = useState(null);
+  const [favoriteAttractions, setFavoriteAttractions] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
 
+  // ----------------------------- User ----------------------------- //
   const user = async () => {
     const res = await axios.get(
       "http://localhost:3000/api/auth/getCurrentUser"
@@ -21,6 +24,22 @@ const favorites = () => {
       setCurrentUser(res.data);
     }
   };
+
+  useMemo(() => {
+    user();
+  }, []);
+
+  const refetchUser = useCallback(() => {
+    user();
+  }, []);
+
+  useEffect(() => {
+    if (!currentUser) return;
+    fetchFavoriteListings();
+    fetchFavoriteAttractions();
+  }, [currentUser]);
+
+  // ----------------------------- Fetching Fav Listings ----------------------------- //
 
   const fetchFavoriteListings = async () => {
     const res = await axios.post(
@@ -36,23 +55,28 @@ const favorites = () => {
     }
   };
 
-  useMemo(() => {
-    user();
-  }, []);
+  // ----------------------------- Fetching Fav Attractions ----------------------------- //
 
-  const refetchUser = useCallback(() => {
-    user();
-  }, []);
+  const fetchFavoriteAttractions = async () => {
+    const res = await axios.post(
+      "http://localhost:3000/api/favorites/getFavoriteAttractions",
+      {
+        email: currentUser?.email,
+      }
+    );
+    if (res.data.message === "No favorites found!") {
+      return;
+    } else {
+      setFavoriteAttractions(res.data);
+    }
+  };
 
-  useEffect(() => {
-    if (!currentUser) return;
-    fetchFavoriteListings();
-  }, [currentUser]);
-
-  console.log(favoriteListings);
-  console.log(currentUser);
-
-  if (favoriteListings?.length === 0 || favoriteListings === null) {
+  // ----------------------------- Render if null ----------------------------- //
+  if (
+    favoriteListings?.length === 0 ||
+    (favoriteListings === null && favoriteAttractions?.length === 0) ||
+    favoriteAttractions === null
+  ) {
     return (
       <div>
         <Header />
@@ -64,16 +88,20 @@ const favorites = () => {
     );
   }
 
+  // ----------------------------- Render main page----------------------------- //
   return (
     <div>
       <Header />
-      <div className="p-6">
-        <div className="pt-8 border-b-2 border-gray-500 w-64">
-          <Heading title="Polubione" subtitle="Lista polubionych noclegów" />
+      <div className="pt-3 px-5">
+        <div className=" border-b-2 border-gray-500 w-64">
+          <Heading
+            title="Polubione noclegi"
+            subtitle="Lista polubionych noclegów"
+          />
         </div>
 
         <div
-          className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
+          className="mt-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
           xl:grid-cols-5 gap-8"
         >
           {favoriteListings?.map((listing) => (
@@ -82,6 +110,31 @@ const favorites = () => {
               key={listing.id}
               data={listing}
               refetchUser={refetchUser}
+              page="Listings"
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="pt-3 pl-5">
+        <div className="pt-1 border-b-2 border-gray-500 w-64">
+          <Heading
+            title="Polubione atrakcje"
+            subtitle="Lista polubionych atrakcji"
+          />
+        </div>
+
+        <div
+          className="mt-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
+          xl:grid-cols-5 gap-8 mb-8"
+        >
+          {favoriteAttractions?.map((attraction) => (
+            <ListingCard
+              currentUser={currentUser}
+              key={attraction.id}
+              data={attraction}
+              refetchUser={refetchUser}
+              page="Attractions"
             />
           ))}
         </div>

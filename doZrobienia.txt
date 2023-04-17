@@ -22,14 +22,10 @@
 ✔️ Możliwość dodawania atrakcji turystycznych do ulubionych ✔️
 
 
-
+✔️ Podstrona wyświetlająca szczegóły atrakcji ✔️
 
 
 -----------------------   W trakcie realizacji    ------------------------------------
-
-
-
-Podstrona wyświetlająca szczegóły atrakcji 
 
 
 Lista recenzji danej atrakcji 
