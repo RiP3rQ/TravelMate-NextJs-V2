@@ -15,6 +15,7 @@ const ListingHead = ({
   refetchUser,
   star,
   page,
+  reviews,
 }) => {
   const reviewModal = useReviewModal();
 
@@ -31,6 +32,14 @@ const ListingHead = ({
     reviewModal.onOpen();
   }, [currentUser, reviewModal]);
 
+  if (reviews.length > 0) {
+    const sum = reviews.reduce((acc, review) => {
+      let rating = review.star;
+      return acc + parseFloat(rating);
+    }, 0);
+    star = (sum / reviews.length).toFixed(1);
+  }
+
   return (
     <>
       <div className=" flex items-center justify-between gap-9">
@@ -41,16 +50,27 @@ const ListingHead = ({
               className="flex flex-col items-center justify-center mt-2 cursor-pointer bg-slate-200 rounded-xl py-1"
               onClick={onReview}
             >
-              <span className="text-3xl font-bold text-red-400">Brak ocen</span>
+              <span className="text-3xl font-bold text-green-500">
+                Brak ocen
+              </span>
               <span className="text-gray-400 hover:underline">
                 {" "}
                 Oceń to miejsce
               </span>
             </div>
           ) : (
-            <div className="flex items-center justify-end">
-              <StarIcon className="h-8 text-red-400" />
-              <span className="text-3xl font-bold">{star}</span>
+            <div
+              className="flex items-end flex-col cursor-pointer"
+              onClick={onReview}
+            >
+              <div className="flex items-center justify-end">
+                <StarIcon className="h-8 text-red-400" />
+                <span className="text-3xl font-bold">{star}</span>
+              </div>
+              <span className="text-gray-400 hover:underline">
+                {" "}
+                Dodaj recenzję
+              </span>
             </div>
           )}
         </div>

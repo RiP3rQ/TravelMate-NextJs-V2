@@ -17,6 +17,8 @@
 ✔️ Możliwość dodawania recenzji do noclegów ✔️
 
 
+✔️ Pobieranie recenzji z bazy dla noclegów ✔️
+
 
 
 --- atrakcje
@@ -34,6 +36,9 @@
 
 
 ✔️ Możliwość dodawania recenzji do atrakcji ✔️
+
+
+✔️ Pobieranie recenzji z bazy dla atrakcji ✔️
 
 
 
@@ -63,19 +68,26 @@ Galeria zdjęć dla danej atrakcji oraz noclegu    ( możliwe przeniesienia do n
 
 ----------------------------------------------------------------------------------
                             DO NASTĘPNEGO BACKLOGU:
-----------------------------------------------------------------------------------
+----------------------------------------------------------------------------------\
 
-Możliwość dodawania nowych noclegów
 
-Możliwość dodawnia nowych atrakcji
 
-Możliwość rezerwacji noclegu
+--------------------------------------------------------------------------------------------------- zrobione
+
+Możliwość dodawania nowych noclegów - GOTOWE JUŻ ✔️
+
+Możliwość dodawnia nowych atrakcji - GOTOWE JUŻ ✔️
+
+
+--------------------------------------------------------------------------------------------------- do zrobienia
+
+Możliwość rezerwacji noclegu 
 
 Możliwość kupienia biletów na atrackję, jeżeli płatna
 
 Podstrona umożliwiająca zarządzanie rezerwacjami noclegów
 
-Podstrona umożliwiająca zarządzanie rezerwacjami płatnych atrakcji
+Podstrona umożliwiająca zarządzanie biletami na płatne atrakcje
 
 Po najechaniu na nocleg pokaż na mapie
 
@@ -86,8 +98,6 @@ Google autocorrect location w pasku wyszukiwania
 Pobieranie danych lokalizacji z autokorekty i środkowanie mapy na tych koordach
 
 Mozliwość logowania / rejestracji poprzez Google/Fb  
-
-Dodawania rezecji do bazy 
 
 Obliczanie średniej oceny do atrakcji / noclegu
 

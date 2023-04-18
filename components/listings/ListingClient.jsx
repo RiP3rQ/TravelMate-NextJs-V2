@@ -104,6 +104,7 @@ const ListingClient = ({
             refetchUser={refetchUser}
             star={listing?.star}
             page="Listings"
+            reviews={listingReviews}
           />
           {/* środkowy div podzielony na 2 części */}
           <div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6">
@@ -137,14 +138,29 @@ const ListingClient = ({
           <hr />
           {/* dolna część - recenzje */}
 
-          <h2 className="text-2xl font-semibold">Recenzje </h2>
-          <div>
+          <h2 className="text-2xl font-semibold">
+            Recenzje{" "}
+            {listingReviews.length > 0 && "[" + listingReviews.length + "]"}
+          </h2>
+          <div className="grid gap-10 grid-cols-2 ">
             {listingReviews.length > 0 ? (
               listingReviews.map((review) => (
-                <ReviewCard key={review.id} review={review} />
+                <div
+                  className={`w-full h-max border-2 border-gray-400 rounded-xl p-4 col-span-1 ${
+                    review.imageSrc !== "" && "col-span-2"
+                  }`}
+                >
+                  <ReviewCard key={review.id} review={review} />
+                </div>
               ))
             ) : (
-              <p>Brak recenzji</p>
+              <div className="flex flex-col items-center justify-center w-full col-span-2 mb-10">
+                <p className="text-3xl font-bold">Brak Recenzji</p>
+                <p className="text-lg text-gray-400">
+                  Wygląda na to, że nikt jeszcze nie dodał recenzji do tej
+                  pozycji.
+                </p>
+              </div>
             )}
           </div>
         </div>
