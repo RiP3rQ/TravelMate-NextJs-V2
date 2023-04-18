@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 import Input from "../inputs/Input";
 import ImageUpload from "../inputs/ImageUpload";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const STEPS = {
   RATING: 0,
@@ -15,6 +16,7 @@ const STEPS = {
 };
 
 const ReviewModal = () => {
+  const router = useRouter();
   // global state of review modal using zustand
   const reviewModal = useReviewModal();
   // page of the modal
@@ -121,6 +123,9 @@ const ReviewModal = () => {
           setIsLoading(false);
         });
     }
+
+    // odświeżenie strony
+    router.refresh();
   };
 
   // ------------------------------------ button labels ------------------------------------
