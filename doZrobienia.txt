@@ -75,6 +75,8 @@ Możliwość dodawania nowych noclegów - GOTOWE JUŻ ✔️
 
 Możliwość dodawnia nowych atrakcji - GOTOWE JUŻ ✔️
 
+Obliczanie średniej oceny do atrakcji / noclegu - GOTOWE JUŻ ✔️
+
 
 --------------------------------------------------------------------------------------------------- do zrobienia
 
@@ -96,7 +98,5 @@ Pobieranie danych lokalizacji z autokorekty i środkowanie mapy na tych koordach
 
 Mozliwość logowania / rejestracji poprzez Google/Fb  
 
-Obliczanie średniej oceny do atrakcji / noclegu
 
-Połączenie ze sobą tabel w prismie
 

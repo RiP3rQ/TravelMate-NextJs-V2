@@ -73,6 +73,7 @@ const searchAttractions = ({ attractions }) => {
                 img={item.imageSrc}
                 title={item.title}
                 description={item.description}
+                category={item.category}
                 price={item.price}
                 star={item.star}
                 currentUser={currentUser}

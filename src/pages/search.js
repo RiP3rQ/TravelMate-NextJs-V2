@@ -46,21 +46,24 @@ const Search = ({ listings }) => {
       <Header placeholder={`${location} `} page="Listings" />
 
       <main className="flex">
-        <section className="flex-grow pt-14 px-6 h-screen">
+        <section className="flex-grow pt-4 px-6 h-screen">
           <p className="text-xs text-gray-400"> {listings.length} noclegów </p>
           <h1 className="text-3xl font-semibold mb-6">
             Noclegi w miejscowości: {location.toUpperCase()}
           </h1>
 
+          <hr />
+
           <div
-            className="hidden lg:inline-flex mb-5 space-x-3 text-gray-800 whitespace-nowrap pb-2
-          border-b-2 border-gray-200 w-full"
+            className="hidden lg:inline-flex mb-5 space-x-3 text-gray-800 whitespace-nowrap py-3
+          border-b-2 border-gray-200 w-full justify-evenly"
           >
-            <span className="button_search">Możliwość rezygnacji</span>
-            <span className="button_search">Typ miejsca</span>
+            <p className="font-bold text-3xl text-gray-400">Filtry:</p>
             <span className="button_search">Cena</span>
-            <span className="button_search">Liczba pokoi</span>
-            <span className="button_search">Więcej filtrów</span>
+            <span className="button_search">Opinie</span>
+            <span className="button_search">Kategorii</span>
+            <span className="button_search">Liczbie recenzji</span>
+            <span className="button_search">Liczba Gości/Pokoi/Łazienek</span>
           </div>
 
           <div
@@ -76,6 +79,7 @@ const Search = ({ listings }) => {
                 img={item.imageSrc}
                 title={item.title}
                 description={item.description}
+                category={item.category}
                 price={item.price}
                 star={item.star}
                 currentUser={currentUser}
