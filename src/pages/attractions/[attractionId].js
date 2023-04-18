@@ -64,8 +64,6 @@ const IndividualAttractionPage = () => {
     fetchAttractionData();
   }, [attractionId]);
 
-  console.log(attractionData);
-
   // ------------------------------------- render loader
   if (isLoading) {
     return (

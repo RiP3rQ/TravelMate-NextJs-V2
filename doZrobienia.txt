@@ -14,7 +14,7 @@
 ✔️ Podstrona wyświetlająca szczegóły noclegów ✔️
 
 
-✔️ ożliwość dodawania recenzji do noclegów ✔️
+✔️ Możliwość dodawania recenzji do noclegów ✔️
 
 
 

@@ -1,11 +1,13 @@
 import { differenceInCalendarDays, eachDayOfInterval } from "date-fns";
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { types } from "../../src/pages/index";
 import ListingHead from "./ListingHead";
 import ListingInfo from "./ListingInfo";
 import ListingReservation from "./ListingReservation";
 import { toast } from "react-hot-toast";
+import axios from "axios";
+import ReviewCard from "../reviews/ReviewCard";
 
 const initialDateRange = {
   startDate: new Date(),
@@ -20,7 +22,8 @@ const ListingClient = ({
   refetchUser,
 }) => {
   // ----------------------- router
-  const router = useRouter();
+  const path = usePathname();
+  const listingId = path?.substring(10);
 
   // ----------------------- disabled dates using date-fns
   const disabledDates = useMemo(() => {
@@ -63,10 +66,35 @@ const ListingClient = ({
     return types.find((item) => item.label === listing.category);
   }, [listing.category]);
 
+  // ----------------------- get Reviews for listing
+  const [listingReviews, setListingReviews] = useState([]);
+  const fetchReviews = async () => {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_URL}/api/listings/getListingReviewsById`,
+      {
+        listingId: listingId,
+      }
+    );
+    if (res.data.message === "Reviews not found!") {
+      console.log("Reviews not found!");
+      return;
+    } else {
+      setListingReviews(res.data);
+    }
+  };
+
+  useMemo(() => {
+    if (listingId === undefined || listingId === null) return;
+    fetchReviews();
+  }, [listingId]);
+
+  console.log(listingReviews);
+
   return (
     <div className="max-w-[2520px] mx-auto xl:px-20 md:px-10 sm:px-2 px-4">
       <div className="max-w-screen-lg mx-auto">
         <div className="flex flex-col gap-6 mt-5">
+          {/* Tytuł / Gwiazdki / zdjęcie */}
           <ListingHead
             title={listing?.title}
             imageSrc={listing?.imageSrc}
@@ -77,7 +105,9 @@ const ListingClient = ({
             star={listing?.star}
             page="Listings"
           />
+          {/* środkowy div podzielony na 2 części */}
           <div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6">
+            {/* lewa część - kto dodał / kategorie / mapa*/}
             <ListingInfo
               user={listing.user}
               category={category}
@@ -89,7 +119,8 @@ const ListingClient = ({
               long={listing.long}
               lat={listing.lat}
             />
-            <div className="order-first mb-10 md:order-last md:col-span-3">
+            {/* prawa część - rezerwacja */}
+            <div className="order-first md:order-last md:col-span-3">
               <ListingReservation
                 price={listing.price}
                 totalPrice={totalPrice}
@@ -102,6 +133,19 @@ const ListingClient = ({
                 disabledDates={disabledDates}
               />
             </div>
+          </div>
+          <hr />
+          {/* dolna część - recenzje */}
+
+          <h2 className="text-2xl font-semibold">Recenzje </h2>
+          <div>
+            {listingReviews.length > 0 ? (
+              listingReviews.map((review) => (
+                <ReviewCard key={review.id} review={review} />
+              ))
+            ) : (
+              <p>Brak recenzji</p>
+            )}
           </div>
         </div>
       </div>

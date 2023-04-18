@@ -67,6 +67,7 @@ const ListingHead = ({
             listingId={id}
             currentUser={currentUser}
             refetchUser={refetchUser}
+            page={page}
           />
         </div>
       </div>
