@@ -32,7 +32,7 @@ export const list = [
   },
 ];
 
-const Header = ({ placeholder }) => {
+const Header = ({ placeholder, page }) => {
   const [searchInput, setSearchInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [avatarDropdownIsOpen, setAvatarDropdownIsOpen] = useState(false);
@@ -57,6 +57,16 @@ const Header = ({ placeholder }) => {
   // selection of possible search options
   const [selectedOption, setSelectedOption] = useState(list[0].label);
 
+  useMemo(() => {
+    if (page === "Attractions") {
+      setSelectedOption(list[1].label);
+    }
+    if (page === "Listings") {
+      setSelectedOption(list[0].label);
+    }
+  }, [page]);
+
+  // router
   const router = useRouter();
 
   // router for search page

@@ -40,7 +40,7 @@ const searchAttractions = ({ attractions }) => {
   ) {
     return (
       <div className="overflow-x-hidden">
-        <Header placeholder={`${location} `} />
+        <Header placeholder={`${location} `} page="Attractions" />
         <EmptyState showReset />
       </div>
     );
@@ -48,7 +48,7 @@ const searchAttractions = ({ attractions }) => {
 
   return (
     <div className="overflow-x-hidden">
-      <Header placeholder={`${location} `} />
+      <Header placeholder={`${location} `} page="Attractions" />
 
       <main className="flex">
         <section className="flex-grow pt-4 px-6 h-screen">

@@ -68,7 +68,7 @@ const IndividualAttractionPage = () => {
   if (isLoading) {
     return (
       <div>
-        <Header />
+        <Header page="Attractions" />
         <div>Loading...</div>
       </div>
     );
@@ -78,7 +78,7 @@ const IndividualAttractionPage = () => {
   if (!isLoading) {
     return (
       <div>
-        <Header />
+        <Header page="Attractions" placeholder={attractionData.title} />
         <AttractionClient
           attraction={attractionData}
           currentUser={currentUser}

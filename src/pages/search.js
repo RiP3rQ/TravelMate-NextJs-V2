@@ -35,7 +35,7 @@ const Search = ({ listings }) => {
   if (listings === undefined || listings === null || listings.length === 0) {
     return (
       <div className="overflow-x-hidden">
-        <Header placeholder={`${location} `} />
+        <Header placeholder={`${location} `} page="Listings" />
         <EmptyState showReset />
       </div>
     );
@@ -43,7 +43,7 @@ const Search = ({ listings }) => {
 
   return (
     <div className="overflow-x-hidden">
-      <Header placeholder={`${location} `} />
+      <Header placeholder={`${location} `} page="Listings" />
 
       <main className="flex">
         <section className="flex-grow pt-14 px-6 h-screen">

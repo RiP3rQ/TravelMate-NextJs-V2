@@ -64,7 +64,7 @@ const IndividualListingPage = () => {
   if (isLoading) {
     return (
       <div>
-        <Header />
+        <Header page="Listings" />
         <div>Loading...</div>
       </div>
     );
@@ -73,7 +73,7 @@ const IndividualListingPage = () => {
   if (!isLoading) {
     return (
       <div>
-        <Header />
+        <Header page="Listings" placeholder={listingData.title} />
         <ListingClient
           listing={listingData}
           currentUser={currentUser}
