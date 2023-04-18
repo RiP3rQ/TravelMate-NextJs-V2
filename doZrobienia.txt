@@ -20,6 +20,9 @@
 ✔️ Pobieranie recenzji z bazy dla noclegów ✔️
 
 
+✔️ Lista recenzji danego noclegu ✔️
+
+
 
 --- atrakcje
 
@@ -41,15 +44,9 @@
 ✔️ Pobieranie recenzji z bazy dla atrakcji ✔️
 
 
-
+✔️ Lista recenzji danej atrakcji  ✔️
 
 -----------------------   W trakcie realizacji    ------------------------------------
-
-
-Lista recenzji danej atrakcji 
-
-
-Lista recenzji danego noclegu
 
 
 

@@ -83,17 +83,17 @@ const AttractionClient = ({ attraction, currentUser, refetchUser }) => {
             {attractionReviews.length > 0 &&
               "[" + attractionReviews.length + "]"}
           </h2>
-          <div className="grid gap-10 grid-cols-2 w-full">
+          <div className="grid gap-10 grid-cols-2 w-full mb-8">
             {attractionReviews.length > 0 ? (
-              attractionReviews.map((review) => {
-                if (review.imageSrc === "") {
-                  return <ReviewCard key={review.id} review={review} />;
-                } else {
-                  return (
-                    <ReviewCard key={review.id} review={review} hasImage />
-                  );
-                }
-              })
+              attractionReviews.map((review) => (
+                <div
+                  className={`w-full h-max border-2 border-gray-400 rounded-xl p-4 col-span-1 ${
+                    review.imageSrc !== "" && "col-span-2"
+                  }`}
+                >
+                  <ReviewCard key={review.id} review={review} />
+                </div>
+              ))
             ) : (
               <div className="flex flex-col items-center justify-center w-full col-span-2 mb-10">
                 <p className="text-3xl font-bold">Brak Recenzji</p>

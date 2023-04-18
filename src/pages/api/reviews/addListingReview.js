@@ -32,25 +32,43 @@ export default async function handler(req, res) {
     },
   });
 
-  //   // Calculate the average rating of the listing based on all reviews
-  //   const result = await prisma.Listing_Review.aggregate({
-  //     where: {
-  //       listingId: listingId,
-  //     },
-  //     _avg: {
-  //       star: true,
-  //     },
-  //   });
+  // Calculate the average rating of the listing based on all reviews
+  const reviews = await prisma.Listing_Review.findMany({
+    where: {
+      listingId: listingId,
+    },
+    select: {
+      star: true,
+    },
+  });
 
-  //   // Update the rating field of the listing with the calculated average rating
-  //   await prisma.listing.update({
-  //     where: {
-  //       id: listingId,
-  //     },
-  //     data: {
-  //       star: result._avg.star,
-  //     },
-  //   });
+  console.log("reviews", reviews);
+
+  // all ratings
+  const totalRatings = reviews.reduce((acc, listing) => {
+    const rating = parseFloat(listing.star);
+    if (!isNaN(rating)) {
+      acc += rating;
+    }
+    return acc;
+  }, 0);
+
+  console.log("totalRatings", totalRatings);
+
+  // average rating
+  const averageRating = (totalRatings / reviews.length).toFixed(1).toString();
+
+  console.log("averageRating", averageRating);
+
+  // Update the rating field of the listing with the calculated average rating
+  await prisma.listing.update({
+    where: {
+      id: listingId,
+    },
+    data: {
+      star: averageRating,
+    },
+  });
 
   return res.status(200).json(review);
 }

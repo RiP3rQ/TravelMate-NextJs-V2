@@ -65,8 +65,8 @@ const MapInfoCard = ({
                 </span>
               ) : (
                 <>
-                  <StarIcon className="h-4 text-red-400" />
-                  <span className="text-sm font-bold">{star}</span>
+                  <StarIcon className="h-5 text-red-400 pr-1" />
+                  <span className="text-base font-bold">{star}</span>
                 </>
               )}
             </p>

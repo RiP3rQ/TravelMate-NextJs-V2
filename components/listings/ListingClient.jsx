@@ -142,7 +142,7 @@ const ListingClient = ({
             Recenzje{" "}
             {listingReviews.length > 0 && "[" + listingReviews.length + "]"}
           </h2>
-          <div className="grid gap-10 grid-cols-2 ">
+          <div className="grid gap-10 grid-cols-2 w-full mb-8">
             {listingReviews.length > 0 ? (
               listingReviews.map((review) => (
                 <div
