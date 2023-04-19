@@ -13,13 +13,16 @@ const ReviewCard = ({ review }) => {
           <h1 className="text-xs text-gray-400 mb-1">
             {"<" + review?.user.email + ">"}
           </h1>
-          <Image
-            className="rounded-full"
-            src={review?.user?.image}
-            width={30}
-            height={30}
-            alt="Avatar"
-          />
+          {/* AVATAR */}
+          {review?.user?.image && (
+            <Image
+              className="rounded-full"
+              src={review?.user?.image}
+              width={30}
+              height={30}
+              alt="Avatar"
+            />
+          )}
         </div>
       </div>
       {/* STARS */}

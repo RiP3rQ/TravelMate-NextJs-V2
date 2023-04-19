@@ -60,6 +60,20 @@ const searchAttractions = ({ attractions }) => {
             Atrakcje w miejscowości: {location.toUpperCase()}
           </h1>
 
+          <hr />
+
+          <div
+            className="hidden lg:inline-flex mb-5 space-x-3 text-gray-800 whitespace-nowrap py-3
+border-b-2 border-gray-200 w-full justify-evenly"
+          >
+            <p className="font-bold text-3xl text-gray-400">Filtry:</p>
+            <span className="button_search">Cena</span>
+            <span className="button_search">Opinie</span>
+            <span className="button_search">Kategorie</span>
+            <span className="button_search">Liczba recenzji</span>
+            <span className="button_search">Liczba Gości/Pokoi/Łazienek</span>
+          </div>
+
           <div
             className="flex flex-col lg:overflow-y-scroll h-4/5
             scrollbar scrollbar-thumb-[#3F9337] scrollbar-track-red-100 

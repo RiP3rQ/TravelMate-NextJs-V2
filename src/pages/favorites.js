@@ -5,8 +5,10 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import ListingCard from "../../components/listings/ListingCard";
 import Heading from "../../components/modals/Heading";
+import { useSession } from "next-auth/react";
 
 const favorites = () => {
+  const { data: session } = useSession();
   // ----------------------------- States ----------------------------- //
   const router = useRouter();
   const [favoriteListings, setFavoriteListings] = useState(null);
@@ -38,6 +40,13 @@ const favorites = () => {
     fetchFavoriteListings();
     fetchFavoriteAttractions();
   }, [currentUser]);
+
+  // check if user is logged in
+  useEffect(() => {
+    if (session === undefined || session === null) {
+      router.push("/login");
+    }
+  }, [session]);
 
   // ----------------------------- Fetching Fav Listings ----------------------------- //
 
@@ -73,9 +82,8 @@ const favorites = () => {
 
   // ----------------------------- Render if null ----------------------------- //
   if (
-    favoriteListings?.length === 0 ||
-    (favoriteListings === null && favoriteAttractions?.length === 0) ||
-    favoriteAttractions === null
+    (favoriteListings?.length === 0 && favoriteAttractions?.length === 0) ||
+    (favoriteListings === null && favoriteAttractions === null)
   ) {
     return (
       <div>
@@ -92,53 +100,58 @@ const favorites = () => {
   return (
     <div>
       <Header />
-      <div className="pt-3 px-5">
-        <div className=" border-b-2 border-gray-500 w-64">
-          <Heading
-            title="Polubione noclegi"
-            subtitle="Lista polubionych noclegów"
-          />
-        </div>
 
-        <div
-          className="mt-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
+      {favoriteListings?.length > 0 && (
+        <div className="pt-3 px-5">
+          <div className=" border-b-2 border-gray-500 w-64">
+            <Heading
+              title="Polubione noclegi"
+              subtitle="Lista polubionych noclegów"
+            />
+          </div>
+
+          <div
+            className="mt-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
           xl:grid-cols-5 gap-8"
-        >
-          {favoriteListings?.map((listing) => (
-            <ListingCard
-              currentUser={currentUser}
-              key={listing.id}
-              data={listing}
-              refetchUser={refetchUser}
-              page="Listings"
+          >
+            {favoriteListings?.map((listing) => (
+              <ListingCard
+                currentUser={currentUser}
+                key={listing.id}
+                data={listing}
+                refetchUser={refetchUser}
+                page="Listings"
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {favoriteAttractions?.length > 0 && (
+        <div className="pt-3 pl-5">
+          <div className="pt-1 border-b-2 border-gray-500 w-64">
+            <Heading
+              title="Polubione atrakcje"
+              subtitle="Lista polubionych atrakcji"
             />
-          ))}
-        </div>
-      </div>
+          </div>
 
-      <div className="pt-3 pl-5">
-        <div className="pt-1 border-b-2 border-gray-500 w-64">
-          <Heading
-            title="Polubione atrakcje"
-            subtitle="Lista polubionych atrakcji"
-          />
-        </div>
-
-        <div
-          className="mt-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
+          <div
+            className="mt-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
           xl:grid-cols-5 gap-8 mb-8"
-        >
-          {favoriteAttractions?.map((attraction) => (
-            <ListingCard
-              currentUser={currentUser}
-              key={attraction.id}
-              data={attraction}
-              refetchUser={refetchUser}
-              page="Attractions"
-            />
-          ))}
+          >
+            {favoriteAttractions?.map((attraction) => (
+              <ListingCard
+                currentUser={currentUser}
+                key={attraction.id}
+                data={attraction}
+                refetchUser={refetchUser}
+                page="Attractions"
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

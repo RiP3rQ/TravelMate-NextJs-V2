@@ -98,7 +98,9 @@ const InfoCard = ({
             {star !== "0" ? star : "Brak ocen"}
           </p>
 
-          <p className="text-lg font-semibold pb-2 lg:text-2xl">{price} zł</p>
+          <p className="text-lg font-semibold pb-2 lg:text-2xl">
+            {price ? price + " zł /osoba" : "Bezpłatna"}
+          </p>
         </div>
       </div>
     </div>

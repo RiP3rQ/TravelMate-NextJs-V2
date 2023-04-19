@@ -61,8 +61,8 @@ const Search = ({ listings }) => {
             <p className="font-bold text-3xl text-gray-400">Filtry:</p>
             <span className="button_search">Cena</span>
             <span className="button_search">Opinie</span>
-            <span className="button_search">Kategorii</span>
-            <span className="button_search">Liczbie recenzji</span>
+            <span className="button_search">Kategorie</span>
+            <span className="button_search">Liczba recenzji</span>
             <span className="button_search">Liczba Gości/Pokoi/Łazienek</span>
           </div>
 
