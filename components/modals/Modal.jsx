@@ -13,6 +13,7 @@ const Modal = ({
   disabled,
   secondaryAction,
   secondaryActionLabel,
+  galleryModal,
 }) => {
   const [showModal, setShowModal] = useState(isOpen);
 
@@ -50,7 +51,11 @@ const Modal = ({
 
   return (
     <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none bg-neutral-800/70">
-      <div className="relative w-full md:w-4/6 lg:w-3/6 xl:w-2/5 my-6 mx-auto h-full lg:h-auto md:h-auto">
+      <div
+        className={`relative w-full ${
+          galleryModal ? "md:w-5/6 lg:w-4/6" : "md:w-4/6 lg:w-3/6 xl:w-2/5"
+        } my-6 mx-auto h-full lg:h-auto md:h-auto`}
+      >
         {/* CONTENT */}
         <div
           className={`translate duration-300 h-full ${
@@ -72,27 +77,32 @@ const Modal = ({
             {/* BODY */}
             <div className="relative p-6 flex-auto">{body}</div>
             {/* FOOTER */}
-            <div className="flex flex-col gap-2 p-6">
-              <div className="flex flex-row items-center gap-4 w-full">
-                {
-                  // If secondaryActionLabel is provided, render the button
-                  secondaryActionLabel && secondaryActionLabel && (
+            {
+              // if galleryModal is provided, render do not renter the button
+              !galleryModal && (
+                <div className="flex flex-col gap-2 p-6">
+                  <div className="flex flex-row items-center gap-4 w-full">
+                    {
+                      // If secondaryActionLabel is provided, render the button
+                      secondaryActionLabel && secondaryActionLabel && (
+                        <Button
+                          outline
+                          label={secondaryActionLabel}
+                          onClick={handleSecondaryAction}
+                          disabled={disabled}
+                        />
+                      )
+                    }
                     <Button
-                      outline
-                      label={secondaryActionLabel}
-                      onClick={handleSecondaryAction}
+                      label={actionLabel}
+                      onClick={handleSubmit}
                       disabled={disabled}
                     />
-                  )
-                }
-                <Button
-                  label={actionLabel}
-                  onClick={handleSubmit}
-                  disabled={disabled}
-                />
-              </div>
-              {footer}
-            </div>
+                  </div>
+                  {footer}
+                </div>
+              )
+            }
           </div>
         </div>
       </div>

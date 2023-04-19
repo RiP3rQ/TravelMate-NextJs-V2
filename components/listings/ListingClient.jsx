@@ -1,6 +1,6 @@
 import { differenceInCalendarDays, eachDayOfInterval } from "date-fns";
 import { usePathname } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { types } from "../../src/pages/index";
 import ListingHead from "./ListingHead";
 import ListingInfo from "./ListingInfo";
@@ -8,6 +8,7 @@ import ListingReservation from "./ListingReservation";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import ReviewCard from "../reviews/ReviewCard";
+import useGalleryModal from "../../hooks/useGalleryModal";
 
 const initialDateRange = {
   startDate: new Date(),
@@ -24,6 +25,9 @@ const ListingClient = ({
   // ----------------------- router
   const path = usePathname();
   const listingId = path?.substring(10);
+
+  // ----------------------- galeria
+  const galleryModal = useGalleryModal();
 
   // ----------------------- disabled dates using date-fns
   const disabledDates = useMemo(() => {
@@ -88,7 +92,23 @@ const ListingClient = ({
     fetchReviews();
   }, [listingId]);
 
-  console.log(listingReviews);
+  // ----------------------- handle open gallery modal
+  const imageList = [];
+
+  const handleOpenGalleryModal = () => {
+    // add listing image to the imageList
+    imageList.push(listing.imageSrc);
+    // Loop through the reviews and add non-empty imageSrc values to the imageList
+    for (let i = 0; i < listingReviews.length; i++) {
+      const item = listingReviews[i];
+      if (item.imageSrc !== null && item.imageSrc !== "") {
+        imageList.push(item.imageSrc);
+      }
+    }
+
+    galleryModal.setImages(imageList);
+    galleryModal.onOpen();
+  };
 
   return (
     <div className="max-w-[2520px] mx-auto xl:px-20 md:px-10 sm:px-2 px-4">
@@ -137,11 +157,28 @@ const ListingClient = ({
           </div>
           <hr />
           {/* dolna część - recenzje */}
+          {listingReviews.length > 0 ? (
+            <>
+              <div className="text-2xl font-semibold flex items-center justify-between ">
+                <h2>
+                  Recenzje{" "}
+                  {listingReviews.length > 0 &&
+                    "[" + listingReviews.length + "]"}
+                </h2>
+                <div
+                  className="py-1 px-3 border-2 border-gray-400 bg-green-400 rounded-xl flex items-center cursor-pointer"
+                  onClick={handleOpenGalleryModal}
+                >
+                  Galeria
+                </div>
+              </div>
 
-          <h2 className="text-2xl font-semibold">
-            Recenzje{" "}
-            {listingReviews.length > 0 && "[" + listingReviews.length + "]"}
-          </h2>
+              <hr />
+            </>
+          ) : (
+            <h2 className="text-2xl font-semibold">Recenzje</h2>
+          )}
+
           <div className="grid gap-10 grid-cols-2 w-full mb-8">
             {listingReviews.length > 0 ? (
               listingReviews.map((review) => (
@@ -149,6 +186,7 @@ const ListingClient = ({
                   className={`w-full h-max border-2 border-gray-400 rounded-xl p-4 col-span-1 ${
                     review.imageSrc !== "" && "col-span-2"
                   }`}
+                  key={review.id}
                 >
                   <ReviewCard key={review.id} review={review} />
                 </div>
