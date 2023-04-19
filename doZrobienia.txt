@@ -100,3 +100,7 @@ Mozliwość logowania / rejestracji poprzez Google/Fb
 
 
 
+bład związany z recenzjami, jeżeli użytkownik bez imageSrc - usunąć avatar lub dać ze zdjęciem domyślnym
+błąd związany z polubionymi, jeżeli nie ma polubionych noclegów, a atrakcje są to i tak ich nie wyświetla
+
+
