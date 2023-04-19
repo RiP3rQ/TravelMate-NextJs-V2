@@ -9,6 +9,9 @@ import ImageUpload from "../inputs/ImageUpload";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
+// star icons import
+import { BsStar, BsStarFill, BsStarHalf } from "react-icons/bs";
+
 const STEPS = {
   RATING: 0,
   INFO: 1,
@@ -25,6 +28,9 @@ const ReviewModal = () => {
   // steps of the modal
   const [step, setStep] = useState(STEPS.RATING);
   const [isLoading, setIsLoading] = useState(false);
+  // stars rating
+  const [hoverRating, setHoverRating] = useState(0);
+  const [clickedRating, setClickedRating] = useState(0);
 
   // ------------------------------------ form state for review ------------------------------------
   const {
@@ -59,6 +65,8 @@ const ReviewModal = () => {
   const description = watch("description");
   // step 3 - IMAGE
   const imageSrc = watch("imageSrc");
+
+  console.log("rating", rating);
 
   // ------------------------------------ actions ------------------------------------
   // go back to previous step
@@ -149,6 +157,11 @@ const ReviewModal = () => {
   }, [step]);
 
   // ------------------------------------ body content ------------------------------------
+  function shouldBeHighlighted(rating) {
+    return rating <= (hoverRating || clickedRating);
+  }
+
+  console.log("hoverRating", hoverRating);
   // content of the modal based on step 1 - rating
   let bodyContent = (
     <div className="flex flex-col gap-8">
@@ -156,16 +169,30 @@ const ReviewModal = () => {
         title="To miejsce sprawiło na Tobie wrażenie?"
         subtitle="Już teraz możesz ocenić to miejsce i pomóc innym użytkownikom w wyborze"
       />
-      <Input
-        id="rating"
-        label="Ocena"
-        formatPrice
-        type="number"
-        disabled={isLoading}
-        register={register}
-        errors={errors}
-        required
-      />
+      {/* rating using stars*/}
+      <ul className="flex items-center justify-center">
+        {[1, 2, 3, 4, 5].map((rating) => (
+          <li
+            key={rating}
+            className="cursor-pointer"
+            onMouseEnter={() => setHoverRating(rating)}
+            onMouseLeave={() => setHoverRating(0)}
+            onClick={() => {
+              setClickedRating(rating);
+              setCustomValue("rating", rating);
+            }}
+          >
+            <BsStarFill
+              size={40}
+              className={`${
+                shouldBeHighlighted(rating)
+                  ? "text-yellow-500"
+                  : "text-gray-400"
+              }`}
+            />
+          </li>
+        ))}
+      </ul>
     </div>
   );
 
