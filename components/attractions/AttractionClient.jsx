@@ -6,11 +6,15 @@ import AttractionBuyTicket from "./AttractionBuyTicket";
 import { usePathname } from "next/navigation";
 import axios from "axios";
 import ReviewCard from "../reviews/ReviewCard";
+import useGalleryModal from "../../hooks/useGalleryModal";
 
 const AttractionClient = ({ attraction, currentUser, refetchUser }) => {
   // ----------------------- router
   const path = usePathname();
   const attractionId = path?.substring(13);
+
+  // ----------------------- galeria
+  const galleryModal = useGalleryModal();
 
   // ----------------------- display with types from index.js applies to listing
   const category = useMemo(() => {
@@ -39,7 +43,23 @@ const AttractionClient = ({ attraction, currentUser, refetchUser }) => {
     fetchReviews();
   }, [attractionId]);
 
-  console.log(attractionReviews);
+  // ----------------------- handle open gallery modal
+  const imageList = [];
+
+  const handleOpenGalleryModal = () => {
+    // add listing image to the imageList
+    imageList.push(attraction.imageSrc);
+    // Loop through the reviews and add non-empty imageSrc values to the imageList
+    for (let i = 0; i < attractionReviews.length; i++) {
+      const item = attractionReviews[i];
+      if (item.imageSrc !== null && item.imageSrc !== "") {
+        imageList.push(item.imageSrc);
+      }
+    }
+
+    galleryModal.setImages(imageList);
+    galleryModal.onOpen();
+  };
 
   return (
     <div className="max-w-[2520px] mx-auto xl:px-20 md:px-10 sm:px-2 px-4">
@@ -77,12 +97,28 @@ const AttractionClient = ({ attraction, currentUser, refetchUser }) => {
           </div>
           <hr />
           {/* dolna część - recenzje */}
+          {attractionReviews.length > 0 ? (
+            <>
+              <div className="text-2xl font-semibold flex items-center justify-between ">
+                <h2>
+                  Recenzje{" "}
+                  {attractionReviews.length > 0 &&
+                    "[" + attractionReviews.length + "]"}
+                </h2>
+                <div
+                  className="py-1 px-3 border-2 border-gray-400 bg-green-400 rounded-xl flex items-center cursor-pointer"
+                  onClick={handleOpenGalleryModal}
+                >
+                  Galeria
+                </div>
+              </div>
 
-          <h2 className="text-2xl font-semibold">
-            Recenzje{" "}
-            {attractionReviews.length > 0 &&
-              "[" + attractionReviews.length + "]"}
-          </h2>
+              <hr />
+            </>
+          ) : (
+            <h2 className="text-2xl font-semibold">Recenzje</h2>
+          )}
+
           <div className="grid gap-10 grid-cols-2 w-full mb-8">
             {attractionReviews.length > 0 ? (
               attractionReviews.map((review) => (
@@ -90,6 +126,7 @@ const AttractionClient = ({ attraction, currentUser, refetchUser }) => {
                   className={`w-full h-max border-2 border-gray-400 rounded-xl p-4 col-span-1 ${
                     review.imageSrc !== "" && "col-span-2"
                   }`}
+                  key={review.id}
                 >
                   <ReviewCard key={review.id} review={review} />
                 </div>

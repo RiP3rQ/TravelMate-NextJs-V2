@@ -23,6 +23,11 @@
 ✔️ Lista recenzji danego noclegu ✔️
 
 
+✔️ Galeria zdjęć dla danego noclegu ✔️
+
+
+
+
 
 --- atrakcje
 
@@ -46,6 +51,13 @@
 
 ✔️ Lista recenzji danej atrakcji  ✔️
 
+
+✔️ Galeria zdjęć dla danej atrakcji  ✔️
+
+
+
+
+
 -----------------------   W trakcie realizacji    ------------------------------------
 
 
@@ -56,10 +68,7 @@ Wyszukiwanie noclegów po kategoriach
 
 Wyszukiwanie atrakcji po kategoriach 
 
-Galeria zdjęć dla danej atrakcji oraz noclegu    ( możliwe przeniesienia do nastepnego sprintu )
-
-
-
+Poprawić wystawianie recenzji
 
 
 
