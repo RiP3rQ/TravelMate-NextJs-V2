@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 
 // star icons import
 import { BsStar, BsStarFill, BsStarHalf } from "react-icons/bs";
+import InputTextArea from "../inputs/InputTextArea";
 
 const STEPS = {
   RATING: 0,
@@ -96,9 +97,14 @@ const ReviewModal = () => {
         })
         .then((res) => {
           toast.success("Pomyślnie dodano recenzję noclegu!");
+          toast.loading("Strona zostanie odświeżona...");
           reset();
           reviewModal.onClose();
           setStep(STEPS.RATING);
+          // odświeżenie strony
+          setTimeout(() => {
+            router.refresh();
+          }, 2000);
         })
         .catch((err) => {
           toast.error("Coś poszło nie tak...");
@@ -120,9 +126,14 @@ const ReviewModal = () => {
         )
         .then((res) => {
           toast.success("Pomyślnie dodano recenzję atrackji!");
+          toast.loading("Strona zostanie odświeżona...");
           reset();
           reviewModal.onClose();
           setStep(STEPS.RATING);
+          // odświeżenie strony
+          setTimeout(() => {
+            router.refresh();
+          }, 2000);
         })
         .catch((err) => {
           toast.error("Coś poszło nie tak...");
@@ -131,9 +142,6 @@ const ReviewModal = () => {
           setIsLoading(false);
         });
     }
-
-    // odświeżenie strony
-    router.refresh();
   };
 
   // ------------------------------------ button labels ------------------------------------
@@ -213,7 +221,7 @@ const ReviewModal = () => {
           required
         />
         <hr />
-        <Input
+        <InputTextArea
           id="description"
           label="Opis"
           disabled={isLoading}

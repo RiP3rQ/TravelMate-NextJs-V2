@@ -56,6 +56,10 @@
 
 
 
+------------------- ogólne --------------
+
+
+✔️ Poprawienie wystawiania recenzji  ✔️
 
 
 -----------------------   W trakcie realizacji    ------------------------------------
@@ -68,7 +72,7 @@ Wyszukiwanie noclegów po kategoriach
 
 Wyszukiwanie atrakcji po kategoriach 
 
-Poprawić wystawianie recenzji
+
 
 
 
