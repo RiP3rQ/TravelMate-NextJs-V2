@@ -18,7 +18,7 @@ const Favorites = () => {
   // ----------------------------- User ----------------------------- //
   const user = async () => {
     const res = await axios.get(
-      "http://localhost:3000/api/auth/getCurrentUser"
+      `${process.env.NEXT_PUBLIC_URL}/api/auth/getCurrentUser`
     );
     if (res.data.message === "Not logged In!") {
       return;
@@ -52,7 +52,7 @@ const Favorites = () => {
 
   const fetchFavoriteListings = async () => {
     const res = await axios.post(
-      "http://localhost:3000/api/favorites/getFavoriteListings",
+      `${process.env.NEXT_PUBLIC_URL}/api/favorites/getFavoriteListings`,
       {
         email: currentUser?.email,
       }
@@ -68,7 +68,7 @@ const Favorites = () => {
 
   const fetchFavoriteAttractions = async () => {
     const res = await axios.post(
-      "http://localhost:3000/api/favorites/getFavoriteAttractions",
+      `${process.env.NEXT_PUBLIC_URL}/api/favorites/getFavoriteAttractions`,
       {
         email: currentUser?.email,
       }

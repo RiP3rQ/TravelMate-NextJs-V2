@@ -41,7 +41,7 @@ const Header = ({ placeholder, page }) => {
 
   const user = async () => {
     const res = await axios.get(
-      "http://localhost:3000/api/auth/getCurrentUser"
+      `${process.env.NEXT_PUBLIC_URL}/api/auth/getCurrentUser`
     );
     if (res.data.message === "Not logged In!") {
       return;
