@@ -46,49 +46,33 @@ const SortingModal = () => {
   // ------------------------------ OBSŁUGA SORTOWANIA ------------------------------ //
   const handleSort = () => {
     // defensive programming
-    if (sortingCategory === "" || typeOfSorting === "") {
+    if (
+      sortingCategory === "" ||
+      typeOfSorting === "" ||
+      (sortingCategory === "Liczba Gości/Pokoi/Łazienek" &&
+        selectedLastCategory === "")
+    ) {
       toast.error("Wybierz sortowania rosnąco/malejąco");
       return;
     }
-    // sortowanie po cenie
-    if (sortingCategory === "Cena") {
-      if (typeOfSorting === "Rosnąco") {
-        const powiadomienie = toast.loading("Sortowanie rosnąco w toku...");
-        axios
-          .post(`${process.env.NEXT_PUBLIC_URL}/api/listings/sortListings`, {
-            sortingCategory: sortingCategory,
-            typeOfSorting: typeOfSorting,
-          })
-          .then((res) => {
-            console.log(res.data);
-          })
-          .then(() => {
-            toast.dismiss(powiadomienie);
-            toast.success("Sortowanie rosnąco zakończone");
-          });
-        sortingModal.onClose();
-        return;
-      } else if (typeOfSorting === "Malejąco") {
-        const powiadomienie = toast.loading("Sortowanie malejąco w toku...");
-        axios
-          .post(`${process.env.NEXT_PUBLIC_URL}/api/listings/sortListings`, {
-            sortingCategory: sortingCategory,
-            typeOfSorting: typeOfSorting,
-          })
-          .then((res) => {
-            console.log(res.data);
-          })
-          .then(() => {
-            toast.dismiss(powiadomienie);
-            toast.success("Sortowanie malejąco zakończone");
-          });
-        sortingModal.onClose();
-        return;
-      } else {
-        toast.error("Wybierz rodzaj sortowania");
-        return;
-      }
-    }
+
+    // globalne powiadomienie o rozpoczęciu sortowania
+    let powiadomienie = toast.loading("Sortowanie w toku...");
+
+    axios
+      .post(`${process.env.NEXT_PUBLIC_URL}/api/listings/sortListings`, {
+        sortingCategory: sortingCategory,
+        typeOfSorting: typeOfSorting,
+        selectedLastCategory: selectedLastCategory,
+      })
+      .then((res) => {
+        sortingModal.setNewListings(res.data);
+      })
+      .then(() => {
+        toast.dismiss(powiadomienie);
+        toast.success("Sortowanie zakończone!");
+      });
+    sortingModal.onClose();
   };
 
   // ------------------------------ ZAWARTOŚĆ MODALU ------------------------------ //

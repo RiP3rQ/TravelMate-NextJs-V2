@@ -1,5 +1,5 @@
 import { useSearchParams } from "next/navigation";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Header from "../../components/Header";
 import InfoCard from "../../components/InfoCard";
 import MyMap from "../../components/MyMap";
@@ -11,6 +11,7 @@ import useSortingModal from "../../hooks/useSortingModal";
 const Search = ({ listings }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const location = useSearchParams().get("location");
+  const [newListings, setNewListings] = useState([]);
 
   // sorting modal
   const sortingModal = useSortingModal();
@@ -43,8 +44,23 @@ const Search = ({ listings }) => {
     [sortingModal]
   );
 
+  // change listings after sorting
+  useEffect(() => {
+    if (sortingModal.newListings !== [] || undefined || null || 0) {
+      setNewListings(sortingModal.newListings);
+      console.log(sortingModal);
+      console.log(listings);
+    }
+  }, [sortingModal.newListings]);
+
   // wyszukujemy listingi , jeżeli nie ma to zwracamy loader
-  if (listings === undefined || listings === null || listings.length === 0) {
+  if (
+    listings === undefined ||
+    listings === null ||
+    (listings.length === 0 && newListings.length === 0) ||
+    newListings === undefined ||
+    newListings === null
+  ) {
     return (
       <div className="overflow-x-hidden">
         <Header placeholder={`${location} `} page="Listings" />
@@ -106,21 +122,37 @@ const Search = ({ listings }) => {
             scrollbar-thumb-rounded-xl scrollbar-track-rounded-xl
           "
           >
-            {listings?.map((item, index) => (
-              <InfoCard
-                key={index}
-                id={item.id}
-                img={item.imageSrc}
-                title={item.title}
-                description={item.description}
-                category={item.category}
-                price={item.price}
-                star={item.star}
-                currentUser={currentUser}
-                refetchUser={refetchUser}
-                page="Listings"
-              />
-            ))}
+            {newListings.length > 0
+              ? newListings?.map((item, index) => (
+                  <InfoCard
+                    key={index}
+                    id={item.id}
+                    img={item.imageSrc}
+                    title={item.title}
+                    description={item.description}
+                    category={item.category}
+                    price={item.price}
+                    star={item.star}
+                    currentUser={currentUser}
+                    refetchUser={refetchUser}
+                    page="Listings"
+                  />
+                ))
+              : listings?.map((item, index) => (
+                  <InfoCard
+                    key={index}
+                    id={item.id}
+                    img={item.imageSrc}
+                    title={item.title}
+                    description={item.description}
+                    category={item.category}
+                    price={item.price}
+                    star={item.star}
+                    currentUser={currentUser}
+                    refetchUser={refetchUser}
+                    page="Listings"
+                  />
+                ))}
           </div>
         </section>
 
