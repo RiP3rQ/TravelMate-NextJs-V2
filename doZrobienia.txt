@@ -1,4 +1,4 @@
---------------------------------✔️  GOTOWE  ✔️-----------------------------------
+--------------------------------✔️  GOTOWE  ✔️----------------------------------- (Sprint 3 zakończony)
 
 --- noclegi
 
@@ -25,6 +25,8 @@
 
 ✔️ Galeria zdjęć dla danego noclegu ✔️
 
+
+✔️ Sortowanie noclegów ✔️
 
 
 
@@ -55,6 +57,9 @@
 ✔️ Galeria zdjęć dla danej atrakcji  ✔️
 
 
+✔️ Wyszukiwanie atrakcji po kategoriach ✔️
+
+
 
 ------------------- ogólne --------------
 
@@ -62,16 +67,20 @@
 ✔️ Poprawienie wystawiania recenzji  ✔️
 
 
+
+
+
+
+
+
+
+
 -----------------------   W trakcie realizacji    ------------------------------------
 
 
 
------ Mniejszy priorytet --------
 
-Wyszukiwanie noclegów po kategoriach
-
-Wyszukiwanie atrakcji po kategoriach 
-
+----
 
 
 
