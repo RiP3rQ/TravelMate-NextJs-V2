@@ -1,4 +1,4 @@
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import React, { useCallback, useMemo, useState } from "react";
 import Header from "../../components/Header";
 import InfoCard from "../../components/InfoCard";
@@ -6,11 +6,14 @@ import MyMap from "../../components/MyMap";
 import getListings from "../../actions/getListings";
 import EmptyState from "../../components/EmptyState";
 import axios from "axios";
+import useSortingModal from "../../hooks/useSortingModal";
 
 const Search = ({ listings }) => {
   const [currentUser, setCurrentUser] = useState(null);
-  const router = useRouter();
   const location = useSearchParams().get("location");
+
+  // sorting modal
+  const sortingModal = useSortingModal();
 
   const user = async () => {
     const res = await axios.get(
@@ -31,7 +34,16 @@ const Search = ({ listings }) => {
     user();
   }, []);
 
-  // filtrujemy listingi , jeżeli nie ma to zwracamy loader
+  // handle soritng
+  const handleSort = useCallback(
+    (sortingCategory) => {
+      sortingModal.setCategory(sortingCategory);
+      sortingModal.onOpen(sortingCategory);
+    },
+    [sortingModal]
+  );
+
+  // wyszukujemy listingi , jeżeli nie ma to zwracamy loader
   if (listings === undefined || listings === null || listings.length === 0) {
     return (
       <div className="overflow-x-hidden">
@@ -59,11 +71,33 @@ const Search = ({ listings }) => {
           border-b-2 border-gray-200 w-full justify-evenly"
           >
             <p className="font-bold text-3xl text-gray-400">Filtry:</p>
-            <span className="button_search">Cena</span>
-            <span className="button_search">Opinie</span>
-            <span className="button_search">Kategorie</span>
-            <span className="button_search">Liczba recenzji</span>
-            <span className="button_search">Liczba Gości/Pokoi/Łazienek</span>
+            <span className="button_search" onClick={() => handleSort("Cena")}>
+              Cena
+            </span>
+            <span
+              className="button_search"
+              onClick={() => handleSort("Opinie")}
+            >
+              Opinie
+            </span>
+            <span
+              className="button_search"
+              onClick={() => handleSort("Kategorie")}
+            >
+              Kategorie
+            </span>
+            <span
+              className="button_search"
+              onClick={() => handleSort("Liczba recenzji")}
+            >
+              Liczba recenzji
+            </span>
+            <span
+              className="button_search"
+              onClick={() => handleSort("Liczba Gości/Pokoi/Łazienek")}
+            >
+              Liczba Gości/Pokoi/Łazienek
+            </span>
           </div>
 
           <div

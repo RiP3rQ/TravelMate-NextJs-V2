@@ -59,9 +59,6 @@ const GalleryModal = () => {
       galleryModal
       isOpen={galleryModal.isOpen}
       onClose={galleryModal.onClose}
-      onSubmit={() => {
-        console.log("submit");
-      }}
       title="Galeria"
       body={bodyContent}
     />

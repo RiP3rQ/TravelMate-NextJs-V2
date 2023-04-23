@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast";
 import RentModal from "../../components/modals/RentModal";
 import ReviewModal from "../../components/modals/ReviewModal";
 import GalleryModal from "../../components/modals/GalleryModal";
+import SortingModal from "../../components/modals/SortingModal";
 
 const progress = new ProgressBar({
   size: 7,
@@ -28,6 +29,7 @@ export default function App({
       <RentModal />
       <ReviewModal />
       <GalleryModal />
+      <SortingModal />
       <Component {...pageProps} />
     </SessionProvider>
   );

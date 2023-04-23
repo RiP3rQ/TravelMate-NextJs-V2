@@ -67,8 +67,6 @@ const ReviewModal = () => {
   // step 3 - IMAGE
   const imageSrc = watch("imageSrc");
 
-  console.log("rating", rating);
-
   // ------------------------------------ actions ------------------------------------
   // go back to previous step
   const onBack = () => {
@@ -169,7 +167,6 @@ const ReviewModal = () => {
     return rating <= (hoverRating || clickedRating);
   }
 
-  console.log("hoverRating", hoverRating);
   // content of the modal based on step 1 - rating
   let bodyContent = (
     <div className="flex flex-col gap-8">
