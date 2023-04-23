@@ -32,9 +32,11 @@ const GalleryModal = () => {
       >
         {images.map((image, index) => {
           return (
-            <div className="cursor-pointer hover:scale-105 hover:opacity-75 transition transform duration-300 ease-out">
+            <div
+              className="cursor-pointer hover:scale-105 hover:opacity-75 transition transform duration-300 ease-out"
+              key={index}
+            >
               <div
-                key={index}
                 className="w-40 h-full relative "
                 onClick={() => {
                   setMainImage(image);

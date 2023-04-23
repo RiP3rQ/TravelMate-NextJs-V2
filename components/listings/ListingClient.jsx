@@ -90,7 +90,7 @@ const ListingClient = ({
   useMemo(() => {
     if (listingId === undefined || listingId === null) return;
     fetchReviews();
-  }, [listingId]);
+  }, [listingId, fetchReviews]);
 
   // ----------------------- handle open gallery modal
   const imageList = [];

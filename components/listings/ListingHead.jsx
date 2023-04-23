@@ -30,7 +30,7 @@ const ListingHead = ({
     reviewModal.setPage(page);
     reviewModal.setItemId(id);
     reviewModal.onOpen();
-  }, [currentUser, reviewModal]);
+  }, [currentUser, reviewModal, id, page]);
 
   if (reviews.length > 0) {
     const sum = reviews.reduce((acc, review) => {

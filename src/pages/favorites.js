@@ -7,7 +7,7 @@ import ListingCard from "../../components/listings/ListingCard";
 import Heading from "../../components/modals/Heading";
 import { useSession } from "next-auth/react";
 
-const favorites = () => {
+const Favorites = () => {
   const { data: session } = useSession();
   // ----------------------------- States ----------------------------- //
   const router = useRouter();
@@ -156,4 +156,4 @@ const favorites = () => {
   );
 };
 
-export default favorites;
+export default Favorites;

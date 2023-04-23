@@ -8,7 +8,7 @@ import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import useSortingModal from "../../hooks/useSortingModal";
 
-const searchAttractions = ({ attractions }) => {
+const SearchAttractions = ({ attractions }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const location = useSearchParams().get("location");
   const [newAttractions, setNewAttractions] = useState([]);
@@ -169,7 +169,7 @@ border-b-2 border-gray-200 w-full justify-evenly"
   );
 };
 
-export default searchAttractions;
+export default SearchAttractions;
 
 export async function getServerSideProps(context) {
   const attractions = await getAttractions();

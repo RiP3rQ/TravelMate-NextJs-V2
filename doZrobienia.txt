@@ -1,106 +1,17 @@
---------------------------------✔️  GOTOWE  ✔️----------------------------------- (Sprint 3 zakończony)
+--------------------------------✔️  GOTOWE  ✔️----------------------------------- (Sprint 4)
 
---- noclegi
+✔️ Możliwość dodawania nowych noclegów  ✔️
 
-✔️ Możliwość dodawania noclegów do ulubionych ✔️
+✔️ Możliwość dodawnia nowych atrakcji  ✔️
 
+✔️ Obliczanie średniej oceny do atrakcji ✔️
 
-✔️ Podstrona umożliwiająca zarządzanie polubionymi noclegami  ✔️ 
-
-
-✔️ Pobieranie noclegów z bazy danych ✔️ 
-
-
-✔️ Podstrona wyświetlająca szczegóły noclegów ✔️
-
-
-✔️ Możliwość dodawania recenzji do noclegów ✔️
-
-
-✔️ Pobieranie recenzji z bazy dla noclegów ✔️
-
-
-✔️ Lista recenzji danego noclegu ✔️
-
-
-✔️ Galeria zdjęć dla danego noclegu ✔️
-
-
-✔️ Sortowanie noclegów ✔️
-
-
-
-
---- atrakcje
-
-✔️ Pobieranie atrakcji z bazy danych 
-
-
-✔️ Możliwość dodawania atrakcji turystycznych do ulubionych ✔️
-
-
-✔️ Podstrona wyświetlająca szczegóły atrakcji ✔️
-
-
-✔️ Podstrona umożliwiająca zarządzanie polubionymi atrakcjami ✔️
-
-
-✔️ Możliwość dodawania recenzji do atrakcji ✔️
-
-
-✔️ Pobieranie recenzji z bazy dla atrakcji ✔️
-
-
-✔️ Lista recenzji danej atrakcji  ✔️
-
-
-✔️ Galeria zdjęć dla danej atrakcji  ✔️
-
-
-✔️ Wyszukiwanie atrakcji po kategoriach ✔️
-
-
-
-------------------- ogólne --------------
-
-
-✔️ Poprawienie wystawiania recenzji  ✔️
-
-
-
-
-
-
+✔️ Obliczanie średniej oceny do noclegu ✔️
 
 
 
 
 -----------------------   W trakcie realizacji    ------------------------------------
-
-
-
-
-----
-
-
-
-
-----------------------------------------------------------------------------------
-                            DO NASTĘPNEGO BACKLOGU:
-----------------------------------------------------------------------------------\
-
-
-
---------------------------------------------------------------------------------------------------- zrobione
-
-Możliwość dodawania nowych noclegów - GOTOWE JUŻ ✔️
-
-Możliwość dodawnia nowych atrakcji - GOTOWE JUŻ ✔️
-
-Obliczanie średniej oceny do atrakcji / noclegu - GOTOWE JUŻ ✔️
-
-
---------------------------------------------------------------------------------------------------- do zrobienia
 
 Możliwość rezerwacji noclegu 
 
@@ -119,6 +30,13 @@ Google autocorrect location w pasku wyszukiwania
 Pobieranie danych lokalizacji z autokorekty i środkowanie mapy na tych koordach
 
 Mozliwość logowania / rejestracji poprzez Google/Fb  
+
+
+----------------------------------------------------------------------------------
+                            Zaplanowane:
+----------------------------------------------------------------------------------
+
+
 
 
 

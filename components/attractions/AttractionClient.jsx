@@ -41,7 +41,7 @@ const AttractionClient = ({ attraction, currentUser, refetchUser }) => {
   useMemo(() => {
     if (attractionId === undefined || attractionId === null) return;
     fetchReviews();
-  }, [attractionId]);
+  }, [attractionId, fetchReviews]);
 
   // ----------------------- handle open gallery modal
   const imageList = [];
