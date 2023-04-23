@@ -16,6 +16,7 @@ const Search = ({ listings }) => {
   // sorting modal
   const sortingModal = useSortingModal();
 
+  // get current user
   const user = async () => {
     const res = await axios.get(
       `${process.env.NEXT_PUBLIC_URL}/api/auth/getCurrentUser`
@@ -38,6 +39,7 @@ const Search = ({ listings }) => {
   // handle soritng
   const handleSort = useCallback(
     (sortingCategory) => {
+      sortingModal.setPage("Listings");
       sortingModal.setCategory(sortingCategory);
       sortingModal.onOpen(sortingCategory);
     },

@@ -13,12 +13,12 @@ import axios from "axios";
 
 const sortingCategories = [
   {
-    label: "Rosnąco",
-    icon: AiOutlineArrowUp,
-  },
-  {
     label: "Malejąco",
     icon: AiOutlineArrowDown,
+  },
+  {
+    label: "Rosnąco",
+    icon: AiOutlineArrowUp,
   },
 ];
 
@@ -40,6 +40,8 @@ const lastTypeOfSorting = [
 const SortingModal = () => {
   const sortingModal = useSortingModal();
   const sortingCategory = sortingModal.category;
+  const page = sortingModal.page;
+
   const [typeOfSorting, setTypeOfSorting] = useState("");
   const [selectedLastCategory, setSelectedLastCategory] = useState("");
 
@@ -59,19 +61,46 @@ const SortingModal = () => {
     // globalne powiadomienie o rozpoczęciu sortowania
     let powiadomienie = toast.loading("Sortowanie w toku...");
 
-    axios
-      .post(`${process.env.NEXT_PUBLIC_URL}/api/listings/sortListings`, {
-        sortingCategory: sortingCategory,
-        typeOfSorting: typeOfSorting,
-        selectedLastCategory: selectedLastCategory,
-      })
-      .then((res) => {
-        sortingModal.setNewListings(res.data);
-      })
-      .then(() => {
-        toast.dismiss(powiadomienie);
-        toast.success("Sortowanie zakończone!");
-      });
+    // wysłanie zapytania do serwera odnośnie sortowania LISITNGÓW
+    if (page === "Listings") {
+      axios
+        .post(`${process.env.NEXT_PUBLIC_URL}/api/listings/sortListings`, {
+          sortingCategory: sortingCategory,
+          typeOfSorting: typeOfSorting,
+          selectedLastCategory: selectedLastCategory,
+        })
+        .then((res) => {
+          sortingModal.setNewListings(res.data);
+        })
+        .then(() => {
+          toast.dismiss(powiadomienie);
+          toast.success("Sortowanie zakończone!");
+        });
+    }
+
+    // wysłanie zapytania do serwera odnośnie sortowania ATRAKCJI
+    if (page === "Attractions") {
+      axios
+        .post(
+          `${process.env.NEXT_PUBLIC_URL}/api/attractions/sortAttractions`,
+          {
+            sortingCategory: sortingCategory,
+            typeOfSorting: typeOfSorting,
+            selectedLastCategory: selectedLastCategory,
+          }
+        )
+        .then((res) => {
+          sortingModal.setNewListings(res.data);
+        })
+        .then(() => {
+          toast.dismiss(powiadomienie);
+          toast.success("Sortowanie zakończone!");
+        });
+    }
+
+    // zamknięcie modalu
+    setTypeOfSorting("");
+    setSelectedLastCategory("");
     sortingModal.onClose();
   };
 

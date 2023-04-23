@@ -1,18 +1,22 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Header from "../../components/Header";
 import EmptyState from "../../components/EmptyState";
 import getAttractions from "../../actions/getAttractions";
 import MyMap from "../../components/MyMap";
 import InfoCard from "../../components/InfoCard";
-import { useRouter } from "next/router";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
+import useSortingModal from "../../hooks/useSortingModal";
 
 const searchAttractions = ({ attractions }) => {
   const [currentUser, setCurrentUser] = useState(null);
-  const router = useRouter();
   const location = useSearchParams().get("location");
+  const [newAttractions, setNewAttractions] = useState([]);
 
+  // sorting modal
+  const sortingModal = useSortingModal();
+
+  // get current user
   const user = async () => {
     const res = await axios.get(
       `${process.env.NEXT_PUBLIC_URL}/api/auth/getCurrentUser`
@@ -32,11 +36,32 @@ const searchAttractions = ({ attractions }) => {
     user();
   }, []);
 
-  // filtrujemy attractions , jeżeli nie ma to zwracamy loader
+  // handle soritng
+  const handleSort = useCallback(
+    (sortingCategory) => {
+      sortingModal.setPage("Attractions");
+      sortingModal.setCategory(sortingCategory);
+      sortingModal.onOpen(sortingCategory);
+    },
+    [sortingModal]
+  );
+
+  // change listings after sorting
+  useEffect(() => {
+    if (sortingModal.newListings !== [] || undefined || null || 0) {
+      setNewAttractions(sortingModal.newListings);
+      console.log(sortingModal);
+      console.log(newAttractions);
+    }
+  }, [sortingModal.newListings]);
+
+  // wyszukujemy listingi , jeżeli nie ma to zwracamy loader
   if (
     attractions === undefined ||
     attractions === null ||
-    attractions.length === 0
+    (attractions.length === 0 && newAttractions.length === 0) ||
+    newAttractions === undefined ||
+    newAttractions === null
   ) {
     return (
       <div className="overflow-x-hidden">
@@ -67,11 +92,27 @@ const searchAttractions = ({ attractions }) => {
 border-b-2 border-gray-200 w-full justify-evenly"
           >
             <p className="font-bold text-3xl text-gray-400">Filtry:</p>
-            <span className="button_search">Cena</span>
-            <span className="button_search">Opinie</span>
-            <span className="button_search">Kategorie</span>
-            <span className="button_search">Liczba recenzji</span>
-            <span className="button_search">Liczba Gości/Pokoi/Łazienek</span>
+            <span className="button_search" onClick={() => handleSort("Cena")}>
+              Cena
+            </span>
+            <span
+              className="button_search"
+              onClick={() => handleSort("Opinie")}
+            >
+              Opinie
+            </span>
+            <span
+              className="button_search"
+              onClick={() => handleSort("Kategorie")}
+            >
+              Kategorie
+            </span>
+            <span
+              className="button_search"
+              onClick={() => handleSort("Liczba recenzji")}
+            >
+              Liczba recenzji
+            </span>
           </div>
 
           <div
@@ -80,21 +121,37 @@ border-b-2 border-gray-200 w-full justify-evenly"
             scrollbar-thumb-rounded-xl scrollbar-track-rounded-xl
           "
           >
-            {attractions?.map((item, index) => (
-              <InfoCard
-                key={index}
-                id={item.id}
-                img={item.imageSrc}
-                title={item.title}
-                description={item.description}
-                category={item.category}
-                price={item.price}
-                star={item.star}
-                currentUser={currentUser}
-                refetchUser={refetchUser}
-                page="Attractions"
-              />
-            ))}
+            {newAttractions.length > 0
+              ? newAttractions?.map((item, index) => (
+                  <InfoCard
+                    key={index}
+                    id={item.id}
+                    img={item.imageSrc}
+                    title={item.title}
+                    description={item.description}
+                    category={item.category}
+                    price={item.price}
+                    star={item.star}
+                    currentUser={currentUser}
+                    refetchUser={refetchUser}
+                    page="Attractions"
+                  />
+                ))
+              : attractions?.map((item, index) => (
+                  <InfoCard
+                    key={index}
+                    id={item.id}
+                    img={item.imageSrc}
+                    title={item.title}
+                    description={item.description}
+                    category={item.category}
+                    price={item.price}
+                    star={item.star}
+                    currentUser={currentUser}
+                    refetchUser={refetchUser}
+                    page="Attractions"
+                  />
+                ))}
           </div>
         </section>
 
