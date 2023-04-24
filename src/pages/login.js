@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import { signIn, useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import { useEffect } from "react";
+import { FcGoogle } from "react-icons/fc";
 
 // password validation
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/;
@@ -92,10 +93,10 @@ const Login = () => {
         className="z-10"
       />
       <section className="z-50 absolute top-0 left-0 w-full h-screen flex justify-center items-center">
-        <div className="relative w-96 h-96 flex justify-center items-center bg-transparent border-2 border-white rounded-3xl backdrop-blur-3xl">
+        <div className="relative w-[600px] h-[530px] flex justify-center items-center bg-transparent border-2 border-white rounded-3xl backdrop-blur-3xl">
           {/* LOGO */}
           <div
-            className="absolute -top-32 cursor-pointer h-28 w-full flex items-center justify-center "
+            className="absolute -top-32 cursor-pointer h-28 w-96 flex items-center justify-center "
             onClick={goBack}
           >
             <Image
@@ -106,7 +107,7 @@ const Login = () => {
               className=" rounded-3xl"
             />
           </div>
-          <div className="">
+          <div className="px-4 w-full">
             {/* FORM */}
             <form onSubmit={handleSubmit}>
               <h2 className="text-5xl text-center text-white my-8">
@@ -170,6 +171,17 @@ const Login = () => {
               >
                 {isSubmitting ? "LOGOWANIE" : "Zaloguj"}
               </button>
+              <hr className="mt-3" />
+              <div className="w-full mt-3">
+                <button
+                  className="relative rounded-lg hover:opacity-80 transition w-full text-black border-4 border-green-800 bg-white text-2xl py-2 font-bold"
+                  onClick={() => signIn("google")}
+                >
+                  <FcGoogle className="absolute left-4 top-0 h-12" />
+                  Zaloguj za pomocą Google
+                </button>
+              </div>
+              <hr className="mt-3" />
               <div className="font-lg text-white my-5 text-center">
                 <p>
                   Nie masz jeszcze konta?{" "}

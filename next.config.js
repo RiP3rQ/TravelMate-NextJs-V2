@@ -7,6 +7,7 @@ const nextConfig = {
       "firebasestorage.googleapis.com",
       "st3.depositphotos.com",
       "res.cloudinary.com",
+      "lh3.googleusercontent.com",
     ],
   },
 };

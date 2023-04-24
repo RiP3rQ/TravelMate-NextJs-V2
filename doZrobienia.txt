@@ -8,7 +8,10 @@
 
 ✔️ Obliczanie średniej oceny do noclegu ✔️
 
+✔️ Powiadomienia informujące użytkownika o przydatnych przedmiotach, które warto zabrać na daną atrakcję 
+w zależności od kategorii danego miejsca ✔️
 
+✔️ Możliwość logowania / rejestracji poprzez Google ✔️
 
 
 -----------------------   W trakcie realizacji    ------------------------------------
@@ -29,10 +32,7 @@ Google autocorrect location w pasku wyszukiwania
 
 Pobieranie danych lokalizacji z autokorekty i środkowanie mapy na tych koordach
 
-Mozliwość logowania / rejestracji poprzez Google/Fb  
 
-Powiadomienia informujące użytkownika o przydatnych przedmiotach, które warto zabrać na daną atrakcję 
-w zależności od kategorii danego miejsca
 
 
 ----------------------------------------------------------------------------------

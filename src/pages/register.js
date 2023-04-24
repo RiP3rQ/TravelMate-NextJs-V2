@@ -1,9 +1,9 @@
 import {
   EnvelopeIcon,
   LockClosedIcon,
-  PhotoIcon,
   UserIcon,
 } from "@heroicons/react/24/solid";
+import { FcGoogle } from "react-icons/fc";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState, useRef, useEffect } from "react";
@@ -11,7 +11,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 // password validation
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/;
@@ -108,7 +108,7 @@ const Register = () => {
               className=" rounded-3xl"
             />
           </div>
-          <div className="w-full mx-6">
+          <div className="w-full mx-6 h-full">
             {/* FORM */}
             <form onSubmit={handleSubmit}>
               <h2 className="text-5xl text-center text-white mb-8">
@@ -206,6 +206,16 @@ const Register = () => {
                 {isSubmitting ? "REJESTRUJE" : "Zarejestruj"}
               </button>
             </form>
+            <hr className="mt-3" />
+            <div className="w-full mt-3">
+              <button
+                className="relative rounded-lg hover:opacity-80 transition w-full text-black border-4 border-green-800 bg-white text-2xl py-2 font-bold"
+                onClick={() => signIn("google")}
+              >
+                <FcGoogle className="absolute left-4 top-0 h-12" />
+                Rejestracja za pomocą Google
+              </button>
+            </div>
           </div>
         </div>
       </section>
