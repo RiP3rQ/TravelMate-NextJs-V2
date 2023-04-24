@@ -2,7 +2,7 @@
 
 ✔️ Możliwość dodawania nowych noclegów  ✔️
 
-✔️ Możliwość dodawnia nowych atrakcji  ✔️
+✔️ Możliwość dodawania nowych atrakcji  ✔️
 
 ✔️ Obliczanie średniej oceny do atrakcji ✔️
 
@@ -30,6 +30,9 @@ Google autocorrect location w pasku wyszukiwania
 Pobieranie danych lokalizacji z autokorekty i środkowanie mapy na tych koordach
 
 Mozliwość logowania / rejestracji poprzez Google/Fb  
+
+Powiadomienia informujące użytkownika o przydatnych przedmiotach, które warto zabrać na daną atrakcję 
+w zależności od kategorii danego miejsca
 
 
 ----------------------------------------------------------------------------------

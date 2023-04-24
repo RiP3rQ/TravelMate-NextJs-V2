@@ -1,17 +1,19 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { attractionTypes } from "@/pages";
 import ListingHead from "../listings/ListingHead";
 import ListingInfo from "../listings/ListingInfo";
 import AttractionBuyTicket from "./AttractionBuyTicket";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import axios from "axios";
 import ReviewCard from "../reviews/ReviewCard";
 import useGalleryModal from "../../hooks/useGalleryModal";
+import { toast } from "react-hot-toast";
 
 const AttractionClient = ({ attraction, currentUser, refetchUser }) => {
   // ----------------------- router
   const path = usePathname();
   const attractionId = path?.substring(13);
+  const router = useRouter();
 
   // ----------------------- galeria
   const galleryModal = useGalleryModal();
@@ -41,7 +43,7 @@ const AttractionClient = ({ attraction, currentUser, refetchUser }) => {
   useMemo(() => {
     if (attractionId === undefined || attractionId === null) return;
     fetchReviews();
-  }, [attractionId, fetchReviews]);
+  }, [attractionId]);
 
   // ----------------------- handle open gallery modal
   const imageList = [];
@@ -60,6 +62,41 @@ const AttractionClient = ({ attraction, currentUser, refetchUser }) => {
     galleryModal.setImages(imageList);
     galleryModal.onOpen();
   };
+
+  // ----------------------- toast
+  useEffect(() => {
+    toast.custom(
+      (t) => (
+        <div
+          className={`${
+            t.visible ? "animate-enter" : "animate-leave"
+          } max-w-[400px] w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5 relative`}
+        >
+          <div className="flex-1 w-0 p-4">
+            <h1 className="font-bold text-2xl text-center">
+              Lista przydatnych przedmiotów:
+            </h1>
+            {category?.notifications?.map((item) => (
+              <p
+                key={item}
+                className="font-thin text-gray-400 text-base text-center"
+              >
+                - {item}
+              </p>
+            ))}
+          </div>
+          <div className="absolute -top-2 -right-2 bg-gray-400 text-green-200 px-2 rounded-lg hover:text-white hover:bg-red-400">
+            <button onClick={() => toast.dismiss()}>X</button>
+          </div>
+        </div>
+      ),
+      {
+        id: "custom-id-1",
+        duration: 10000,
+        position: "bottom-right",
+      }
+    );
+  }, []);
 
   return (
     <div className="max-w-[2520px] mx-auto xl:px-20 md:px-10 sm:px-2 px-4">

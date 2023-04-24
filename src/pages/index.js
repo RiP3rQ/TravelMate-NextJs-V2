@@ -83,52 +83,122 @@ export const attractionTypes = [
     icon: GiCastle,
     description:
       "Ta atrakcja jest związana z zabytkami lub miejscami historycznymi!",
+    notifications: [
+      "Aparat fotograficzny",
+      "Przewodnik po zabytkach lub informator",
+      "Wygodne buty",
+      "Okulary przeciwsłoneczne",
+      "Woda pitna",
+    ],
   },
   {
     label: "Przyroda i krajobrazy",
     icon: FaLeaf,
     description:
       "Ta atrakcja jest związana z przyrodą lub krajobrazem okolicy!",
+    notifications: [
+      "Latarka lub czołówka",
+      "Mapa terenu",
+      "Przybory do jedzenia piknikowego (np. koc, koszyk piknikowy)",
+      "Okulary przeciwsłoneczne",
+      "Woda pitna",
+    ],
   },
   {
     label: "Rozrywka i atrakcje dla rodzin",
     icon: MdFamilyRestroom,
     description: "Ta atrakcja jest związana z rozrywką dla rodziny!",
+    notifications: [
+      "Aparat fotograficzny",
+      "Kaski ochronne dla dzieci na niektórych atrakcjach",
+      "Przekąski i napoje",
+      "Środki przeciwbólowe dla ewentualnych ból głowy lub brzucha",
+      "Zestaw kolorowanek i zabawek dla dzieci",
+    ],
   },
   {
     label: "Sport i rekreacja",
     icon: MdSportsVolleyball,
     description: "Ta atrakcja jest związana z sportem lub rekreacją!",
+    notifications: [
+      "Buty sportowe lub buty do biegania",
+      "Ręcznik",
+      "Woda pitna",
+      "Ochraniacz przeciwsłoneczny",
+      "Napój izotoniczny lub baton energetyczny",
+    ],
   },
   {
     label: "Ekstremalne",
     icon: MdSportsKabaddi,
     description: "Ta atrakcja jest uznawana za ekstremalną!",
+    notifications: [
+      "Kask i ochraniacze (np. na kolana, łokcie)",
+      "Rękawice zabezpieczające dłonie",
+      "Środki przeciwbólowe",
+      "Woda pitna",
+      "Kamizelka ratunkowa",
+    ],
   },
   {
     label: "Zakupy",
     icon: AiOutlineShoppingCart,
     description: "Ta atrakcja jest związana z możliwością zakupu dóbr!",
+    notifications: [
+      "Torba na zakupy",
+      "Portfel z wystarczającą ilością gotówki lub karta kredytowa",
+      "Lista rzeczy do kupienia",
+      "Woda pitna",
+      "Zegarek lub telefon z aplikacją do monitorowania wydatków",
+    ],
   },
   {
     label: "Muzyka i sztuka",
     icon: FaMusic,
     description: "Ta atrakcja jest związana z muzyką lub sztuką!",
+    notifications: [
+      "Bilet lub rezerwacja na wydarzenie",
+      "Aparat fotograficzny",
+      "Notatnik i długopis",
+      "Woda pitna",
+      "Okulary przeciwsłoneczne (jeśli wydarzenie odbywa się na zewnątrz)",
+    ],
   },
   {
     label: "Relaks i odprężenie",
     icon: GiNightSleep,
     description: "Ta atrakcja jest związana z relaksem oraz odpoczynkiem!",
+    notifications: [
+      "Koc piknikowy lub leżak",
+      "Książka lub magazyn",
+      "Przekąski i napoje",
+      "Muzyka na odtwarzaczu lub słuchawkach",
+      "Woda pitna",
+    ],
   },
   {
     label: "Na świeżym powietrzu",
     icon: MdAir,
     description: "Ta atrakcja jest związana ze świeżym powietrzem!",
+    notifications: [
+      "Wodoodporna kurtka lub płaszcz przeciwdeszczowy",
+      "Ciepła czapka i rękawice (w sezonie zimowym)",
+      "Krem przeciwsłoneczny i okulary przeciwsłoneczne (w sezonie letnim)",
+      "Woda pitna",
+      "Buty do chodzenia po nierównym terenie",
+    ],
   },
   {
     label: "Edukacja i nauka",
     icon: AiOutlineBook,
     description: "Ta atrakcja jest związana z edukacją lub nauką!",
+    notifications: [
+      "Notatnik i długopis",
+      "Aparat fotograficzny",
+      "Przekąski i napoje",
+      "Mapa lub przewodnik turystyczny",
+      "Zapasowe baterie do urządzeń elektronicznych",
+    ],
   },
 ];
 
