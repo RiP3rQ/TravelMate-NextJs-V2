@@ -34,6 +34,7 @@ const IndividualListingPage = () => {
   // ------------------------------------- fetch listing data from db and set Loader
   const [isLoading, setIsLoading] = useState(true);
   const [listingData, setListingData] = useState({});
+  const [reservations, setReservations] = useState([]);
 
   useMemo(() => {
     if (
@@ -44,6 +45,7 @@ const IndividualListingPage = () => {
     ) {
       return;
     }
+    // ------------------------------------- fetch listing data from db
     const fetchListingData = async () => {
       await axios
         .post(`${process.env.NEXT_PUBLIC_URL}/api/listings/getListingById`, {
@@ -57,7 +59,26 @@ const IndividualListingPage = () => {
           toast.error("Coś poszło nie tak...");
         });
     };
+
     fetchListingData();
+
+    // ------------------------------------- fetch reservations data from db
+    const fetchListingReservations = async () => {
+      await axios
+        .post(
+          `${process.env.NEXT_PUBLIC_URL}/api/reservations/getAllListingReservations`,
+          {
+            listingId,
+          }
+        )
+        .then((res) => {
+          setReservations(res.data);
+        })
+        .catch((err) => {
+          toast.error("Coś poszło nie tak...");
+        });
+    };
+    fetchListingReservations();
   }, [listingId]);
 
   // ------------------------------------- render loader
@@ -78,6 +99,7 @@ const IndividualListingPage = () => {
           listing={listingData}
           currentUser={currentUser}
           refetchUser={refetchUser}
+          reservations={reservations}
         />
       </div>
     );

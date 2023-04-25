@@ -1,5 +1,5 @@
 import { differenceInCalendarDays, eachDayOfInterval } from "date-fns";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { types } from "../../src/pages/index";
 import ListingHead from "./ListingHead";
@@ -23,6 +23,7 @@ const ListingClient = ({
   refetchUser,
 }) => {
   // ----------------------- router
+  const router = useRouter();
   const path = usePathname();
   const listingId = path?.substring(10);
 
@@ -33,7 +34,7 @@ const ListingClient = ({
   const disabledDates = useMemo(() => {
     let dates = [];
 
-    reservations.forEach((reservation) => {
+    reservations?.forEach((reservation) => {
       const range = eachDayOfInterval({
         start: new Date(reservation.startDate),
         end: new Date(reservation.endDate),
@@ -50,6 +51,35 @@ const ListingClient = ({
   const [totalPrice, setTotalPrice] = useState(listing.price);
   const [dateRange, setDateRange] = useState(initialDateRange);
 
+  // ----------------------- handle create reservation
+  const onCreateReservation = useCallback(async () => {
+    if (!currentUser) {
+      return router.push("/login");
+    }
+
+    setIsLoading(true);
+
+    axios
+      .post("/api/reservations/reserveListing", {
+        totalPrice,
+        startDate: dateRange.startDate,
+        endDate: dateRange.endDate,
+        listingId: listing?.id,
+        currentUserId: currentUser.id,
+      })
+      .then(() => {
+        toast.success("Zarezerwowano nocleg!");
+        setDateRange(initialDateRange);
+      })
+      .catch(() => {
+        toast.error("Coś poszło nie tak!");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [totalPrice, dateRange, listing?.id, router, currentUser]);
+
+  // ----------------------- calculate price
   useEffect(() => {
     if (dateRange.startDate && dateRange.endDate) {
       const dayCount = differenceInCalendarDays(
@@ -90,7 +120,7 @@ const ListingClient = ({
   useMemo(() => {
     if (listingId === undefined || listingId === null) return;
     fetchReviews();
-  }, [listingId, fetchReviews]);
+  }, [listingId]);
 
   // ----------------------- handle open gallery modal
   const imageList = [];
@@ -147,9 +177,7 @@ const ListingClient = ({
                 totalPrice={totalPrice}
                 onChangeDate={(value) => setDateRange(value)}
                 dateRange={dateRange}
-                onSubmit={() => {
-                  toast.success("Tu w przyszłość będzie rezerwacja");
-                }}
+                onSubmit={onCreateReservation}
                 disabled={isLoading}
                 disabledDates={disabledDates}
               />

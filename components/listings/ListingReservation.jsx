@@ -1,5 +1,5 @@
-import Button from "../modals/Button";
 import Calendar from "../inputs/Calendar";
+import Button from "../modals/Button";
 
 const ListingReservation = ({
   price,
@@ -28,11 +28,13 @@ const ListingReservation = ({
         <div className="font-light text-neutral-400 text-2xl">/noc</div>
       </div>
       <hr />
-      <Calendar
-        value={dateRange}
-        disabledDates={disabledDates}
-        onChange={(value) => onChangeDate(value.selection)}
-      />
+      <div className="h-full">
+        <Calendar
+          value={dateRange}
+          disabledDates={disabledDates}
+          onChange={(value) => onChangeDate(value.selection)}
+        />
+      </div>
       <hr />
       <div className="p-4">
         <Button disabled={disabled} label="Rezerwuj" onClick={onSubmit} />

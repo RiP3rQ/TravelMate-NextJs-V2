@@ -16,3 +16,11 @@
 .mapboxgl-popup-close-button {
   @apply flex items-center justify-center text-white text-4xl absolute top-1 bg-red-500 rounded-full h-8 w-8 right-1 !important;
 }
+
+.rdrMonth {
+  width: 100% !important;
+}
+
+.rdrCalendarWrapper {
+  width: 100% !important;
+}
