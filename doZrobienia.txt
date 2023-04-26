@@ -17,15 +17,11 @@ w zależności od kategorii danego miejsca ✔️
 
 ✔️ Możliwość kupienia biletów na atrackję, jeżeli płatna ✔️
 
+✔️ Podstrona umożliwiająca zarządzanie rezerwacjami noclegów oraz biletami na płatne atrakcje ✔️
+
 -----------------------   W trakcie realizacji    ------------------------------------
 
 
-
-
-
-Podstrona umożliwiająca zarządzanie rezerwacjami noclegów
-
-Podstrona umożliwiająca zarządzanie biletami na płatne atrakcje
 
 Po najechaniu na nocleg pokaż na mapie
 

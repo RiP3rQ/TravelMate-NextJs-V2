@@ -1,5 +1,4 @@
 import prisma from "../../../../libs/prismadb";
-import { getServerSession } from "next-auth/next";
 
 export default async function handler(req, res) {
   try {
@@ -19,7 +18,6 @@ export default async function handler(req, res) {
       query.authorId = authorId;
     }
 
-    // Calculate the average rating of the listing based on all reviews
     const reservations = await prisma.reservation.findMany({
       where: query,
       include: {

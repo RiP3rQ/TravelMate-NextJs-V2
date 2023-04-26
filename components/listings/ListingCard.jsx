@@ -84,15 +84,16 @@ const ListingCard = ({
             {!reservation && price && <div className="font-light">/noc</div>}
           </div>
         </div>
-        {onAction && actionLabel && (
+      </div>
+      {onAction && actionLabel && (
+        <div className="mt-2">
           <Button
             disabled={disabled}
-            small
             label={actionLabel}
             onClick={handleCancel}
           />
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

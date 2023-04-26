@@ -110,6 +110,11 @@ const Header = ({ placeholder, page }) => {
     });
   };
 
+  // router for reserved listings/attractions page
+  const reservationsPageHandle = () => {
+    router.push("/reservations");
+  };
+
   // sign out functionallity
   const SignOutHandle = () => {
     signOut().then(() => {
@@ -254,6 +259,13 @@ const Header = ({ placeholder, page }) => {
               onClick={favoritePageHandle}
             >
               Polubione
+            </p>
+            <p
+              className="text-lg font-semibold border-b border-gray-500 py-1 cursor-pointer w-full rounded-lg text-center
+              hover:bg-green-400 hover:text-white "
+              onClick={reservationsPageHandle}
+            >
+              Rezerwacje/Bilety
             </p>
             <p
               className="text-xl text-[#3F9337] font-extrabold py-1 tracking-widest cursor-pointer w-full rounded-lg text-center
