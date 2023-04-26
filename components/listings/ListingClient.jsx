@@ -70,6 +70,8 @@ const ListingClient = ({
       .then(() => {
         toast.success("Zarezerwowano nocleg!");
         setDateRange(initialDateRange);
+        // w przyszłości zrobić przekierowanie na strone planera podróży
+        // z możliwościa wybrania atrakcji itp.
       })
       .catch(() => {
         toast.error("Coś poszło nie tak!");

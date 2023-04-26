@@ -101,6 +101,7 @@ model Ticket_for_Attraction {
   id                String @id @default(auto()) @map("_id") @db.ObjectId
   attractionId      String @db.ObjectId
   userId            String @db.ObjectId
+  price             Int
   createdAt         DateTime @default(now())
   attraction        Attraction @relation(fields: [attractionId], references: [id], onDelete: Cascade)
   user              User @relation(fields: [userId], references: [id], onDelete: Cascade)

@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "../modals/Button";
 
-const AttractionBuyTicket = ({ paid, price }) => {
+const AttractionBuyTicket = ({ paid, price, onSubmit, disabled }) => {
   return (
     <div
       className="
@@ -20,7 +20,11 @@ const AttractionBuyTicket = ({ paid, price }) => {
               /osoba
             </div>
             <div className="w-full">
-              <Button label="Kup bilet" onClick={() => {}} />
+              <Button
+                disabled={disabled}
+                label="Kup bilet"
+                onClick={onSubmit}
+              />
             </div>
           </div>
         ) : (

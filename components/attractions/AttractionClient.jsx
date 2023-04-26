@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { attractionTypes } from "@/pages";
 import ListingHead from "../listings/ListingHead";
 import ListingInfo from "../listings/ListingInfo";
@@ -10,6 +10,7 @@ import useGalleryModal from "../../hooks/useGalleryModal";
 import { toast } from "react-hot-toast";
 
 const AttractionClient = ({ attraction, currentUser, refetchUser }) => {
+  const [isLoading, setIsLoading] = useState(false);
   // ----------------------- router
   const path = usePathname();
   const attractionId = path?.substring(13);
@@ -98,6 +99,35 @@ const AttractionClient = ({ attraction, currentUser, refetchUser }) => {
     );
   }, []);
 
+  // ----------------------- buy ticket function
+  const onBuyTicket = useCallback(async () => {
+    if (!currentUser) {
+      return router.push("/login");
+    }
+
+    if (!attraction?.paid) return toast.error("Atrakcja bezpłatna!");
+
+    setIsLoading(true);
+
+    axios
+      .post("/api/reservations/buyTicket", {
+        price: attraction?.price,
+        attractionId: attraction?.id,
+        currentUserId: currentUser.id,
+      })
+      .then(() => {
+        toast.success("Kupiono bilet!");
+        // w przyszłości zrobić przekierowanie na strone planera podróży
+        // z możliwościa wybrania atrakcji itp.
+      })
+      .catch(() => {
+        toast.error("Coś poszło nie tak!");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [currentUser, attraction]);
+
   return (
     <div className="max-w-[2520px] mx-auto xl:px-20 md:px-10 sm:px-2 px-4">
       <div className="max-w-screen-lg mx-auto">
@@ -129,6 +159,8 @@ const AttractionClient = ({ attraction, currentUser, refetchUser }) => {
               <AttractionBuyTicket
                 paid={attraction?.paid}
                 price={attraction?.price}
+                onSubmit={onBuyTicket}
+                disabled={isLoading}
               />
             </div>
           </div>

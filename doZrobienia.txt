@@ -13,12 +13,15 @@ w zależności od kategorii danego miejsca ✔️
 
 ✔️ Możliwość logowania / rejestracji poprzez Google ✔️
 
+✔️ Możliwość rezerwacji noclegu ✔️
+
+✔️ Możliwość kupienia biletów na atrackję, jeżeli płatna ✔️
 
 -----------------------   W trakcie realizacji    ------------------------------------
 
-Możliwość rezerwacji noclegu 
 
-Możliwość kupienia biletów na atrackję, jeżeli płatna
+
+
 
 Podstrona umożliwiająca zarządzanie rezerwacjami noclegów
 
