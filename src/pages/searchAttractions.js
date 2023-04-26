@@ -55,6 +55,12 @@ const SearchAttractions = ({ attractions }) => {
     }
   }, [sortingModal.newListings]);
 
+  // get listings for showing on map
+  const [listingForMap, setListingForMap] = useState("");
+  const getListingForMap = useCallback((id) => {
+    setListingForMap(id);
+  }, []);
+
   // wyszukujemy listingi , jeżeli nie ma to zwracamy loader
   if (
     attractions === undefined ||
@@ -135,6 +141,7 @@ border-b-2 border-gray-200 w-full justify-evenly"
                     currentUser={currentUser}
                     refetchUser={refetchUser}
                     page="Attractions"
+                    getListingForMap={getListingForMap}
                   />
                 ))
               : attractions?.map((item, index) => (
@@ -150,6 +157,7 @@ border-b-2 border-gray-200 w-full justify-evenly"
                     currentUser={currentUser}
                     refetchUser={refetchUser}
                     page="Attractions"
+                    getListingForMap={getListingForMap}
                   />
                 ))}
           </div>
@@ -162,6 +170,7 @@ border-b-2 border-gray-200 w-full justify-evenly"
             currentUser={currentUser}
             refetchUser={refetchUser}
             page="Attractions"
+            showMarkerForListing={listingForMap}
           />
         </section>
       </main>

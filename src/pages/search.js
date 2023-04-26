@@ -55,6 +55,12 @@ const Search = ({ listings }) => {
     }
   }, [sortingModal.newListings]);
 
+  // get listings for showing on map
+  const [listingForMap, setListingForMap] = useState("");
+  const getListingForMap = useCallback((id) => {
+    setListingForMap(id);
+  }, []);
+
   // wyszukujemy listingi , jeżeli nie ma to zwracamy loader
   if (
     listings === undefined ||
@@ -138,6 +144,7 @@ const Search = ({ listings }) => {
                     currentUser={currentUser}
                     refetchUser={refetchUser}
                     page="Listings"
+                    getListingForMap={getListingForMap}
                   />
                 ))
               : listings?.map((item, index) => (
@@ -153,6 +160,7 @@ const Search = ({ listings }) => {
                     currentUser={currentUser}
                     refetchUser={refetchUser}
                     page="Listings"
+                    getListingForMap={getListingForMap}
                   />
                 ))}
           </div>
@@ -165,6 +173,7 @@ const Search = ({ listings }) => {
             currentUser={currentUser}
             refetchUser={refetchUser}
             page="Listings"
+            showMarkerForListing={listingForMap}
           />
         </section>
       </main>

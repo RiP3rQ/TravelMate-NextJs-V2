@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Map, { Marker, Popup } from "react-map-gl";
 
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -15,6 +15,7 @@ const MyMap = ({
   currentUser,
   refetchUser,
   page,
+  showMarkerForListing,
 }) => {
   const [selectedLocation, setSelectedLocation] = useState({});
   const [clickedLocation, setClickedLocation] = useState({});
@@ -36,9 +37,17 @@ const MyMap = ({
       ...viewport,
       longitude: result.long,
       latitude: result.lat,
-      zoom: 11,
+      zoom: 15,
     });
   };
+
+  useEffect(() => {
+    if (showMarkerForListing) {
+      flyToMarker(
+        searchResults.find((result) => result.id === showMarkerForListing)
+      );
+    }
+  }, [showMarkerForListing]);
 
   return (
     <Map
@@ -105,6 +114,33 @@ const MyMap = ({
           ) : (
             false
           )}
+          {/* show popup for listing that user wants to see on map */}
+          {showMarkerForListing === result.id ? (
+            <Popup
+              onClose={() => setSelectedLocation({})} // close the popup when we click on the close button
+              longitude={result.long}
+              latitude={result.lat}
+              closeOnClick={false}
+              closeButton={true}
+              anchor="bottom"
+              offset={[-20, -35]}
+              style={{ maxWidth: "384px", position: "relative" }}
+            >
+              <div className="h-full w-full bg-white">
+                <MapInfoCard
+                  id={result.id}
+                  img={result.imageSrc}
+                  title={result.title}
+                  description={result.description}
+                  price={result.price}
+                  star={result.star}
+                  currentUser={currentUser}
+                  refetchUser={refetchUser}
+                  page={page}
+                />
+              </div>
+            </Popup>
+          ) : null}
         </div>
       ))}
 

@@ -19,13 +19,13 @@ w zależności od kategorii danego miejsca ✔️
 
 ✔️ Podstrona umożliwiająca zarządzanie rezerwacjami noclegów oraz biletami na płatne atrakcje ✔️
 
+✔️ Po najechaniu na nocleg pokaż na mapie ✔️
+
+✔️ Po najechaniu na atrakcje pokaż na mapie ✔️
+
 
 -----------------------   W trakcie realizacji    ------------------------------------
 
-
-Po najechaniu na nocleg pokaż na mapie
-
-Po najechaniu na atrakcje pokaż na mapie
 
 Google autocorrect location w pasku wyszukiwania
 

@@ -5,6 +5,7 @@ import { StarIcon } from "@heroicons/react/24/solid";
 import HeartButton from "./HeartButton";
 import { useRouter } from "next/navigation";
 import { attractionTypes, types } from "@/pages";
+import { BsFillPinMapFill } from "react-icons/bs";
 
 const InfoCard = ({
   img,
@@ -17,6 +18,7 @@ const InfoCard = ({
   currentUser,
   refetchUser,
   page,
+  getListingForMap,
 }) => {
   const router = useRouter();
 
@@ -41,6 +43,8 @@ const InfoCard = ({
       return types.find((item) => item.label === category);
     }
   }, [category, page]);
+
+  // ----------------------- render -----------------------
 
   return (
     <div
@@ -72,7 +76,19 @@ const InfoCard = ({
 
         <div className="border-b w-10 pt-2" />
 
-        <p className="pt-2 text-sm text-gray-500 flex-grow">{description}</p>
+        <div className="flex items-center justify-end mb-2">
+          <p className="pt-2 text-sm text-gray-500 flex-grow">{description}</p>
+          <button
+            className="flex items-center justify-center bg-green-400 border-2 border-green-400 text-white p-1 rounded-2xl cursor-pointer hover:bg-white hover:text-green-400 hover:border-gray-400 transition ease-in-out duration-300"
+            onClick={(e) => {
+              e.stopPropagation();
+              getListingForMap(id);
+            }}
+          >
+            <span className="text-xl ">Mapa|</span>
+            <BsFillPinMapFill size={20} />
+          </button>
+        </div>
 
         {/* ----------------------- kategoria listingu ----------------------- */}
         <hr />
@@ -99,7 +115,9 @@ const InfoCard = ({
           </p>
 
           <p className="text-lg font-semibold pb-2 lg:text-2xl">
-            {price ? price + " zł /osoba" : "Bezpłatna"}
+            {price
+              ? price + `${page === "Listings" ? " zł/noc" : " zł/osoba"}`
+              : "Bezpłatna"}
           </p>
         </div>
       </div>
