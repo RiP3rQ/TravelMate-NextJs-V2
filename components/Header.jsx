@@ -102,12 +102,7 @@ const Header = ({ placeholder, page }) => {
 
   // router for profile settings page
   const favoritePageHandle = () => {
-    router.push({
-      pathname: "/favorites",
-      query: {
-        currentUser: currentUser,
-      },
-    });
+    router.push("/favorites");
   };
 
   // router for reserved listings/attractions page

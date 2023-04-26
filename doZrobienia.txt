@@ -19,8 +19,8 @@ w zależności od kategorii danego miejsca ✔️
 
 ✔️ Podstrona umożliwiająca zarządzanie rezerwacjami noclegów oraz biletami na płatne atrakcje ✔️
 
------------------------   W trakcie realizacji    ------------------------------------
 
+-----------------------   W trakcie realizacji    ------------------------------------
 
 
 Po najechaniu na nocleg pokaż na mapie

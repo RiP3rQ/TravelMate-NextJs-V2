@@ -36,12 +36,12 @@ const Reservations = () => {
     user();
   }, []);
 
-  // check if user is logged in
-  useEffect(() => {
-    if (session === undefined || session === null) {
-      router.push("/login");
-    }
-  }, [session]);
+  // // check if user is logged in
+  // useEffect(() => {
+  //   if (session === undefined || session === null) {
+  //     router.push("/login");
+  //   }
+  // }, [session]);
 
   // ----------------------------- Fetching Reserations ----------------------------- //
 
@@ -82,8 +82,52 @@ const Reservations = () => {
     fetchBoughtTickets();
   }, [currentUser]);
 
-  console.log(reservations);
-  console.log(boughtTickets);
+  // ----------------------------- Cancel reservation/ticket ----------------------------- //
+  const [deletingId, setDeletingId] = useState("");
+
+  const cancelReservation = useCallback(
+    async (reservationId) => {
+      setDeletingId(reservationId);
+
+      await axios
+        .post(
+          `${process.env.NEXT_PUBLIC_URL}/api/reservations/deleteReservationOrTicket`,
+          {
+            reservationId: reservationId,
+            currentUserId: currentUser?.id,
+          }
+        )
+        .then(() => toast.success("Rezerwacja anulowana!"))
+        .catch(() => toast.error("Wystąpił błąd!"))
+        .finally(() => {
+          setDeletingId("");
+          fetchReservations();
+        });
+    },
+    [currentUser]
+  );
+
+  const cancelTicket = useCallback(
+    async (ticketId) => {
+      setDeletingId(ticketId);
+
+      await axios
+        .post(
+          `${process.env.NEXT_PUBLIC_URL}/api/reservations/deleteReservationOrTicket`,
+          {
+            ticketId: ticketId,
+            currentUserId: currentUser?.id,
+          }
+        )
+        .then(() => toast.success("Bilet anulowany!"))
+        .catch(() => toast.error("Wystąpił błąd!"))
+        .finally(() => {
+          setDeletingId("");
+          fetchBoughtTickets();
+        });
+    },
+    [currentUser]
+  );
 
   // ----------------------------- Render if null ----------------------------- //
   if (
@@ -122,14 +166,15 @@ const Reservations = () => {
             {reservations?.map((reservation) => (
               <ListingCard
                 currentUser={currentUser}
-                key={reservation.listing.id}
+                key={reservation.listing.id + reservation.id}
+                actionId={reservation.id}
                 data={reservation.listing}
                 refetchUser={refetchUser}
                 actionLabel="Anuluj rezerwację"
-                onAction={() => {
-                  toast.success("Rezerwacja anulowana!");
-                }}
+                onAction={cancelReservation}
                 page="Listings"
+                reservation={reservation}
+                disabled={!currentUser}
               />
             ))}
           </div>
@@ -152,14 +197,14 @@ const Reservations = () => {
             {boughtTickets?.map((ticket) => (
               <ListingCard
                 currentUser={currentUser}
-                key={ticket.attraction.id}
+                key={ticket.attraction.id + ticket.id}
+                actionId={ticket.id}
                 data={ticket.attraction}
                 refetchUser={refetchUser}
                 actionLabel="Zwróć bilet"
-                onAction={() => {
-                  toast.success("Bilet zwrócony!");
-                }}
+                onAction={cancelTicket}
                 page="Attractions"
+                disabled={!currentUser}
               />
             ))}
           </div>

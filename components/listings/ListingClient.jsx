@@ -70,6 +70,7 @@ const ListingClient = ({
       .then(() => {
         toast.success("Zarezerwowano nocleg!");
         setDateRange(initialDateRange);
+        router.refresh();
         // w przyszłości zrobić przekierowanie na strone planera podróży
         // z możliwościa wybrania atrakcji itp.
       })
