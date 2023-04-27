@@ -16,13 +16,25 @@ const MyMap = ({
   refetchUser,
   page,
   showMarkerForListing,
+  coordinatesLat,
+  coordinatesLng,
 }) => {
   const [selectedLocation, setSelectedLocation] = useState({});
   const [clickedLocation, setClickedLocation] = useState({});
 
-  const viewportLong = isListingMap ? long : 17.926126;
-  const viewportLat = isListingMap ? lat : 50.671062;
+  let viewportLong = isListingMap ? long : 17.926126;
+  let viewportLat = isListingMap ? lat : 50.671062;
   const viewportZoom = isListingMap ? 14 : 11;
+
+  useEffect(() => {
+    if (!coordinatesLat && !coordinatesLng) return;
+
+    setViewport({
+      ...viewport,
+      longitude: coordinatesLng,
+      latitude: coordinatesLat,
+    });
+  }, [coordinatesLat, coordinatesLng]);
 
   const [viewport, setViewport] = useState({
     width: "100%",

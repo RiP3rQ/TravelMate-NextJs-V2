@@ -11,6 +11,8 @@ import useSortingModal from "../../hooks/useSortingModal";
 const SearchAttractions = ({ attractions }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const location = useSearchParams().get("location");
+  const coordinatesLat = useSearchParams().get("coordinatesLat");
+  const coordinatesLng = useSearchParams().get("coordinatesLng");
   const [newAttractions, setNewAttractions] = useState([]);
 
   // sorting modal
@@ -71,7 +73,7 @@ const SearchAttractions = ({ attractions }) => {
   ) {
     return (
       <div className="overflow-x-hidden">
-        <Header placeholder={`${location} `} page="Attractions" />
+        <Header placeholder={`${location}`} page="Attractions" />
         <EmptyState showReset />
       </div>
     );
@@ -171,6 +173,8 @@ border-b-2 border-gray-200 w-full justify-evenly"
             refetchUser={refetchUser}
             page="Attractions"
             showMarkerForListing={listingForMap}
+            coordinatesLat={coordinatesLat}
+            coordinatesLng={coordinatesLng}
           />
         </section>
       </main>

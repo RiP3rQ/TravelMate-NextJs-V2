@@ -13,6 +13,11 @@ import { signOut } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import useRentModal from "../hooks/useRentModal";
 import axios from "axios";
+// google autocomplete
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng,
+} from "react-places-autocomplete";
 
 export const list = [
   {
@@ -33,7 +38,6 @@ export const list = [
 ];
 
 const Header = ({ placeholder, page }) => {
-  const [searchInput, setSearchInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [avatarDropdownIsOpen, setAvatarDropdownIsOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
@@ -71,12 +75,16 @@ const Header = ({ placeholder, page }) => {
 
   // router for search page
   const search = () => {
-    if (!searchInput) return;
+    if (!address || !coordinates) {
+      return;
+    }
     if (selectedOption === "Noclegi") {
       router.push({
         pathname: "/search",
         query: {
-          location: searchInput,
+          location: address,
+          coordinatesLat: coordinates.lat,
+          coordinatesLng: coordinates.lng,
         },
       });
     }
@@ -84,7 +92,9 @@ const Header = ({ placeholder, page }) => {
       router.push({
         pathname: "/searchAttractions",
         query: {
-          location: searchInput,
+          location: address,
+          coordinatesLat: coordinates.lat,
+          coordinatesLng: coordinates.lng,
         },
       });
     }
@@ -127,6 +137,30 @@ const Header = ({ placeholder, page }) => {
     // open rent modal
     rentModal.onOpen();
   }, [currentUser, rentModal]);
+
+  // google autocomplete
+  const [address, setAddress] = useState("");
+  const [coordinates, setCoordinates] = useState({
+    lat: null,
+    lng: null,
+  });
+
+  const handleChange = (address) => {
+    setAddress(address);
+  };
+
+  const handleSelect = (address) => {
+    setAddress(address);
+    geocodeByAddress(address)
+      .then((results) => getLatLng(results[0]))
+      .then((latLng) =>
+        setCoordinates({
+          lat: latLng.lat,
+          lng: latLng.lng,
+        })
+      )
+      .catch((error) => console.error("Error", error));
+  };
 
   return (
     <header className="sticky top-0 z-30 bg-white shadow-md md:p-5 md:px-10 grid lg:grid-cols-12 md:grid-cols-5 sm:grid-cols-4">
@@ -182,15 +216,45 @@ const Header = ({ placeholder, page }) => {
         </div>
       </div>
       {/* Search bar */}
-      <div className="flex items-center border-2 rounded-2xl py-2 md:shadow-md md:col-span-2 lg:col-span-4 sm:col-span-1">
-        <input
-          className="pl-5 bg-transparent outline-none flex-grow 
-          text-sm text-gray-600 placeholder-gray-400"
-          type="text"
-          placeholder={placeholder || "Wyszukaj miejsca"}
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-        />
+      <div className="flex items-center border-2 rounded-2xl py-2 md:shadow-md md:col-span-2 lg:col-span-4 sm:col-span-1 relative">
+        <PlacesAutocomplete
+          value={address}
+          onChange={handleChange}
+          onSelect={handleSelect}
+        >
+          {({
+            getInputProps,
+            suggestions,
+            getSuggestionItemProps,
+            loading,
+          }) => (
+            <div className="flex-1 ml-2">
+              <input
+                {...getInputProps({
+                  placeholder: `${
+                    placeholder ? placeholder : "Wyszukaj miejsce"
+                  }`,
+                  className: "location-search-input",
+                })}
+                className=" w-full py-1 outline-none focus:outline-none relative"
+              />
+              {loading || suggestions.length > 0 ? (
+                <div className="autocomplete-dropdown-container absolute top-12 left-0 w-full border border-gray-400 rounded-xl">
+                  {loading && <div className="text-center">Ładowanie...</div>}
+                  {suggestions.map((suggestion) => (
+                    <div
+                      {...getSuggestionItemProps(suggestion)}
+                      key={suggestion.placeId}
+                      className="bg-white hover:bg-gray-400 cursor-pointer"
+                    >
+                      <span className=" px-2">{suggestion.description}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          )}
+        </PlacesAutocomplete>
         <MagnifyingGlassIcon
           className="hidden h-8 bg-[#3F9337] text-white rounded-full 
         p-2 cursor-pointer md:inline-flex md:mx-2"

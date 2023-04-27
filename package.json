@@ -30,6 +30,7 @@
     "react-hot-toast": "^2.4.0",
     "react-icons": "^4.8.0",
     "react-map-gl": "^7.0.21",
+    "react-places-autocomplete": "^7.3.0",
     "tailwind-scrollbar": "^3.0.0",
     "yup": "^1.0.2",
     "zustand": "^4.3.7"
