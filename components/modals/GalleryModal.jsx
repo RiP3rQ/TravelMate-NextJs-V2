@@ -17,15 +17,23 @@ const GalleryModal = () => {
   }, [images]);
 
   let bodyContent = (
-    <div className="w-full h-full">
-      <div className="max-w-[950px] h-[620px] relative mx-auto mb-4">
+    <div className="w-full h-auto ">
+      <div className="max-w-[250px] h-[180px] md:max-w-[450px] md:h-[300px] xl:max-w-[950px] xl:h-[500px] relative mx-auto mb-4">
         {mainImage !== undefined && (
-          <Image src={mainImage} alt="Main Photo" fill />
+          <>
+            <Image src={mainImage} alt="Main Photo" fill />
+            <div
+              className="absolute -bottom-2 -right-3 px-2 bg-red-400 text-white rounded-full cursor-pointer hover:text-red-400 hover:bg-white"
+              onClick={galleryModal.onClose}
+            >
+              X
+            </div>
+          </>
         )}
       </div>
       <hr />
       <div
-        className="w-full h-32 overflow-x-auto flex space-x-3 overflow-y-hidden mt-2 justify-center
+        className="w-full h-32 overflow-x-auto flex space-x-3 overflow-y-hidden mt-2 xl:justify-center
       scrollbar scrollbar-thumb-[#3F9337] scrollbar-track-red-100 
       scrollbar-thumb-rounded-xl scrollbar-track-rounded-xl
       "
@@ -37,7 +45,7 @@ const GalleryModal = () => {
               key={index}
             >
               <div
-                className="w-40 h-full relative "
+                className="w-40 h-full "
                 onClick={() => {
                   setMainImage(image);
                 }}
