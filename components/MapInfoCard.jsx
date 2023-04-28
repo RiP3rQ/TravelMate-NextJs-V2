@@ -31,7 +31,7 @@ const MapInfoCard = ({
     <div className="py-2 px-2 relative grid grid-cols-7 bg-slate-200 rounded-xl">
       {/* LEFT */}
       <div className="flex flex-col col-span-5 relative p-1 w-60">
-        <div className="absolute top-0 right-0">
+        <div className="absolute top-0 -right-2">
           <HeartButton
             listingId={id}
             currentUser={currentUser}
@@ -40,7 +40,7 @@ const MapInfoCard = ({
           />
         </div>
 
-        <div className="flex">
+        <div className="flex pr-4">
           <h4 className="text-base text-gray-900 font-bold flex-grow">
             {title}
           </h4>

@@ -86,9 +86,13 @@ const AttractionClient = ({ attraction, currentUser, refetchUser }) => {
               </p>
             ))}
           </div>
-          <div className="absolute -top-2 -right-2 bg-gray-400 text-green-200 px-2 rounded-lg hover:text-white hover:bg-red-400">
-            <button onClick={() => toast.dismiss()}>X</button>
-          </div>
+
+          <button
+            onClick={() => toast.dismiss()}
+            className="absolute -top-2 -right-2 bg-gray-400 text-green-200 px-2 rounded-lg hover:text-white hover:bg-red-400"
+          >
+            X
+          </button>
         </div>
       ),
       {
