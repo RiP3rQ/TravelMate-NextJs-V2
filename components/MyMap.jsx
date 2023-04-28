@@ -18,6 +18,7 @@ const MyMap = ({
   showMarkerForListing,
   coordinatesLat,
   coordinatesLng,
+  clearListingForMap,
 }) => {
   const [selectedLocation, setSelectedLocation] = useState({});
   const [clickedLocation, setClickedLocation] = useState({});
@@ -129,7 +130,10 @@ const MyMap = ({
           {/* show popup for listing that user wants to see on map */}
           {showMarkerForListing === result.id ? (
             <Popup
-              onClose={() => setSelectedLocation({})} // close the popup when we click on the close button
+              onClose={() => {
+                setSelectedLocation({});
+                clearListingForMap();
+              }} // close the popup when we click on the close button and clear listing for map
               longitude={result.long}
               latitude={result.lat}
               closeOnClick={false}

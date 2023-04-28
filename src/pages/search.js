@@ -62,6 +62,9 @@ const Search = ({ listings }) => {
   const getListingForMap = useCallback((id) => {
     setListingForMap(id);
   }, []);
+  const clearListingForMap = useCallback(() => {
+    setListingForMap("");
+  }, []);
 
   // wyszukujemy listingi , jeżeli nie ma to zwracamy loader
   if (
@@ -178,6 +181,7 @@ const Search = ({ listings }) => {
             showMarkerForListing={listingForMap}
             coordinatesLat={coordinatesLat}
             coordinatesLng={coordinatesLng}
+            clearListingForMap={clearListingForMap}
           />
         </section>
       </main>
