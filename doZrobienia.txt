@@ -23,13 +23,23 @@ w zależności od kategorii danego miejsca ✔️
 
 ✔️ Po najechaniu na atrakcje pokaż na mapie ✔️
 
+✔️ Google autocorrect location w pasku wyszukiwania ✔️
+
+✔️ Pobieranie danych lokalizacji z autokorekty i środkowanie mapy na tych koordach ✔️
+
+✔️ Pobieranie propozycji z bazy danych w pasku wyszukiwania  ✔️
+
+
+
+
+
+
 
 -----------------------   W trakcie realizacji    ------------------------------------
 
 
-Google autocorrect location w pasku wyszukiwania
 
-Pobieranie danych lokalizacji z autokorekty i środkowanie mapy na tych koordach
+
 
 
 

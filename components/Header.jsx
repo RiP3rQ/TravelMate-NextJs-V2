@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   MagnifyingGlassIcon,
   UserCircleIcon,
@@ -75,14 +75,14 @@ const Header = ({ placeholder, page }) => {
 
   // router for search page
   const search = () => {
-    if (!address || !coordinates) {
+    if (!selectedAddress || !coordinates) {
       return;
     }
     if (selectedOption === "Noclegi") {
       router.push({
         pathname: "/search",
         query: {
-          location: address,
+          location: selectedAddress,
           coordinatesLat: coordinates.lat,
           coordinatesLng: coordinates.lng,
         },
@@ -92,7 +92,7 @@ const Header = ({ placeholder, page }) => {
       router.push({
         pathname: "/searchAttractions",
         query: {
-          location: address,
+          location: selectedAddress,
           coordinatesLat: coordinates.lat,
           coordinatesLng: coordinates.lng,
         },
@@ -140,18 +140,45 @@ const Header = ({ placeholder, page }) => {
 
   // google autocomplete
   const [address, setAddress] = useState("");
+  const [selectedAddress, setSelectedAddress] = useState(null);
   const [coordinates, setCoordinates] = useState({
     lat: null,
     lng: null,
   });
+  // Timeout ID holder for debounce of input change
+  const [timeoutId, setTimeoutId] = useState(null);
+  // database suggestions
+  const [databaseSuggestions, setDatabaseSuggestions] = useState([]);
 
+  // wybieranie opcji z listy - GOOGLE AUTOCOMPLETE
   const handleChange = (address) => {
     setAddress(address);
+    setSelectedAddress(null);
+    setCoordinates({
+      lat: null,
+      lng: null,
+    });
+    setDatabaseSuggestions([]);
+
+    // ----------------------------------------------------- get Data from database (debounce input change)
+    // If there's a timeout already, clear it
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+
+    // Set a new timeout to execute the function after 500ms
+    setTimeoutId(
+      setTimeout(() => {
+        askForData();
+      }, 450)
+    );
   };
 
-  const handleSelect = (address) => {
-    setAddress(address);
-    geocodeByAddress(address)
+  // wybieranie opcji z listy - GOOGLE AUTOCOMPLETE
+  const handleSelect = (selectedAddress) => {
+    setAddress(selectedAddress);
+    setSelectedAddress(selectedAddress);
+    geocodeByAddress(selectedAddress)
       .then((results) => getLatLng(results[0]))
       .then((latLng) =>
         setCoordinates({
@@ -161,6 +188,36 @@ const Header = ({ placeholder, page }) => {
       )
       .catch((error) => console.error("Error", error));
   };
+
+  // zapytanie do bazy danych po wybraniu opcji z listy
+  const askForData = useCallback(() => {
+    if (!address || !coordinates) {
+      return;
+    }
+
+    axios
+      .post(`${process.env.NEXT_PUBLIC_URL}/api/searchInput`, {
+        name: address,
+        page: selectedOption,
+      })
+      .then((res) => {
+        console.log(res.data);
+        setDatabaseSuggestions(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [address, coordinates]);
+
+  // wyzeruj timout jeżeli zostanie wybrana opcja z listy
+  useEffect(() => {
+    // Clear the timeout on unmount
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [timeoutId]);
 
   return (
     <header className="sticky top-0 z-30 bg-white shadow-md md:p-5 md:px-10 grid lg:grid-cols-12 md:grid-cols-5 sm:grid-cols-4">
@@ -221,6 +278,7 @@ const Header = ({ placeholder, page }) => {
           value={address}
           onChange={handleChange}
           onSelect={handleSelect}
+          debounce={500}
         >
           {({
             getInputProps,
@@ -239,15 +297,46 @@ const Header = ({ placeholder, page }) => {
                 className=" w-full py-1 outline-none focus:outline-none relative"
               />
               {loading || suggestions.length > 0 ? (
-                <div className="autocomplete-dropdown-container absolute top-12 left-0 w-full border border-gray-400 rounded-xl">
+                <div className=" absolute top-12 left-0 w-full border border-gray-400 rounded-lg bg-white">
                   {loading && <div className="text-center">Ładowanie...</div>}
+                  {suggestions.length > 0 && (
+                    <>
+                      <div className="text-center">Propozycje miejsc:</div>
+                      <hr className="border-gray-400" />
+                    </>
+                  )}
                   {suggestions.map((suggestion) => (
                     <div
                       {...getSuggestionItemProps(suggestion)}
                       key={suggestion.placeId}
-                      className="bg-white hover:bg-gray-400 cursor-pointer"
+                      className="bg-white hover:bg-gray-400 cursor-pointer rounded-lg"
                     >
                       <span className=" px-2">{suggestion.description}</span>
+                    </div>
+                  ))}
+                  {databaseSuggestions.length > 0 && (
+                    <>
+                      <hr className="border-gray-400" />
+                      <div className="text-center">
+                        Propozycje z bazy danych:
+                      </div>
+                      <hr className="border-gray-400" />
+                    </>
+                  )}
+                  {databaseSuggestions.map((suggestion) => (
+                    <div
+                      {...getSuggestionItemProps(suggestion)}
+                      key={suggestion.id}
+                      className="bg-white hover:bg-gray-400 cursor-pointer rounded-lg"
+                      onClick={() => {
+                        if (selectedOption === "Noclegi") {
+                          router.push(`/listings/${suggestion.id}`);
+                        } else if (selectedOption === "Atrakcje") {
+                          router.push(`/attractions/${suggestion.id}`);
+                        }
+                      }}
+                    >
+                      <span className=" px-2">{suggestion.title}</span>
                     </div>
                   ))}
                 </div>
