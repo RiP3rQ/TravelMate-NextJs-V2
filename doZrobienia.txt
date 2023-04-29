@@ -1,33 +1,6 @@
---------------------------------✔️  GOTOWE  ✔️----------------------------------- (Sprint 4)
+--------------------------------✔️  GOTOWE  ✔️----------------------------------- (Sprint 5)
 
-✔️ Możliwość dodawania nowych noclegów  ✔️
-
-✔️ Możliwość dodawania nowych atrakcji  ✔️
-
-✔️ Obliczanie średniej oceny do atrakcji ✔️
-
-✔️ Obliczanie średniej oceny do noclegu ✔️
-
-✔️ Powiadomienia informujące użytkownika o przydatnych przedmiotach, które warto zabrać na daną atrakcję 
-w zależności od kategorii danego miejsca ✔️
-
-✔️ Możliwość logowania / rejestracji poprzez Google ✔️
-
-✔️ Możliwość rezerwacji noclegu ✔️
-
-✔️ Możliwość kupienia biletów na atrackję, jeżeli płatna ✔️
-
-✔️ Podstrona umożliwiająca zarządzanie rezerwacjami noclegów oraz biletami na płatne atrakcje ✔️
-
-✔️ Po najechaniu na nocleg pokaż na mapie ✔️
-
-✔️ Po najechaniu na atrakcje pokaż na mapie ✔️
-
-✔️ Google autocorrect location w pasku wyszukiwania ✔️
-
-✔️ Pobieranie danych lokalizacji z autokorekty i środkowanie mapy na tych koordach ✔️
-
-✔️ Pobieranie propozycji z bazy danych w pasku wyszukiwania  ✔️
+✔️ Pobieranie szlaków z bazy danych ✔️
 
 
 
@@ -37,18 +10,20 @@ w zależności od kategorii danego miejsca ✔️
 
 -----------------------   W trakcie realizacji    ------------------------------------
 
+Możliwość dodawania szlaków turystycznych do ulubionych
 
+Możliwość dodawania własnych szlaków
 
+Możliwość wystawania recenzji szlaków
 
+Galeria zdjęć szlaków
 
+Wyszukiwanie szlaków po kategoriach
 
+Podstrona umożliwiająca zarządzanie polubionymi szlakami
 
+Podstrona z planerem podróży, w którym można zaplanować jakie przedmioty zabrać w daną podróż
 
-----------------------------------------------------------------------------------
-                            Zaplanowane:
-----------------------------------------------------------------------------------
+Pokazywanie pogody w danym miejscu
 
-
-
-
-
+Zaimplementowanie mapy dojazdu do noclegu lub atrakcji

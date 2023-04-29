@@ -68,6 +68,9 @@ const Header = ({ placeholder, page }) => {
     if (page === "Listings") {
       setSelectedOption(list[0].label);
     }
+    if (page === "Trails") {
+      setSelectedOption(list[2].label);
+    }
   }, [page]);
 
   // router
@@ -91,6 +94,16 @@ const Header = ({ placeholder, page }) => {
     if (selectedOption === "Atrakcje") {
       router.push({
         pathname: "/searchAttractions",
+        query: {
+          location: selectedAddress,
+          coordinatesLat: coordinates.lat,
+          coordinatesLng: coordinates.lng,
+        },
+      });
+    }
+    if (selectedOption === "Szlaki") {
+      router.push({
+        pathname: "/searchTrails",
         query: {
           location: selectedAddress,
           coordinatesLat: coordinates.lat,

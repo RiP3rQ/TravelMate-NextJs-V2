@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Map, { Marker, Popup } from "react-map-gl";
+import Map, { Marker, Popup, Layer, Source } from "react-map-gl";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 import MapInfoCard from "./MapInfoCard";
@@ -19,6 +19,7 @@ const MyMap = ({
   coordinatesLat,
   coordinatesLng,
   clearListingForMap,
+  trailsResults,
 }) => {
   const [selectedLocation, setSelectedLocation] = useState({});
   const [clickedLocation, setClickedLocation] = useState({});
@@ -65,7 +66,11 @@ const MyMap = ({
   return (
     <Map
       {...viewport}
-      mapStyle="mapbox://styles/rip3rq/clfk003pa000q01qzsp20ktft"
+      mapStyle={
+        page === "Trails"
+          ? "mapbox://styles/rip3rq/clh1zfzrl00lu01quf8z15ffl"
+          : "mapbox://styles/rip3rq/clfk003pa000q01qzsp20ktft"
+      }
       mapboxAccessToken="pk.eyJ1IjoicmlwM3JxIiwiYSI6ImNsZmsxOXFkZjA2ZWo0NG10ZWQzMjJ3ZTEifQ.jigvVhdTvtnv675Fyi4OMA"
       onMove={(e) => setViewport(e.viewport)}
       onClick={(e) => {
@@ -160,6 +165,141 @@ const MyMap = ({
         </div>
       ))}
 
+      {/* ----------------------------------------------------------------------------------------------------------------------------------------- */}
+
+      {/* display trails if page is trails */}
+      {trailsResults?.map((result) => (
+        <div key={result.id}>
+          {/* Marker at the start and end of the trail */}
+          <Marker
+            longitude={result.locations[0].long}
+            latitude={result.locations[0].lat}
+            offset={[0, -5]}
+          >
+            <p
+              className="cursor-pointer text-sm "
+              aria-label="push-pin"
+              role="img"
+              onClick={() => {
+                setSelectedLocation(result.locations[0]);
+                flyToMarker(result.locations[0]);
+              }}
+            >
+              📌
+            </p>
+          </Marker>
+          <Marker
+            longitude={result.locations[result.locations.length - 1].long}
+            latitude={result.locations[result.locations.length - 1].lat}
+            offset={[0, -10]}
+          >
+            <p
+              className="cursor-pointer text-sm "
+              aria-label="push-pin"
+              role="img"
+              onClick={() => {
+                setSelectedLocation(
+                  result.locations[result.locations.length - 1]
+                );
+                flyToMarker(result.locations[result.locations.length - 1]);
+              }}
+            >
+              🎯
+            </p>
+          </Marker>
+          {/* Drowing a trail from 1 to last marker */}
+          <Source
+            id={result.id}
+            type="geojson"
+            data={{
+              type: "Feature",
+              properties: {},
+              geometry: {
+                type: "LineString",
+                coordinates: result.locations.map((location) => [
+                  location.long,
+                  location.lat,
+                ]),
+              },
+            }}
+          >
+            <Layer
+              id={result.id + "-trail"}
+              source={result.id}
+              type="line"
+              paint={{
+                "line-color": "#888",
+                "line-width": 4,
+              }}
+              layout={{
+                "line-join": "round",
+                "line-cap": "round",
+              }}
+            />
+          </Source>
+          the popup that should show if we click on a Marker
+          {selectedLocation.long == result.locations[0].long ? (
+            <Popup
+              onClose={() => setSelectedLocation({})} // close the popup when we click on the close button
+              longitude={result.locations[0].long}
+              latitude={result.locations[0].lat}
+              closeOnClick={false}
+              closeButton={true}
+              anchor="bottom"
+              offset={[0, -55]}
+              style={{ maxWidth: "384px", position: "relative" }}
+            >
+              <div className="h-full w-full bg-white">
+                <MapInfoCard
+                  id={result.id}
+                  img={result.imageSrc}
+                  title={result.title}
+                  description={result.description}
+                  price={result.price}
+                  star={result.star}
+                  currentUser={currentUser}
+                  refetchUser={refetchUser}
+                  page={page}
+                />
+              </div>
+            </Popup>
+          ) : (
+            false
+          )}
+          {selectedLocation.long ==
+          result.locations[result.locations.length - 1].long ? (
+            <Popup
+              onClose={() => setSelectedLocation({})} // close the popup when we click on the close button
+              longitude={result.locations[result.locations.length - 1].long}
+              latitude={result.locations[result.locations.length - 1].lat}
+              closeOnClick={false}
+              closeButton={true}
+              anchor="bottom"
+              offset={[0, -55]}
+              style={{ maxWidth: "384px", position: "relative" }}
+            >
+              <div className="h-full w-full bg-white">
+                <MapInfoCard
+                  id={result.id}
+                  img={result.imageSrc}
+                  title={result.title}
+                  description={result.description}
+                  price={result.price}
+                  star={result.star}
+                  currentUser={currentUser}
+                  refetchUser={refetchUser}
+                  page={page}
+                />
+              </div>
+            </Popup>
+          ) : (
+            false
+          )}
+        </div>
+      ))}
+
+      {/* ----------------------------------------------------------------------------------------------------------------------------------------- */}
+
       {/* display marker on click if rentModal is open */}
       {rentModal && clickedLocation.lat ? (
         <Marker
@@ -170,6 +310,8 @@ const MyMap = ({
           <RiMapPinFill size={40} color="red" />
         </Marker>
       ) : null}
+
+      {/* ----------------------------------------------------------------------------------------------------------------------------------------- */}
 
       {/* display marker on listing page */}
       {isListingMap && lat && long ? (

@@ -1,19 +1,19 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Header from "../../components/Header";
 import EmptyState from "../../components/EmptyState";
-import getAttractions from "../../actions/getAttractions";
+import getTrails from "../../actions/getTrails";
 import MyMap from "../../components/MyMap";
 import InfoCard from "../../components/InfoCard";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import useSortingModal from "../../hooks/useSortingModal";
 
-const SearchAttractions = ({ attractions }) => {
+const SearchTrails = ({ trails }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const location = useSearchParams().get("location");
   const coordinatesLat = useSearchParams().get("coordinatesLat");
   const coordinatesLng = useSearchParams().get("coordinatesLng");
-  const [newAttractions, setNewAttractions] = useState([]);
+  const [newTrails, setNewTrails] = useState([]);
 
   // sorting modal
   const sortingModal = useSortingModal();
@@ -38,45 +38,17 @@ const SearchAttractions = ({ attractions }) => {
     user();
   }, []);
 
-  // handle soritng
-  const handleSort = useCallback(
-    (sortingCategory) => {
-      sortingModal.setPage("Attractions");
-      sortingModal.setCategory(sortingCategory);
-      sortingModal.onOpen(sortingCategory);
-    },
-    [sortingModal]
-  );
-
-  // change listings after sorting
-  useEffect(() => {
-    if (sortingModal.newListings !== [] || undefined || null || 0) {
-      setNewAttractions(sortingModal.newListings);
-      console.log(sortingModal);
-      console.log(newAttractions);
-    }
-  }, [sortingModal.newListings]);
-
-  // get listings for showing on map
-  const [listingForMap, setListingForMap] = useState("");
-  const getListingForMap = useCallback((id) => {
-    setListingForMap(id);
-  }, []);
-  const clearListingForMap = useCallback(() => {
-    setListingForMap("");
-  }, []);
-
-  // wyszukujemy listingi , jeżeli nie ma to zwracamy loader
+  // wyszukujemy trails , jeżeli nie ma to zwracamy loader
   if (
-    attractions === undefined ||
-    attractions === null ||
-    (attractions.length === 0 && newAttractions.length === 0) ||
-    newAttractions === undefined ||
-    newAttractions === null
+    trails === undefined ||
+    trails === null ||
+    (trails.length === 0 && newTrails.length === 0) ||
+    newTrails === undefined ||
+    newTrails === null
   ) {
     return (
       <div className="overflow-x-hidden">
-        <Header placeholder={`${location}`} page="Attractions" />
+        <Header placeholder={`${location}`} page="Trails" />
         <EmptyState showReset />
       </div>
     );
@@ -84,16 +56,16 @@ const SearchAttractions = ({ attractions }) => {
 
   return (
     <div className="overflow-x-hidden">
-      <Header placeholder={`${location} `} page="Attractions" />
+      <Header placeholder={`${location} `} page="Trails" />
 
       <main className="flex">
         <section className="flex-grow pt-4 px-6 h-screen">
           <p className="text-xs text-gray-400">
             {" "}
-            {attractions.length} atrakcji{" "}
+            {trails.length} tras turystycznych{" "}
           </p>
           <h1 className="text-3xl font-semibold mb-6">
-            Atrakcje w miejscowości: {location.toUpperCase()}
+            Trasy turystyczne w miejscowości: {location.toUpperCase()}
           </h1>
 
           <hr />
@@ -103,9 +75,6 @@ const SearchAttractions = ({ attractions }) => {
             border-b-2 border-gray-200 w-full justify-evenly"
           >
             <p className="font-bold text-3xl text-gray-400">Filtry:</p>
-            <span className="button_search" onClick={() => handleSort("Cena")}>
-              Cena
-            </span>
             <span
               className="button_search"
               onClick={() => handleSort("Opinie")}
@@ -132,8 +101,8 @@ const SearchAttractions = ({ attractions }) => {
             scrollbar-thumb-rounded-xl scrollbar-track-rounded-xl
           "
           >
-            {newAttractions.length > 0
-              ? newAttractions?.map((item, index) => (
+            {newTrails.length > 0
+              ? newTrails?.map((item, index) => (
                   <InfoCard
                     key={index}
                     id={item.id}
@@ -146,10 +115,9 @@ const SearchAttractions = ({ attractions }) => {
                     currentUser={currentUser}
                     refetchUser={refetchUser}
                     page="Attractions"
-                    getListingForMap={getListingForMap}
                   />
                 ))
-              : attractions?.map((item, index) => (
+              : trails?.map((item, index) => (
                   <InfoCard
                     key={index}
                     id={item.id}
@@ -162,7 +130,6 @@ const SearchAttractions = ({ attractions }) => {
                     currentUser={currentUser}
                     refetchUser={refetchUser}
                     page="Attractions"
-                    getListingForMap={getListingForMap}
                   />
                 ))}
           </div>
@@ -171,14 +138,12 @@ const SearchAttractions = ({ attractions }) => {
         {/* MAP SECTION  */}
         <section className="hidden lg:inline-flex lg:min-w-[600px] 2xl:min-w-[800px] lg:h-screen">
           <MyMap
-            searchResults={attractions}
+            trailsResults={trails}
             currentUser={currentUser}
             refetchUser={refetchUser}
-            page="Attractions"
-            showMarkerForListing={listingForMap}
+            page="Trails"
             coordinatesLat={coordinatesLat}
             coordinatesLng={coordinatesLng}
-            clearListingForMap={clearListingForMap}
           />
         </section>
       </main>
@@ -186,14 +151,14 @@ const SearchAttractions = ({ attractions }) => {
   );
 };
 
-export default SearchAttractions;
+export default SearchTrails;
 
 export async function getServerSideProps(context) {
-  const attractions = await getAttractions();
+  const trails = await getTrails();
 
   return {
     props: {
-      attractions,
+      trails,
     }, // will be passed to the page component as props
   };
 }

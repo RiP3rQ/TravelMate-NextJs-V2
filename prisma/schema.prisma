@@ -28,6 +28,8 @@ model User {
   tickets         Ticket_for_Attraction[]
   listing_reviews         Listing_Review[]
   attraction_reviews      Attraction_Review[]
+  trails          Trail[]
+  trail_reviews   Trail_Review[]
 }
 
 model Account {
@@ -130,5 +132,40 @@ model Attraction_Review {
   star              String
   imageSrc          String?
   attraction        Attraction @relation(fields: [attractionId], references: [id], onDelete: Cascade)
+  user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Trail {
+  id                String @id @default(auto()) @map("_id") @db.ObjectId
+  title             String
+  description       String
+  imageSrc          String
+  createdAt         DateTime @default(now())
+  category          String
+  star              String
+  locations         Location[]
+  userId            String @db.ObjectId
+  user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trail_reviews     Trail_Review[]
+}
+
+model Location{
+  id                String @id @default(auto()) @map("_id") @db.ObjectId
+  trailId           String @db.ObjectId
+  lat               String
+  long              String
+  trail             Trail @relation(fields: [trailId], references: [id], onDelete: Cascade)
+}
+
+model Trail_Review {
+  id                String @id @default(auto()) @map("_id") @db.ObjectId
+  trailId           String @db.ObjectId
+  userId            String @db.ObjectId
+  createdAt         DateTime @default(now())
+  title             String
+  description       String
+  star              String
+  imageSrc          String?
+  trail             Trail @relation(fields: [trailId], references: [id], onDelete: Cascade)
   user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
