@@ -6,7 +6,16 @@ import LargeCard from "../../components/LargeCard";
 import MediumCard from "../../components/MediumCard";
 import SmallCard from "../../components/SmallCard";
 
-import { FaLeaf, FaMonument, FaWater, FaSkiing, FaMusic } from "react-icons/fa";
+import {
+  FaLeaf,
+  FaMonument,
+  FaWater,
+  FaSkiing,
+  FaMusic,
+  FaCross,
+  FaMountain,
+  FaTheaterMasks,
+} from "react-icons/fa";
 import {
   GiCastle,
   GiForestCamp,
@@ -21,8 +30,12 @@ import {
   MdFamilyRestroom,
   MdSportsKabaddi,
   MdSportsVolleyball,
+  MdOutlineFastfood,
+  MdDirectionsBike,
 } from "react-icons/md";
 import { AiOutlineBook, AiOutlineShoppingCart } from "react-icons/ai";
+import { BiPaint, BiWalk, BiWater } from "react-icons/bi";
+import { GrView } from "react-icons/gr";
 
 export const types = [
   {
@@ -199,6 +212,60 @@ export const attractionTypes = [
       "Mapa lub przewodnik turystyczny",
       "Zapasowe baterie do urządzeń elektronicznych",
     ],
+  },
+];
+
+export const TrailTypes = [
+  {
+    label: "Szlak widokowy",
+    icon: GrView,
+    description: "Trasa zapewniająca wspaniałe widoki.",
+  },
+  {
+    label: "Szlak kulturowy",
+    icon: FaTheaterMasks,
+    description:
+      "Trasa prowadząca przez miejsca o znaczeniu historycznym i kulturowym.",
+  },
+  {
+    label: "Szlak wodny",
+    icon: BiWater,
+    description: "Trasa prowadząca wzdłuż rzek lub jezior.",
+  },
+  {
+    label: "Szlak pieszy",
+    icon: BiWalk,
+    description: "Trasa piesza prowadząca przez tereny miejskie lub parki.",
+  },
+  {
+    label: "Szlak rowerowy",
+    icon: MdDirectionsBike,
+    description: "Trasa rowerowa!",
+  },
+  {
+    label: "Szlak gastronomiczny",
+    icon: MdOutlineFastfood,
+    description: "Trasa umożliwiająca degustację lokalnych przysmaków.",
+  },
+  {
+    label: "Szlak artystyczny",
+    icon: BiPaint,
+    description: "Trasa prowadząca przez galerie sztuki, muzea, teatry itp.",
+  },
+  {
+    label: "Szlak górski",
+    icon: FaMountain,
+    description: "Trasa prowadząca przez tereny górskie.",
+  },
+  {
+    label: "Szlak historyczny",
+    icon: GiCastle,
+    description: "Trasa prowadząca przez miejsca o znaczeniu historycznym.",
+  },
+  {
+    label: "Szlak religijny",
+    icon: FaCross,
+    description: "Trasa prowadząca przez miejsca kultu religijnego.",
   },
 ];
 

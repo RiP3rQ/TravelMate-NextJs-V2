@@ -12,13 +12,13 @@
 
 ✔️ Galeria zdjęć szlaków ✔️
 
+✔️ Poprawić kategorie wyświetlane ✔️
+
+✔️ skok do początku trasy naprawić ✔️
+
 -----------------------   W trakcie realizacji    ------------------------------------
 
 Możliwość dodawania własnych szlaków
-
-Możliwość wystawania recenzji szlaków
-
-Galeria zdjęć szlaków
 
 Wyszukiwanie szlaków po kategoriach
 
@@ -28,6 +28,3 @@ Podstrona z planerem podróży, w którym można zaplanować jakie przedmioty za
 
 Pokazywanie pogody w danym miejscu
 
-Poprawić kategorie wyświetlane
-
-skok do początku trasy naprawić

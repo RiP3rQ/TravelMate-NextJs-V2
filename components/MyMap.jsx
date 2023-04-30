@@ -21,6 +21,7 @@ const MyMap = ({
   clearListingForMap,
   trailsResults,
   singleTrail,
+  showMarkerForTrail,
 }) => {
   const [selectedLocation, setSelectedLocation] = useState({});
   const [clickedLocation, setClickedLocation] = useState({});
@@ -69,6 +70,15 @@ const MyMap = ({
       );
     }
   }, [showMarkerForListing]);
+
+  useEffect(() => {
+    if (showMarkerForTrail) {
+      flyToMarker(
+        trailsResults.find((result) => result.id === showMarkerForTrail)
+          .locations[0]
+      );
+    }
+  }, [showMarkerForTrail]);
 
   return (
     <Map
@@ -302,6 +312,35 @@ const MyMap = ({
           ) : (
             false
           )}
+          {showMarkerForTrail === result.id ? (
+            <Popup
+              onClose={() => {
+                setSelectedLocation({});
+                clearListingForMap();
+              }} // close the popup when we click on the close button and clear listing for map
+              longitude={result.locations[0].long}
+              latitude={result.locations[0].lat}
+              closeOnClick={false}
+              closeButton={true}
+              anchor="bottom"
+              offset={[0, -15]}
+              style={{ maxWidth: "384px", position: "relative" }}
+            >
+              <div className="h-full w-full bg-white">
+                <MapInfoCard
+                  id={result.id}
+                  img={result.imageSrc}
+                  title={result.title}
+                  description={result.description}
+                  price={result.price}
+                  star={result.star}
+                  currentUser={currentUser}
+                  refetchUser={refetchUser}
+                  page={page}
+                />
+              </div>
+            </Popup>
+          ) : null}
         </div>
       ))}
 

@@ -1,10 +1,7 @@
-import Image from "next/image";
 import React from "react";
-import { HeartIcon } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
 import HeartButton from "./HeartButton";
-import { fi } from "date-fns/locale";
 
 const MapInfoCard = ({
   id,
@@ -24,6 +21,8 @@ const MapInfoCard = ({
       router.push(`/listings/${id}`);
     } else if (page === "Attractions") {
       router.push(`/attractions/${id}`);
+    } else if (page === "Trails") {
+      router.push(`/trails/${id}`);
     }
   };
 

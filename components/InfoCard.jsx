@@ -4,7 +4,7 @@ import { HeartIcon } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/solid";
 import HeartButton from "./HeartButton";
 import { useRouter } from "next/navigation";
-import { attractionTypes, types } from "@/pages";
+import { TrailTypes, attractionTypes, types } from "@/pages";
 import { BsFillPinMapFill } from "react-icons/bs";
 
 const InfoCard = ({
@@ -45,7 +45,7 @@ const InfoCard = ({
     } else if (page === "Listings") {
       return types.find((item) => item.label === category);
     } else if (page === "Trails") {
-      return attractionTypes.find((item) => item.label === category);
+      return TrailTypes.find((item) => item.label === category);
     }
   }, [category, page]);
 

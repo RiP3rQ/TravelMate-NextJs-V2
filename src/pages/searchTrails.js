@@ -38,6 +38,15 @@ const SearchTrails = ({ trails }) => {
     user();
   }, []);
 
+  // get trail for showing on map
+  const [listingForMap, setListingForMap] = useState("");
+  const getListingForMap = useCallback((id) => {
+    setListingForMap(id);
+  }, []);
+  const clearListingForMap = useCallback(() => {
+    setListingForMap("");
+  }, []);
+
   // wyszukujemy trails , jeżeli nie ma to zwracamy loader
   if (
     trails === undefined ||
@@ -115,6 +124,7 @@ const SearchTrails = ({ trails }) => {
                     currentUser={currentUser}
                     refetchUser={refetchUser}
                     page="Trails"
+                    getListingForMap={getListingForMap}
                   />
                 ))
               : trails?.map((item, index) => (
@@ -130,6 +140,7 @@ const SearchTrails = ({ trails }) => {
                     currentUser={currentUser}
                     refetchUser={refetchUser}
                     page="Trails"
+                    getListingForMap={getListingForMap}
                   />
                 ))}
           </div>
@@ -144,6 +155,8 @@ const SearchTrails = ({ trails }) => {
             page="Trails"
             coordinatesLat={coordinatesLat}
             coordinatesLng={coordinatesLng}
+            showMarkerForTrail={listingForMap}
+            clearListingForMap={clearListingForMap}
           />
         </section>
       </main>

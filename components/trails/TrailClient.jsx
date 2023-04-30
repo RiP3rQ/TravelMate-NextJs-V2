@@ -1,6 +1,6 @@
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useMemo, useState } from "react";
-import { attractionTypes } from "../../src/pages/index";
+import { TrailTypes } from "../../src/pages/index";
 import axios from "axios";
 import ReviewCard from "../reviews/ReviewCard";
 import useGalleryModal from "../../hooks/useGalleryModal";
@@ -18,7 +18,7 @@ const TrailClient = ({ listing, currentUser, refetchUser }) => {
 
   // ----------------------- display with types from index.js applies to listing
   const category = useMemo(() => {
-    return attractionTypes.find((item) => item.label === listing.category);
+    return TrailTypes.find((item) => item.label === listing.category);
   }, [listing.category]);
 
   // ----------------------- get Reviews for listing
