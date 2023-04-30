@@ -13,6 +13,7 @@ const Favorites = () => {
   const router = useRouter();
   const [favoriteListings, setFavoriteListings] = useState(null);
   const [favoriteAttractions, setFavoriteAttractions] = useState(null);
+  const [favoriteTrails, setFavoriteTrails] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
 
   // ----------------------------- User ----------------------------- //
@@ -39,6 +40,7 @@ const Favorites = () => {
     if (!currentUser) return;
     fetchFavoriteListings();
     fetchFavoriteAttractions();
+    fetchFavoriteTrails();
   }, [currentUser]);
 
   // check if user is logged in
@@ -80,10 +82,30 @@ const Favorites = () => {
     }
   };
 
+  // ----------------------------- Fetching Fav Trails ----------------------------- //
+
+  const fetchFavoriteTrails = async () => {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_URL}/api/favorites/getFavoriteTrails`,
+      {
+        email: currentUser?.email,
+      }
+    );
+    if (res.data.message === "No favorites found!") {
+      return;
+    } else {
+      setFavoriteTrails(res.data);
+    }
+  };
+
   // ----------------------------- Render if null ----------------------------- //
   if (
-    (favoriteListings?.length === 0 && favoriteAttractions?.length === 0) ||
-    (favoriteListings === null && favoriteAttractions === null)
+    (favoriteListings?.length === 0 &&
+      favoriteAttractions?.length === 0 &&
+      favoriteTrails?.length === 0) ||
+    (favoriteListings === null &&
+      favoriteAttractions === null &&
+      favoriteTrails === null)
   ) {
     return (
       <div>
@@ -147,6 +169,32 @@ const Favorites = () => {
                 data={attraction}
                 refetchUser={refetchUser}
                 page="Attractions"
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {favoriteTrails?.length > 0 && (
+        <div className="pt-3 pl-5">
+          <div className="pt-1 border-b-2 border-gray-500 w-64">
+            <Heading
+              title="Polubione szlaki"
+              subtitle="Lista polubionych szlaków"
+            />
+          </div>
+
+          <div
+            className="mt-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
+          xl:grid-cols-5 gap-8 mb-8"
+          >
+            {favoriteTrails?.map((trails) => (
+              <ListingCard
+                currentUser={currentUser}
+                key={trails.id}
+                data={trails}
+                refetchUser={refetchUser}
+                page="Trails"
               />
             ))}
           </div>

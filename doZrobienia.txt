@@ -4,7 +4,7 @@
 
 ✔️ Możliwość dodawania szlaków turystycznych do ulubionych ✔️
 
-
+✔️ Podstrona umożliwiająca zarządzanie polubionymi szlakami ✔️
 
 
 
@@ -17,8 +17,6 @@ Możliwość wystawania recenzji szlaków
 Galeria zdjęć szlaków
 
 Wyszukiwanie szlaków po kategoriach
-
-Podstrona umożliwiająca zarządzanie polubionymi szlakami
 
 Podstrona z planerem podróży, w którym można zaplanować jakie przedmioty zabrać w daną podróż
 
