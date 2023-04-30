@@ -20,13 +20,20 @@ const MyMap = ({
   coordinatesLng,
   clearListingForMap,
   trailsResults,
+  singleTrail,
 }) => {
   const [selectedLocation, setSelectedLocation] = useState({});
   const [clickedLocation, setClickedLocation] = useState({});
 
   let viewportLong = isListingMap ? long : 17.926126;
   let viewportLat = isListingMap ? lat : 50.671062;
-  const viewportZoom = isListingMap ? 14 : 11;
+  let viewportZoom = isListingMap ? 14 : 11;
+
+  if (singleTrail) {
+    viewportLong = singleTrail.locations[0].long;
+    viewportLat = singleTrail.locations[0].lat;
+    viewportZoom = 6;
+  }
 
   useEffect(() => {
     if (!coordinatesLat && !coordinatesLng) return;
@@ -237,7 +244,7 @@ const MyMap = ({
               }}
             />
           </Source>
-          the popup that should show if we click on a Marker
+          {/* the popup that should show if we click on a Marker */}
           {selectedLocation.long == result.locations[0].long ? (
             <Popup
               onClose={() => setSelectedLocation({})} // close the popup when we click on the close button
@@ -297,6 +304,74 @@ const MyMap = ({
           )}
         </div>
       ))}
+
+      {/* ----------------------------------------------------------------------------------------------------------------------------------------- */}
+      {/* display trail if single trail page */}
+      {singleTrail ? (
+        <div key={singleTrail.id}>
+          {/* Marker at the start and end of the trail */}
+          <Marker
+            longitude={singleTrail.locations[0].long}
+            latitude={singleTrail.locations[0].lat}
+            offset={[0, -5]}
+          >
+            <p
+              className="cursor-pointer text-sm "
+              aria-label="push-pin"
+              role="img"
+            >
+              📌
+            </p>
+          </Marker>
+          <Marker
+            longitude={
+              singleTrail.locations[singleTrail.locations.length - 1].long
+            }
+            latitude={
+              singleTrail.locations[singleTrail.locations.length - 1].lat
+            }
+            offset={[0, -10]}
+          >
+            <p
+              className="cursor-pointer text-sm "
+              aria-label="push-pin"
+              role="img"
+            >
+              🎯
+            </p>
+          </Marker>
+          {/* Drowing a trail from 1 to last marker */}
+          <Source
+            id={singleTrail.id}
+            type="geojson"
+            data={{
+              type: "Feature",
+              properties: {},
+              geometry: {
+                type: "LineString",
+                coordinates: singleTrail.locations.map((location) => [
+                  location.long,
+                  location.lat,
+                ]),
+              },
+            }}
+          >
+            <Layer
+              id={singleTrail.id + "-trail"}
+              source={singleTrail.id}
+              type="line"
+              paint={{
+                "line-color": "#888",
+                "line-width": 4,
+              }}
+              layout={{
+                "line-join": "round",
+                "line-cap": "round",
+              }}
+            />
+          </Source>
+        </div>
+      ) : null}
 
       {/* ----------------------------------------------------------------------------------------------------------------------------------------- */}
 

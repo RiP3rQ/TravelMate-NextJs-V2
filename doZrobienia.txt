@@ -6,6 +6,8 @@
 
 ✔️ Podstrona umożliwiająca zarządzanie polubionymi szlakami ✔️
 
+✔️ Podstrona dla pojedyńszego szlaku ✔️
+
 
 
 -----------------------   W trakcie realizacji    ------------------------------------
@@ -18,8 +20,10 @@ Galeria zdjęć szlaków
 
 Wyszukiwanie szlaków po kategoriach
 
+Zaimplementowanie mapy dojazdu do noclegu lub atrakcji
+
 Podstrona z planerem podróży, w którym można zaplanować jakie przedmioty zabrać w daną podróż
 
 Pokazywanie pogody w danym miejscu
 
-Zaimplementowanie mapy dojazdu do noclegu lub atrakcji
+Poprawić kategorie wyświetlane
