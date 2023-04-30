@@ -8,7 +8,9 @@
 
 ✔️ Podstrona dla pojedyńszego szlaku ✔️
 
+✔️ Możliwość wystawania recenzji szlaków ✔️
 
+✔️ Galeria zdjęć szlaków ✔️
 
 -----------------------   W trakcie realizacji    ------------------------------------
 
@@ -27,3 +29,5 @@ Podstrona z planerem podróży, w którym można zaplanować jakie przedmioty za
 Pokazywanie pogody w danym miejscu
 
 Poprawić kategorie wyświetlane
+
+skok do początku trasy naprawić

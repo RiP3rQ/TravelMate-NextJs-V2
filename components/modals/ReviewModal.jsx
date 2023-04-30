@@ -140,6 +140,32 @@ const ReviewModal = () => {
           setIsLoading(false);
         });
     }
+
+    // ------------------------------------ zapisywanie do bazy danych SZLAKÓW ------------------------------------
+    if (page === "Trails") {
+      axios
+        .post(`${process.env.NEXT_PUBLIC_URL}/api/reviews/addTrailReview`, {
+          ...data,
+          trailId: itemId,
+        })
+        .then((res) => {
+          toast.success("Pomyślnie dodano recenzję szlaku!");
+          toast.loading("Strona zostanie odświeżona...");
+          reset();
+          reviewModal.onClose();
+          setStep(STEPS.RATING);
+          // odświeżenie strony
+          setTimeout(() => {
+            router.refresh();
+          }, 2000);
+        })
+        .catch((err) => {
+          toast.error("Coś poszło nie tak...");
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
   };
 
   // ------------------------------------ button labels ------------------------------------

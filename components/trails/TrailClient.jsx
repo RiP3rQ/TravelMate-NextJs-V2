@@ -77,7 +77,7 @@ const TrailClient = ({ listing, currentUser, refetchUser }) => {
             currentUser={currentUser}
             refetchUser={refetchUser}
             star={listing?.star}
-            page="Listings"
+            page="Trails"
             reviews={trailReviews}
           />
           {/* środkowy div podzielony na 2 części */}
