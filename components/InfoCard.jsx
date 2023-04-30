@@ -29,6 +29,9 @@ const InfoCard = ({
     if (page === "Attractions") {
       router.push(`/attractions/${id}`);
     }
+    if (page === "Trails") {
+      router.push(`/trails/${id}`);
+    }
   };
 
   // ----------------------- kategorie -----------------------
@@ -41,6 +44,8 @@ const InfoCard = ({
       return attractionTypes.find((item) => item.label === category);
     } else if (page === "Listings") {
       return types.find((item) => item.label === category);
+    } else if (page === "Trails") {
+      return attractionTypes.find((item) => item.label === category);
     }
   }, [category, page]);
 

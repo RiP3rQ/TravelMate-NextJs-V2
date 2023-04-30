@@ -114,7 +114,7 @@ const SearchTrails = ({ trails }) => {
                     star={item.star}
                     currentUser={currentUser}
                     refetchUser={refetchUser}
-                    page="Attractions"
+                    page="Trails"
                   />
                 ))
               : trails?.map((item, index) => (
@@ -129,7 +129,7 @@ const SearchTrails = ({ trails }) => {
                     star={item.star}
                     currentUser={currentUser}
                     refetchUser={refetchUser}
-                    page="Attractions"
+                    page="Trails"
                   />
                 ))}
           </div>

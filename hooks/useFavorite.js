@@ -19,6 +19,12 @@ const useFavorite = ({ listingId, currentUser, refetchUser, page }) => {
 
       return list.includes(listingId);
     }, [currentUser, listingId]);
+  } else if (page === "Trails") {
+    hasFavorited = useMemo(() => {
+      const list = currentUser?.favoriteTrailsIds || [];
+
+      return list.includes(listingId);
+    }, [currentUser, listingId]);
   }
 
   const toggleFavorite = useCallback(
@@ -88,6 +94,36 @@ const useFavorite = ({ listingId, currentUser, refetchUser, page }) => {
                 )
                 .then(() => {
                   toast.success("Dodano atrakcję do ulubionych!");
+                });
+          }
+        }
+
+        if (page === "Trails") {
+          if (hasFavorited) {
+            request = () =>
+              axios
+                .post(
+                  `${process.env.NEXT_PUBLIC_URL}/api/favorites/trails/${listingId}`,
+                  {
+                    trailId: listingId,
+                    action: "unlike",
+                  }
+                )
+                .then(() => {
+                  toast.success("Usunięto szlak z ulubionych!");
+                });
+          } else {
+            request = () =>
+              axios
+                .post(
+                  `${process.env.NEXT_PUBLIC_URL}/api/favorites/trails/${listingId}`,
+                  {
+                    trailId: listingId,
+                    action: "like",
+                  }
+                )
+                .then(() => {
+                  toast.success("Dodano szlak do ulubionych!");
                 });
           }
         }

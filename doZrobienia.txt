@@ -2,15 +2,13 @@
 
 ✔️ Pobieranie szlaków z bazy danych ✔️
 
-
+✔️ Możliwość dodawania szlaków turystycznych do ulubionych ✔️
 
 
 
 
 
 -----------------------   W trakcie realizacji    ------------------------------------
-
-Możliwość dodawania szlaków turystycznych do ulubionych
 
 Możliwość dodawania własnych szlaków
 

@@ -21,6 +21,7 @@ model User {
   updatedAt       DateTime @updatedAt
   favoriteIds     String[] @db.ObjectId
   favoriteAttractionsIds String[] @db.ObjectId
+  favoriteTrailsIds     String[] @db.ObjectId
   accounts        Account[]
   listings        Listing[]
   reservations    Reservation[]
