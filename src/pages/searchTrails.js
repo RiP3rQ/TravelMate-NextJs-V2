@@ -38,6 +38,25 @@ const SearchTrails = ({ trails }) => {
     user();
   }, []);
 
+  // handle soritng
+  const handleSort = useCallback(
+    (sortingCategory) => {
+      sortingModal.setPage("Trails");
+      sortingModal.setCategory(sortingCategory);
+      sortingModal.onOpen(sortingCategory);
+    },
+    [sortingModal]
+  );
+
+  // change trails after sorting
+  useEffect(() => {
+    if (sortingModal.newListings !== [] || undefined || null || 0) {
+      setNewTrails(sortingModal.newListings);
+      console.log(sortingModal);
+      console.log(newTrails);
+    }
+  }, [sortingModal.newListings]);
+
   // get trail for showing on map
   const [listingForMap, setListingForMap] = useState("");
   const getListingForMap = useCallback((id) => {

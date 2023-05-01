@@ -16,11 +16,11 @@
 
 ✔️ skok do początku trasy naprawić ✔️
 
+✔️ Wyszukiwanie szlaków po kategoriach ✔️
+
 -----------------------   W trakcie realizacji    ------------------------------------
 
 Możliwość dodawania własnych szlaków
-
-Wyszukiwanie szlaków po kategoriach
 
 Zaimplementowanie mapy dojazdu do noclegu lub atrakcji
 

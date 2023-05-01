@@ -98,6 +98,22 @@ const SortingModal = () => {
         });
     }
 
+    // wysłanie zapytania do serwera odnośnie sortowania SZLAKÓW
+    if (page === "Trails") {
+      axios
+        .post(`${process.env.NEXT_PUBLIC_URL}/api/trails/sortTrails`, {
+          sortingCategory: sortingCategory,
+          typeOfSorting: typeOfSorting,
+        })
+        .then((res) => {
+          sortingModal.setNewListings(res.data);
+        })
+        .then(() => {
+          toast.dismiss(powiadomienie);
+          toast.success("Sortowanie zakończone!");
+        });
+    }
+
     // zamknięcie modalu
     setTypeOfSorting("");
     setSelectedLastCategory("");
