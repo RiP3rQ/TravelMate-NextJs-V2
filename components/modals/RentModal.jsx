@@ -3,7 +3,7 @@ import Modal from "./Modal";
 import useRentModal from "../../hooks/useRentModal";
 import Heading from "./Heading";
 import { list } from "../Header";
-import { attractionTypes, types } from "../../src/pages/index";
+import { TrailTypes, attractionTypes, types } from "../../src/pages/index";
 import CategoryInput from "../inputs/CategoryInput";
 import { useForm } from "react-hook-form";
 import MyMap from "../MyMap";
@@ -13,6 +13,7 @@ import Input from "../inputs/Input";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import AddTrailMap from "../trails/AddTrailMap";
 
 const STEPS = {
   CATEGORY: 0,
@@ -54,6 +55,7 @@ const RentModal = () => {
       description: "",
       paid: false, // wartość potrzebna do zapisu atrakcji [2]
       price: 1,
+      locations: [],
     },
   });
 
@@ -72,6 +74,7 @@ const RentModal = () => {
   // step 3 - location
   const lat = watch("lat");
   const long = watch("long");
+  const locations = watch("locations");
   // step 4 - info (guests, rooms, bathrooms) dla noclegu [1]
   const guestCount = watch("guestCount");
   const roomCount = watch("roomCount");
@@ -90,6 +93,8 @@ const RentModal = () => {
   const onBack = () => {
     if (step === STEPS.IMAGES && category === "Atrakcje") {
       return setStep(STEPS.LOCATION);
+    } else if (step === STEPS.IMAGES && category === "Szlaki") {
+      return setStep(STEPS.LOCATION);
     }
 
     setStep((prev) => prev - 1);
@@ -105,6 +110,10 @@ const RentModal = () => {
     if (step !== STEPS.PRICE) {
       if (step === STEPS.LOCATION && category === "Atrakcje") {
         return setStep(STEPS.IMAGES);
+      } else if (step === STEPS.LOCATION && category === "Szlaki") {
+        return setStep(STEPS.IMAGES);
+      } else if (step === STEPS.DESCRIPTION && category === "Szlaki") {
+        return setStep(STEPS.PRICE);
       }
 
       return onNext();
@@ -148,6 +157,24 @@ const RentModal = () => {
           setIsLoading(false);
         });
     }
+
+    // ------------------------------------ zapisywanie do bazy danych ATRAKCJI ------------------------------------
+    if (category === "Szlaki") {
+      axios
+        .post("/api/trails/addTrail", data)
+        .then((res) => {
+          toast.success("Pomyślnie dodano szlak do bazy!");
+          reset();
+          rentModal.onClose();
+          setStep(STEPS.CATEGORY);
+        })
+        .catch((err) => {
+          toast.error("Coś poszło nie tak...");
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
   };
 
   // ------------------------------------ button labels ------------------------------------
@@ -170,7 +197,7 @@ const RentModal = () => {
     return "Powrót";
   }, [step]);
 
-  // ------------------------------------ body content ------------------------------------     dla noclegów [1]
+  // ------------------------------------ body content ------------------------------------     dla noclegów [0]
   // content of the modal based on step 1 - category
   let bodyContent = (
     <div className="flex flex-col gap-8">
@@ -365,8 +392,7 @@ const RentModal = () => {
     );
   }
 
-  // ------------------------------------ body content ------------------------------------     dla atrakcji [2]
-  // step 1 - category [taki sam bez zmiany]
+  // ------------------------------------ body content ------------------------------------     dla atrakcji [1]
 
   // step 2 - type
   if (step === STEPS.TYPE && category === "Atrakcje") {
@@ -444,6 +470,118 @@ const RentModal = () => {
             required
           />
         )}
+      </div>
+    );
+  }
+
+  // ------------------------------------ body content ------------------------------------     dla szlaków [2]
+
+  // step 2 - type
+  if (step === STEPS.TYPE && category === "Szlaki") {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Podaj typ miejsca, które chcesz dodać do TravelMate."
+          subtitle="Pokaż użytkownikom czym cechuje się Twojego miejsca"
+        />
+        <div
+          className="
+          grid 
+          grid-cols-1 
+          md:grid-cols-2 
+          gap-3
+          max-h-[50vh]
+          overflow-y-auto
+          xl:text-sm
+        "
+        >
+          {TrailTypes.map((item) => (
+            <div key={item.label} className="col-span-1">
+              <CategoryInput
+                onClick={(type) => {
+                  setCustomValue("type", type);
+                }}
+                selected={type === item.label}
+                label={item.label}
+                icon={item.icon}
+                grid
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // step 3 - locations
+  if (step === STEPS.LOCATION && category === "Szlaki") {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Podaj lokalizację miejsca, które chcesz dodać do TravelMate."
+          subtitle="Pokaż użytkownikom lokalizację Twojego miejsca"
+        />
+        <div className="w-full h-96 m-2">
+          <AddTrailMap
+            locations={locations}
+            onClickSetLocations={(long, lat) => {
+              setCustomValue("locations", [...locations, { long, lat }]);
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // step 4 - price
+  if (step === STEPS.PRICE && category === "Szlaki") {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Już prawie skończone! Podaj cenę swojego miejsca."
+          subtitle="Jeżeli atrakcje jest bezpłatna zaznacz opcje bezpłatna"
+        />
+        <select
+          className="w-full p-4 bg-gray-500 border-2 rounded-md outline-none text-2xl font-bold text-white text-center"
+          onChange={(e) => {
+            if (e.target.value === "free") {
+              setIsFree(true);
+              setCustomValue("paid", false);
+            } else {
+              setIsFree(false);
+              setCustomValue("paid", true);
+            }
+            console.log(isFree);
+          }}
+        >
+          <option value="free">Bezpłatna</option>
+          <option value="paid">Płatna</option>
+        </select>
+        {isFree ? (
+          " "
+        ) : (
+          <Input
+            id="price"
+            label="Cena"
+            formatPrice
+            type="number"
+            disabled={isLoading}
+            register={register}
+            errors={errors}
+            required
+          />
+        )}
+      </div>
+    );
+  }
+
+  if (step === STEPS.PRICE && category === "Szlaki") {
+    bodyContent = (
+      <div className="flex flex-col gap-8 items-center justify-center">
+        <Heading
+          title="Już prawie skończone!"
+          subtitle="Dodaj utworzony szlak do bazy danych."
+        />
       </div>
     );
   }

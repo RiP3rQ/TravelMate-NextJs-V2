@@ -2,38 +2,65 @@ import prisma from "../../../../libs/prismadb";
 import { getServerSession } from "next-auth/next";
 
 export default async function handler(req, res) {
-  //   const session = await getServerSession(req, res);
+  try {
+    const session = await getServerSession(req, res);
 
-  //   if (!session) {
-  //     return res.status(401).json({ message: "Unauthorized" });
-  //   }
+    if (!session) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
 
-  //   const user = await prisma.user.findUnique({
-  //     where: {
-  //       email: session.user.email,
-  //     },
-  //   });
+    const {
+      title,
+      description,
+      imageSrc,
+      type: category,
+      locations,
+    } = req.body;
 
-  //   const trail = await prisma.trail.create({
-  //     data: {
-  //       title: "Edadwadaw",
-  //       description: "g esgsegesgesges",
-  //       imageSrc:
-  //         "https://res.cloudinary.com/dr3jjyqgi/image/upload/v1681335563/cld-sample-2.jpg",
-  //       category: "Miejskie",
-  //       locations: {
-  //         create: [
-  //           { lat: "36.4917", long: "-118.4377" },
-  //           { lat: "36.8550", long: "-118.2852" },
-  //           { lat: "36.7214", long: "-118.5375" },
-  //           { lat: "36.7255", long: "-118.6386" },
-  //           { lat: "36.8625", long: "-118.5739" },
-  //           { lat: "36.8736", long: "-118.6006" },
-  //         ],
-  //       },
-  //       userId: user.id,
-  //     },
-  //   });
+    const user = await prisma.user.findUnique({
+      where: {
+        email: session.user.email,
+      },
+    });
 
-  return res.status(200).json({ message: "Trail added" });
+    if (
+      !title ||
+      !description ||
+      !imageSrc ||
+      !category ||
+      locations.length < 1
+    ) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    let trail;
+
+    trail = await prisma.trail.create({
+      data: {
+        title,
+        description,
+        imageSrc,
+        category,
+        userId: user.id,
+        star: String(0),
+      },
+    });
+    for (let i = 0; i < locations.length; i++) {
+      const location = await prisma.location.create({
+        data: {
+          lat: String(locations[i].lat),
+          long: String(locations[i].long),
+          trail: {
+            connect: {
+              id: trail.id,
+            },
+          },
+        },
+      });
+    }
+
+    return res.status(200).json(trail);
+  } catch {
+    return res.status(500).json({ message: "Something went wrong." });
+  }
 }

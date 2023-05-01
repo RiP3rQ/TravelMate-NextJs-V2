@@ -33,7 +33,7 @@ const MyMap = ({
   if (singleTrail) {
     viewportLong = singleTrail.locations[0].long;
     viewportLat = singleTrail.locations[0].lat;
-    viewportZoom = 6;
+    viewportZoom = 9;
   }
 
   useEffect(() => {
