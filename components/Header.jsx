@@ -346,6 +346,8 @@ const Header = ({ placeholder, page }) => {
                           router.push(`/listings/${suggestion.id}`);
                         } else if (selectedOption === "Atrakcje") {
                           router.push(`/attractions/${suggestion.id}`);
+                        } else if (selectedOption === "Szlaki") {
+                          router.push(`/trails/${suggestion.id}`);
                         }
                       }}
                     >

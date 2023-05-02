@@ -20,11 +20,9 @@
 
 ✔️ Możliwość dodawania własnych szlaków ✔️
 
+✔️ Wyszukiwanie szlaków na pasku wyszukiwania ✔️
+
 -----------------------   W trakcie realizacji    ------------------------------------
-
-
-
-Wyszukiwanie szlaków na pasku wyszukiwania
 
 Zaimplementowanie mapy dojazdu do noclegu lub atrakcji
 

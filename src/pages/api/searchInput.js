@@ -4,8 +4,9 @@ export default async function handler(req, res) {
   try {
     const { name, page } = req.body;
 
-    if (!name || !page)
+    if (!name || !page) {
       return res.status(400).json({ message: "Missing name or page!" });
+    }
 
     if (page === "Noclegi") {
       const ListingWithNameInName = await prisma.Listing.findMany({
@@ -35,6 +36,20 @@ export default async function handler(req, res) {
       });
 
       return res.status(200).json(AttractionWithNameInName);
+    } else if (page == "Szlaki") {
+      const TrailsWithNameInName = await prisma.Trail.findMany({
+        where: {
+          title: {
+            contains: name,
+          },
+        },
+        select: {
+          id: true,
+          title: true,
+        },
+      });
+
+      return res.status(200).json(TrailsWithNameInName);
     }
   } catch (err) {
     return res.status(400).json({ message: "Not in database!" });
