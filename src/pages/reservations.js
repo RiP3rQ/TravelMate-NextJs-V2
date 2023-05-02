@@ -2,19 +2,16 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Header from "../../components/Header";
 import EmptyState from "../../components/EmptyState";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import ListingCard from "../../components/listings/ListingCard";
 import Heading from "../../components/modals/Heading";
-import { useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
 
 const Reservations = () => {
-  const { data: session } = useSession();
   // ----------------------------- States ----------------------------- //
-  const router = useRouter();
   const [reservations, setReservations] = useState(null);
   const [boughtTickets, setBoughtTickets] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
+  const [trips, setTrips] = useState(null);
 
   // ----------------------------- User ----------------------------- //
   const user = async () => {
@@ -36,13 +33,6 @@ const Reservations = () => {
     user();
   }, []);
 
-  // // check if user is logged in
-  // useEffect(() => {
-  //   if (session === undefined || session === null) {
-  //     router.push("/login");
-  //   }
-  // }, [session]);
-
   // ----------------------------- Fetching Reserations ----------------------------- //
 
   const fetchReservations = async () => {
@@ -56,6 +46,19 @@ const Reservations = () => {
       return;
     } else {
       setReservations(res.data);
+    }
+  };
+
+  // ----------------------------- Fetching Trips ----------------------------- //
+
+  const fetchTrips = async () => {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_URL}/api/trips/getAllTripsMinimum`
+    );
+    if (res.data.message === "No trips found!") {
+      return;
+    } else {
+      setTrips(res.data);
     }
   };
 
@@ -78,17 +81,14 @@ const Reservations = () => {
   // ----------------------------- Fetching Data ----------------------------- //
   useEffect(() => {
     if (!currentUser) return;
+    fetchTrips();
     fetchReservations();
     fetchBoughtTickets();
   }, [currentUser]);
 
   // ----------------------------- Cancel reservation/ticket ----------------------------- //
-  const [deletingId, setDeletingId] = useState("");
-
   const cancelReservation = useCallback(
     async (reservationId) => {
-      setDeletingId(reservationId);
-
       await axios
         .post(
           `${process.env.NEXT_PUBLIC_URL}/api/reservations/deleteReservationOrTicket`,
@@ -100,17 +100,13 @@ const Reservations = () => {
         .then(() => toast.success("Rezerwacja anulowana!"))
         .catch(() => toast.error("Wystąpił błąd!"))
         .finally(() => {
-          setDeletingId("");
           fetchReservations();
         });
     },
     [currentUser]
   );
-
   const cancelTicket = useCallback(
     async (ticketId) => {
-      setDeletingId(ticketId);
-
       await axios
         .post(
           `${process.env.NEXT_PUBLIC_URL}/api/reservations/deleteReservationOrTicket`,
@@ -122,8 +118,60 @@ const Reservations = () => {
         .then(() => toast.success("Bilet anulowany!"))
         .catch(() => toast.error("Wystąpił błąd!"))
         .finally(() => {
-          setDeletingId("");
           fetchBoughtTickets();
+        });
+    },
+    [currentUser]
+  );
+
+  // ----------------------------- Add to trips  ----------------------------- //
+  const addToTrips = useCallback(
+    async (listingId) => {
+      await axios
+        .post(`${process.env.NEXT_PUBLIC_URL}/api/trips/addNewTrip`, {
+          listingId: listingId,
+        })
+        .then(() => toast.success("Dodano nową wycieczkę!"))
+        .catch(() => toast.error("Wystąpił błąd!"))
+        .finally(() => {
+          fetchTrips();
+        });
+    },
+    [currentUser]
+  );
+
+  const addToExistingTrip = useCallback(
+    async (listingId, tripId, page) => {
+      await axios
+        .post(`${process.env.NEXT_PUBLIC_URL}/api/trips/addListingToTrip`, {
+          listingId: listingId,
+          tripId: tripId,
+          page: page,
+        })
+        .then(() => toast.success("Dodano do istniejącej  wycieczki!"))
+        .catch(() => toast.error("Wystąpił błąd!"))
+        .finally(() => {
+          fetchTrips();
+        });
+    },
+    [currentUser]
+  );
+
+  const deleteFromTrip = useCallback(
+    async (listingId, tripId, page) => {
+      await axios
+        .post(
+          `${process.env.NEXT_PUBLIC_URL}/api/trips/deleteListingFromTrip`,
+          {
+            listingId: listingId,
+            tripId: tripId,
+            page: page,
+          }
+        )
+        .then(() => toast.success("Usunięto z wycieczki!"))
+        .catch(() => toast.error("Wystąpił błąd!"))
+        .finally(() => {
+          fetchTrips();
         });
     },
     [currentUser]
@@ -175,6 +223,11 @@ const Reservations = () => {
                 page="Listings"
                 reservation={reservation}
                 disabled={!currentUser}
+                abilityToAddToTrips
+                addToTrips={addToTrips}
+                trips={trips}
+                addToExistingTrip={addToExistingTrip}
+                deleteFromTrip={deleteFromTrip}
               />
             ))}
           </div>
@@ -205,6 +258,11 @@ const Reservations = () => {
                 onAction={cancelTicket}
                 page="Attractions"
                 disabled={!currentUser}
+                abilityToAddToTrips
+                addToTrips={addToTrips}
+                trips={trips}
+                addToExistingTrip={addToExistingTrip}
+                deleteFromTrip={deleteFromTrip}
               />
             ))}
           </div>

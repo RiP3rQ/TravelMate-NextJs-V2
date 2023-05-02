@@ -31,6 +31,7 @@ model User {
   attraction_reviews      Attraction_Review[]
   trails          Trail[]
   trail_reviews   Trail_Review[]
+  trips           Trip[]
 }
 
 model Account {
@@ -80,6 +81,9 @@ model Reservation {
   createdAt         DateTime @default(now())
   user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
   listing           Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+    // trips
+  tripIds           String[] @db.ObjectId
+  trips             Trip[] @relation(fields: [tripIds], references: [id])
 }
 
 model Attraction {
@@ -98,6 +102,9 @@ model Attraction {
   user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
   tickets           Ticket_for_Attraction[]
   attraction_reviews        Attraction_Review[]
+  // trips
+  tripIds           String[] @db.ObjectId
+  trips             Trip[] @relation(fields: [tripIds], references: [id])
 }
 
 model Ticket_for_Attraction {
@@ -148,6 +155,9 @@ model Trail {
   userId            String @db.ObjectId
   user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
   trail_reviews     Trail_Review[]
+  // trips
+  tripIds           String[] @db.ObjectId
+  trips             Trip[] @relation(fields: [tripIds], references: [id])
 }
 
 model Location{
@@ -169,4 +179,18 @@ model Trail_Review {
   imageSrc          String?
   trail             Trail @relation(fields: [trailId], references: [id], onDelete: Cascade)
   user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Trip {
+  id                String @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String @db.ObjectId
+  user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  savedItems        String[]
+  reservationIds    String[] @db.ObjectId
+  reservations      Reservation[] @relation(fields: [reservationIds], references: [id])
+  attractionIds     String[] @db.ObjectId
+  attractions       Attraction[] @relation(fields: [attractionIds], references: [id])
+  trailIds          String[] @db.ObjectId
+  trails            Trail[] @relation(fields: [trailIds], references: [id])
 }

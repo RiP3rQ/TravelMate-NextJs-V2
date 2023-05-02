@@ -133,6 +133,11 @@ const Header = ({ placeholder, page }) => {
     router.push("/reservations");
   };
 
+  // router for trips page
+  const tripsPageHandle = () => {
+    router.push("/trips");
+  };
+
   // sign out functionallity
   const SignOutHandle = () => {
     signOut().then(() => {
@@ -429,6 +434,13 @@ const Header = ({ placeholder, page }) => {
               onClick={reservationsPageHandle}
             >
               Rezerwacje/Bilety
+            </p>
+            <p
+              className="text-lg font-semibold border-b border-gray-500 py-1 cursor-pointer w-full rounded-lg text-center
+              hover:bg-green-400 hover:text-white "
+              onClick={tripsPageHandle}
+            >
+              Planer wycieczki
             </p>
             <p
               className="text-xl text-[#3F9337] font-extrabold py-1 tracking-widest cursor-pointer w-full rounded-lg text-center
