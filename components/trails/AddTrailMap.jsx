@@ -2,7 +2,11 @@ import Map, { Marker, Layer, Source } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useEffect, useState } from "react";
 
-const AddTrailMap = ({ locations, onClickSetLocations }) => {
+const AddTrailMap = ({
+  locations = [],
+  onClickSetLocations,
+  trailData = [],
+}) => {
   const [viewport, setViewport] = useState({
     width: "100%",
     height: "100%",
@@ -17,9 +21,15 @@ const AddTrailMap = ({ locations, onClickSetLocations }) => {
     if (locations.length > 0) {
       setMarkerPositions(locations);
     }
-  }, []);
 
-  console.log(locations);
+    if (trailData.length > 0) {
+      setViewport({
+        ...viewport,
+        longitude: trailData[0].long,
+        latitude: trailData[0].lat,
+      });
+    }
+  }, []);
 
   return (
     <Map
@@ -35,6 +45,7 @@ const AddTrailMap = ({ locations, onClickSetLocations }) => {
         onClickSetLocations(e.lngLat.lng, e.lngLat.lat);
       }}
     >
+      {/* dodawanie tracy */}
       {markerPositions.length > 1 ? (
         // Drowing a trail from 1 to last marker
         <Source
@@ -106,6 +117,69 @@ const AddTrailMap = ({ locations, onClickSetLocations }) => {
           );
         }
       })}
+      {/* strona tripów*/}
+      {trailData.length > 1 ? (
+        // Drowing a trail from 1 to last marker
+        <Source
+          id="trip"
+          type="geojson"
+          data={{
+            type: "Feature",
+            properties: {},
+            geometry: {
+              type: "LineString",
+              coordinates: trailData.map((location) => [
+                location.long,
+                location.lat,
+              ]),
+            },
+          }}
+        >
+          <Layer
+            id="layer-trail"
+            source="trail"
+            type="line"
+            paint={{
+              "line-color": "#888",
+              "line-width": 4,
+            }}
+            layout={{
+              "line-join": "round",
+              "line-cap": "round",
+            }}
+          />
+        </Source>
+      ) : null}
+      <div key="first-marker">
+        <Marker
+          longitude={trailData[0].long}
+          latitude={trailData[0].lat}
+          offset={[0, 0]}
+        >
+          <p
+            className="cursor-pointer text-sm"
+            aria-label="push-pin"
+            role="img"
+          >
+            📌
+          </p>
+        </Marker>
+      </div>
+      <div key="last-marker">
+        <Marker
+          longitude={trailData[trailData.length - 1].long}
+          latitude={trailData[trailData.length - 1].lat}
+          offset={[0, 0]}
+        >
+          <p
+            className="cursor-pointer text-sm"
+            aria-label="push-pin"
+            role="img"
+          >
+            🎯
+          </p>
+        </Marker>
+      </div>
     </Map>
   );
 };

@@ -19,7 +19,7 @@ hover:bg-white hover:text-green-400 hover:border-green-400 hover:animate-pulse t
         {trip.name ? trip.name : `Wycieczka nr.${index + 1}`}
       </div>
       <div
-        className="absolute -top-4 -right-3 bg-red-400 py-2 px-3 rounded-xl text-white text-2xl z-50 cursor-pointer
+        className="absolute -top-4 -right-3 bg-red-400 py-2 px-3 rounded-xl text-white text-2xl z-20 cursor-pointer
   border border-transparent hover:text-green-400 hover:bg-white hover:border-green-400"
         onClick={() => {
           handleDelete(trip.id);
@@ -28,7 +28,7 @@ hover:bg-white hover:text-green-400 hover:border-green-400 hover:animate-pulse t
         <AiOutlineClose />
       </div>
       <div
-        className="absolute top-8 -right-3 bg-red-400 py-2 px-3 rounded-xl text-white text-2xl z-50 cursor-pointer
+        className="absolute top-8 -right-3 bg-red-400 py-2 px-3 rounded-xl text-white text-2xl z-20 cursor-pointer
   border border-transparent hover:text-green-400 hover:bg-white hover:border-green-400"
         onClick={() => {
           setChangeNameMenuOpen((prev) => !prev);

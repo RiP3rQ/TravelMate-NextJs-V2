@@ -7,6 +7,7 @@ import InfoCard from "../../components/InfoCard";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import useSortingModal from "../../hooks/useSortingModal";
+import { toast } from "react-hot-toast";
 
 const SearchTrails = ({ trails }) => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -14,6 +15,20 @@ const SearchTrails = ({ trails }) => {
   const coordinatesLat = useSearchParams().get("coordinatesLat");
   const coordinatesLng = useSearchParams().get("coordinatesLng");
   const [newTrails, setNewTrails] = useState([]);
+  const [trips, setTrips] = useState(null);
+
+  // ----------------------------- Fetching Trips ----------------------------- //
+
+  const fetchTrips = async () => {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_URL}/api/trips/getAllTripsMinimum`
+    );
+    if (res.data.message === "No trips found!") {
+      return;
+    } else {
+      setTrips(res.data);
+    }
+  };
 
   // sorting modal
   const sortingModal = useSortingModal();
@@ -30,8 +45,9 @@ const SearchTrails = ({ trails }) => {
     }
   };
 
-  useMemo(() => {
+  useEffect(() => {
     user();
+    fetchTrips();
   }, []);
 
   const refetchUser = useCallback(() => {
@@ -65,6 +81,59 @@ const SearchTrails = ({ trails }) => {
   const clearListingForMap = useCallback(() => {
     setListingForMap("");
   }, []);
+
+  // ----------------------------- Add to trips  ----------------------------- //
+  const addToTrips = useCallback(
+    async (listingId) => {
+      await axios
+        .post(`${process.env.NEXT_PUBLIC_URL}/api/trips/addNewTrip`, {
+          listingId: listingId,
+        })
+        .then(() => toast.success("Dodano nową wycieczkę!"))
+        .catch(() => toast.error("Wystąpił błąd!"))
+        .finally(() => {
+          fetchTrips();
+        });
+    },
+    [currentUser]
+  );
+
+  const addToExistingTrip = useCallback(
+    async (listingId, tripId, page) => {
+      await axios
+        .post(`${process.env.NEXT_PUBLIC_URL}/api/trips/addListingToTrip`, {
+          listingId: listingId,
+          tripId: tripId,
+          page: page,
+        })
+        .then(() => toast.success("Dodano do istniejącej  wycieczki!"))
+        .catch(() => toast.error("Wystąpił błąd!"))
+        .finally(() => {
+          fetchTrips();
+        });
+    },
+    [currentUser]
+  );
+
+  const deleteFromTrip = useCallback(
+    async (listingId, tripId, page) => {
+      await axios
+        .post(
+          `${process.env.NEXT_PUBLIC_URL}/api/trips/deleteListingFromTrip`,
+          {
+            listingId: listingId,
+            tripId: tripId,
+            page: page,
+          }
+        )
+        .then(() => toast.success("Usunięto z wycieczki!"))
+        .catch(() => toast.error("Wystąpił błąd!"))
+        .finally(() => {
+          fetchTrips();
+        });
+    },
+    [currentUser]
+  );
 
   // wyszukujemy trails , jeżeli nie ma to zwracamy loader
   if (
@@ -144,6 +213,11 @@ const SearchTrails = ({ trails }) => {
                     refetchUser={refetchUser}
                     page="Trails"
                     getListingForMap={getListingForMap}
+                    abilityToAddToTrips
+                    addToTrips={addToTrips}
+                    trips={trips}
+                    addToExistingTrip={addToExistingTrip}
+                    deleteFromTrip={deleteFromTrip}
                   />
                 ))
               : trails?.map((item, index) => (
@@ -160,6 +234,11 @@ const SearchTrails = ({ trails }) => {
                     refetchUser={refetchUser}
                     page="Trails"
                     getListingForMap={getListingForMap}
+                    abilityToAddToTrips
+                    addToTrips={addToTrips}
+                    trips={trips}
+                    addToExistingTrip={addToExistingTrip}
+                    deleteFromTrip={deleteFromTrip}
                   />
                 ))}
           </div>

@@ -99,12 +99,14 @@ const Trips = () => {
           xl:grid-cols-5 gap-8"
         >
           {trips?.map((trip, index) => (
-            <TripCard
-              trip={trip}
-              index={index}
-              handleDelete={handleDelete}
-              handleChangeTripName={handleChangeTripName}
-            />
+            <div key={index}>
+              <TripCard
+                trip={trip}
+                index={index}
+                handleDelete={handleDelete}
+                handleChangeTripName={handleChangeTripName}
+              />
+            </div>
           ))}
         </div>
       </div>

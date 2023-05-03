@@ -22,11 +22,13 @@
 
 ✔️ Wyszukiwanie szlaków na pasku wyszukiwania ✔️
 
+✔️ Podstrona z planerem podróży, w którym można zaplanować jakie przedmioty zabrać w daną podróż ✔️
+
 -----------------------   W trakcie realizacji    ------------------------------------
 
 Zaimplementowanie mapy dojazdu do noclegu lub atrakcji
 
-Podstrona z planerem podróży, w którym można zaplanować jakie przedmioty zabrać w daną podróż
+
 
 Pokazywanie pogody w danym miejscu
 
