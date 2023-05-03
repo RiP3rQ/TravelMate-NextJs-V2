@@ -166,7 +166,9 @@ const ListingCard = ({
                           setShowDropdownTripsMenu((prev) => !prev);
                         }}
                       >
-                        <span>{`Wycieczka nr.${index + 1}`}</span>
+                        <span>
+                          {trip.name ? trip.name : `Wycieczka nr.${index + 1}`}
+                        </span>
                       </div>
                     </div>
                   ))}
