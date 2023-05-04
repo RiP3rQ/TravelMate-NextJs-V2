@@ -73,7 +73,11 @@ const IndividualTripPage = () => {
     <div>
       <Header page="Listings" placeholder={tripData?.name} />
 
-      <TripClient tripData={tripData} refetchTripData={refetchTripData} />
+      <TripClient
+        tripData={tripData}
+        refetchTripData={refetchTripData}
+        tripId={tripId}
+      />
     </div>
   );
 };

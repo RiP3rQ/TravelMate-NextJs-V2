@@ -24,11 +24,11 @@
 
 ✔️ Podstrona z planerem podróży, w którym można zaplanować jakie przedmioty zabrać w daną podróż ✔️
 
+✔️ Zaimplementowanie mapy dojazdu ✔️
+
 -----------------------   W trakcie realizacji    ------------------------------------
-
-Zaimplementowanie mapy dojazdu do noclegu lub atrakcji
-
 
 
 Pokazywanie pogody w danym miejscu
 
+usuwanie powiadomień react-toast po opuszczeniu strony

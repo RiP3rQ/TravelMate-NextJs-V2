@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import Heading from "../modals/Heading";
 import Image from "next/image";
 import { AiOutlineDelete, AiOutlinePlusCircle } from "react-icons/ai";
 import AddTrailMap from "../trails/AddTrailMap";
 import { toast } from "react-hot-toast";
 import axios from "axios";
+import { BsFillPinMapFill } from "react-icons/bs";
 
-const TripClient = ({ tripData, refetchTripData }) => {
+const TripClient = ({ tripData = [], refetchTripData, tripId }) => {
   const [savedItems, setSavedItems] = useState([]);
   const [addingItem, setAddingItem] = useState(false);
   const [newItem, setNewItem] = useState("");
+  const [endPoint, setEndPoint] = useState({ lat: 0, lng: 0 });
 
   const handleAddItem = async () => {
     if (savedItems.length > 0) {
@@ -40,18 +42,39 @@ const TripClient = ({ tripData, refetchTripData }) => {
         item: item,
       })
       .then((res) => {
-        toast.success("Sukcess! Odśwież stronę, aby zobaczyć zmiany");
+        refetchTripData(tripId);
+        toast.success("Sukcess! Rekord został usunięty z bazy danych");
       })
       .catch((err) => {
         toast.error("Wystąpił błąd podczas usuwania elementu z bazy danych");
       });
   };
 
+  const getEndPointForMap = useMemo(
+    () =>
+      ({ lat, lng, name }) => {
+        setEndPoint({ lat: lat, lng: lng, name: name });
+      },
+    []
+  );
+
   return (
     <div className="max-w-[2520px] mx-auto xl:px-20 md:px-10 sm:px-2 px-4">
       <div className="max-w-screen-lg mx-auto">
         <div className="flex flex-col gap-6 mt-5">
-          {tripData.reservations.length > 0 ? (
+          <div>
+            <Heading
+              title="Mapa dojazdu"
+              subtitle="Mapa dojazdu do miejsca docelowego wycieczki"
+            />
+            <hr className="mb-2" />
+            <div className="w-full  h-96">
+              <AddTrailMap showDirections endPoint={endPoint} />
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col gap-6 mt-5">
+          {tripData?.reservations?.length > 0 ? (
             <div>
               <Heading
                 title="Twoje rezerwacje"
@@ -61,7 +84,7 @@ const TripClient = ({ tripData, refetchTripData }) => {
               {tripData?.reservations?.map((reservation, index) => (
                 <div
                   key={index}
-                  className="grid grid-cols-2 h-32 w-full my-2 space-x-2"
+                  className="grid grid-cols-2 h-32 w-full my-2 space-x-2 relative"
                 >
                   <div className="w-1/2 mx-auto h-full relative">
                     <Image
@@ -101,6 +124,23 @@ const TripClient = ({ tripData, refetchTripData }) => {
                       <p>Całościowa cena: {reservation.totalPrice} zł</p>
                     </div>
                   </div>
+                  {/* pokaż na mapie - przycisk */}
+                  <div className="absolute bottom-0 right-0">
+                    <button
+                      className="flex items-center justify-center bg-green-400 border-2 border-green-400 text-white p-1 rounded-2xl cursor-pointer hover:bg-white hover:text-green-400 hover:border-gray-400 transition ease-in-out duration-300 text-sm "
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        getEndPointForMap({
+                          lat: reservation.listing.lat,
+                          lng: reservation.listing.long,
+                          name: reservation.listing.title,
+                        });
+                      }}
+                    >
+                      <span className="">Mapa|</span>
+                      <BsFillPinMapFill />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -114,10 +154,10 @@ const TripClient = ({ tripData, refetchTripData }) => {
                 subtitle="Lista zaplanowanych atrakcji dla tej wycieczki"
               />
               <hr className="mb-2" />
-              {tripData.attractions.map((attraction, index) => (
+              {tripData?.attractions?.map((attraction, index) => (
                 <div
                   key={index}
-                  className="grid grid-cols-2 h-32 w-full my-2 space-x-2"
+                  className="grid grid-cols-2 h-32 w-full my-2 space-x-2 relative"
                 >
                   <div className="w-1/2 mx-auto h-full relative">
                     <Image
@@ -146,6 +186,23 @@ const TripClient = ({ tripData, refetchTripData }) => {
                       )}
                     </div>
                   </div>
+                  {/* pokaż na mapie - przycisk */}
+                  <div className="absolute bottom-0 right-0">
+                    <button
+                      className="flex items-center justify-center bg-green-400 border-2 border-green-400 text-white p-1 rounded-2xl cursor-pointer hover:bg-white hover:text-green-400 hover:border-gray-400 transition ease-in-out duration-300 text-sm "
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        getEndPointForMap({
+                          lat: attraction.lat,
+                          lng: attraction.long,
+                          name: attraction.title,
+                        });
+                      }}
+                    >
+                      <span className="">Mapa|</span>
+                      <BsFillPinMapFill />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -159,10 +216,10 @@ const TripClient = ({ tripData, refetchTripData }) => {
                 subtitle="Lista zaplanowanych szlaków dla tej wycieczki"
               />
               <hr className="mb-2" />
-              {tripData.trails.map((trail, index) => (
+              {tripData?.trails?.map((trail, index) => (
                 <div
                   key={index}
-                  className="grid grid-cols-2 h-48 w-full my-2 space-x-2"
+                  className="grid grid-cols-2 h-48 w-full my-2 space-x-2 relative"
                 >
                   <div className="w-1/2 mx-auto h-full relative">
                     <Image
@@ -179,13 +236,30 @@ const TripClient = ({ tripData, refetchTripData }) => {
                   <div className="w-5/6 h-full">
                     <AddTrailMap trailData={trail.locations} />
                   </div>
+                  {/* pokaż na mapie - przycisk */}
+                  <div className="absolute bottom-0 right-0">
+                    <button
+                      className="flex items-center justify-center bg-green-400 border-2 border-green-400 text-white p-1 rounded-2xl cursor-pointer hover:bg-white hover:text-green-400 hover:border-gray-400 transition ease-in-out duration-300 text-sm "
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        getEndPointForMap({
+                          lat: trail.locations[0].lat,
+                          lng: trail.locations[0].long,
+                          name: trail.title,
+                        });
+                      }}
+                    >
+                      <span className="">Mapa|</span>
+                      <BsFillPinMapFill />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
           ) : null}
         </div>
 
-        <div className="flex flex-col gap-6 mt-5 min-h-screen">
+        <div className="flex flex-col gap-6 mt-5 mb-16">
           <div>
             <Heading
               title="Lista przedmiotów do zabrania"
@@ -289,7 +363,7 @@ const TripClient = ({ tripData, refetchTripData }) => {
               {tripData?.savedItems?.length > 0 ? (
                 <div className="w-full">
                   <Heading title="Lista zapisanych przedmiotów" />
-                  {tripData.savedItems.map((item, index) => (
+                  {tripData?.savedItems?.map((item, index) => (
                     <div
                       key={index}
                       className="flex items-center justify-between w-full px-4 py-2 bg-slate-400/80 rounded-lg mb-2 text-2xl  text-white"
