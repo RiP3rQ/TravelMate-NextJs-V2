@@ -212,6 +212,7 @@ const ListingClient = ({
               <div className="flex items-center justify-center h-96">
                 {closeByAttractions.map((attraction) => (
                   <div
+                    key={attraction.id}
                     className="flex flex-col items-center justify-center w-full relative mx-10 cursor-pointer hover:scale-110 hover:opacity-80 transition duration-150 ease-in-out"
                     onClick={() => router.push(`/attractions/${attraction.id}`)}
                   >
