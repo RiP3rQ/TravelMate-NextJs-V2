@@ -2,7 +2,7 @@ import "@/styles/globals.css";
 import ProgressBar from "@badrap/bar-of-progress";
 import Router from "next/router";
 import { SessionProvider } from "next-auth/react";
-import { Toaster } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 import RentModal from "../../components/modals/RentModal";
 import ReviewModal from "../../components/modals/ReviewModal";
 import GalleryModal from "../../components/modals/GalleryModal";
@@ -18,6 +18,10 @@ const progress = new ProgressBar({
 Router.events.on("routeChangeStart", progress.start);
 Router.events.on("routeChangeComplete", progress.finish);
 Router.events.on("routeChangeError", progress.finish);
+
+Router.events.on("routeChangeStart", () => {
+  toast.dismiss();
+});
 
 export default function App({
   Component,

@@ -120,9 +120,27 @@ const ListingClient = ({
     }
   };
 
+  // ----------------------- get closeBy Attractions
+  const [closeByAttractions, setCloseByAttractions] = useState([]);
+  const fetchCloseByAttractions = async () => {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_URL}/api/closeBy/closeAttractions`,
+      {
+        listingId: listingId,
+      }
+    );
+    if (res.data.message === "Attractions closeBy not found!") {
+      console.log("Attractions closeBy not found!");
+      return;
+    } else {
+      setCloseByAttractions(res.data);
+    }
+  };
+
   useMemo(() => {
     if (listingId === undefined || listingId === null) return;
     fetchReviews();
+    fetchCloseByAttractions();
   }, [listingId]);
 
   // ----------------------- handle open gallery modal
@@ -186,6 +204,35 @@ const ListingClient = ({
               />
             </div>
           </div>
+          {/* propozycje miejsc w pobliżu */}
+          {closeByAttractions.length > 0 ? (
+            <>
+              <hr />
+              <h1 className="text-2xl font-semibold">Atrakcje w pobliżu</h1>
+              <div className="flex items-center justify-center h-96">
+                {closeByAttractions.map((attraction) => (
+                  <div
+                    className="flex flex-col items-center justify-center w-full relative mx-10 cursor-pointer hover:scale-110 hover:opacity-80 transition duration-150 ease-in-out"
+                    onClick={() => router.push(`/attractions/${attraction.id}`)}
+                  >
+                    <img
+                      src={attraction.imageSrc}
+                      alt={attraction.title}
+                      className="w-full h-96 object-cover rounded-xl "
+                    />
+                    <div className="z-10 absolute bottom-0 left-0 right-0 bg-green-400/80 rounded-br-xl rounded-bl-xl px-2 pb-2">
+                      <p className="text-3xl font-bold">{attraction.title}</p>
+                      <hr />
+                      <p className="text-lg text-gray-700 truncate">
+                        {attraction.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : null}
+
           <hr />
           {/* dolna część - recenzje */}
           {listingReviews.length > 0 ? (

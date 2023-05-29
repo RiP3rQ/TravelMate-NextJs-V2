@@ -14,6 +14,7 @@ import PlacesAutocomplete, {
 } from "react-places-autocomplete";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import Image from "next/image";
 
 const AddTrailMap = ({
   locations = [],
@@ -107,7 +108,59 @@ const AddTrailMap = ({
     fetchDataFromApi();
   }, [selectedAddress, endPoint, selectedTypeOfSearch, coordinates]);
 
-  console.log(route);
+  const displayWeatherToast = (data, name) => {
+    toast.custom(
+      (t) => (
+        <div
+          className={`${
+            t.visible ? "animate-enter" : "animate-leave"
+          } max-w-xs w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+        >
+          <div className="flex-1 p-4 w-full">
+            <div className="text-center">Pogoda w: {name}</div>
+            <div className="flex items-center justify-center">
+              <Image
+                src={`http://openweathermap.org/img/w/${data.weather[0].icon}.png`}
+                alt="pogoda-icona"
+                width={80}
+                height={80}
+              />
+            </div>
+            <div className="text-center uppercase">
+              {data.weather[0].description}
+            </div>
+          </div>
+          <button
+            onClick={() => toast.dismiss()}
+            className="absolute -top-2 -right-2 bg-gray-400 text-green-200 px-2 rounded-lg hover:text-white hover:bg-red-400"
+          >
+            X
+          </button>
+        </div>
+      ),
+      {
+        id: "custom-id-1",
+        duration: 20000,
+        position: "bottom-right",
+      }
+    );
+  };
+
+  useEffect(() => {
+    if (!endPoint?.lat && !endPoint?.lng) return;
+
+    axios
+      .post(
+        `${process.env.NEXT_PUBLIC_URL}/api/trips/weather/searchWeatherApi`,
+        {
+          endPoint: endPoint,
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+        displayWeatherToast(res.data, endPoint.name);
+      });
+  }, [endPoint]);
 
   return (
     <Map

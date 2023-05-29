@@ -41,9 +41,27 @@ const AttractionClient = ({ attraction, currentUser, refetchUser }) => {
     }
   };
 
+  // ----------------------- get closeBy Listings
+  const [closeByListings, setCloseByListings] = useState([]);
+  const fetchCloseByListings = async () => {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_URL}/api/closeBy/closeListings`,
+      {
+        attractionId: attractionId,
+      }
+    );
+    if (res.data.message === "Attraction not found") {
+      console.log("Listings closeBy not found!");
+      return;
+    } else {
+      setCloseByListings(res.data);
+    }
+  };
+
   useMemo(() => {
     if (attractionId === undefined || attractionId === null) return;
     fetchReviews();
+    fetchCloseByListings();
   }, [attractionId]);
 
   // ----------------------- handle open gallery modal
@@ -168,6 +186,34 @@ const AttractionClient = ({ attraction, currentUser, refetchUser }) => {
               />
             </div>
           </div>
+          {/* propozycje miejsc w pobliżu */}
+          {closeByListings.length > 0 ? (
+            <>
+              <hr />
+              <h1 className="text-2xl font-semibold">Noclegi w pobliżu</h1>
+              <div className="flex items-center justify-center h-96 ">
+                {closeByListings.map((listing) => (
+                  <div
+                    className="flex flex-col items-center justify-center w-full relative mx-10 cursor-pointer hover:scale-110 hover:opacity-80 transition duration-150 ease-in-out"
+                    onClick={() => router.push(`/listings/${listing.id}`)}
+                  >
+                    <img
+                      src={listing.imageSrc}
+                      alt={listing.title}
+                      className="w-full h-96 object-cover rounded-xl "
+                    />
+                    <div className="z-10 absolute bottom-0 left-0 right-0 bg-green-400/80 rounded-br-xl rounded-bl-xl px-2 pb-2">
+                      <p className="text-3xl font-bold">{listing.title}</p>
+                      <hr />
+                      <p className="text-lg text-gray-700 truncate">
+                        {listing.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : null}
           <hr />
           {/* dolna część - recenzje */}
           {attractionReviews.length > 0 ? (

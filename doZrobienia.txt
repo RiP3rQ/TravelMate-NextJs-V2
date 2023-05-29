@@ -26,9 +26,13 @@
 
 ✔️ Zaimplementowanie mapy dojazdu ✔️
 
------------------------   W trakcie realizacji    ------------------------------------
+✔️ Pokazywanie pogody w danym miejscu ✔️
 
 
-Pokazywanie pogody w danym miejscu
+------------------
 
-usuwanie powiadomień react-toast po opuszczeniu strony
+do zrobienia
+
+Pokazywanie Atrakcji w pobliżu noclegów
+
+Pokazywanie noclegów w pobliżu atrakcji
