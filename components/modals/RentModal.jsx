@@ -132,7 +132,9 @@ const RentModal = () => {
           setStep(STEPS.CATEGORY);
         })
         .catch((err) => {
-          toast.error("Coś poszło nie tak...");
+          toast.error(
+            "Błąd podczas wypełniania formularza! Wszystkie kroki muszą być wypełnione!"
+          );
         })
         .finally(() => {
           setIsLoading(false);
@@ -151,7 +153,9 @@ const RentModal = () => {
           setStep(STEPS.CATEGORY);
         })
         .catch((err) => {
-          toast.error("Coś poszło nie tak...");
+          toast.error(
+            "Błąd podczas wypełniania formularza! Wszystkie kroki muszą być wypełnione!"
+          );
         })
         .finally(() => {
           setIsLoading(false);
@@ -169,7 +173,9 @@ const RentModal = () => {
           setStep(STEPS.CATEGORY);
         })
         .catch((err) => {
-          toast.error("Coś poszło nie tak...");
+          toast.error(
+            "Błąd podczas wypełniania formularza! Wszystkie kroki muszą być wypełnione!"
+          );
         })
         .finally(() => {
           setIsLoading(false);

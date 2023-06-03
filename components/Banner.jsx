@@ -1,7 +1,10 @@
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const Banner = () => {
+  const router = useRouter();
+
   return (
     <div className="relative h-[300px] sm:h-[400px] lg:h-[500px] xl:h-[600px] 2xl:h-[700px]">
       <Image
@@ -19,9 +22,10 @@ const Banner = () => {
           Zaplanuj je z nami!
         </p>
         <button
-          className="text-purple-500 bg-white md:px-8 md:py-3 md:text-lg px-2 py-2 text-xs
+          className="text-green-500 bg-white md:px-8 md:py-3 md:text-lg px-2 py-2 text-xs
         shadow-md rounded-full font-bold my-3 hover:shadow-xl 
         active:scale-90 transition duration-150"
+          onClick={() => router.push("/trips")}
         >
           Zaplanuj
         </button>

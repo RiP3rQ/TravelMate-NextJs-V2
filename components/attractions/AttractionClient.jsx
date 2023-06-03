@@ -115,7 +115,7 @@ const AttractionClient = ({ attraction, currentUser, refetchUser }) => {
       ),
       {
         id: "custom-id-1",
-        duration: 10000,
+        duration: 50000,
         position: "bottom-right",
       }
     );

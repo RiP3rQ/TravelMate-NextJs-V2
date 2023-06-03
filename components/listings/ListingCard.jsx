@@ -91,7 +91,15 @@ const ListingCard = ({
 
   return (
     <div
-      onClick={() => router.push(`/listings/${data.id}`)}
+      onClick={() => {
+        if (page === "Listings") {
+          router.push(`/listings/${data.id}`);
+        } else if (page === "Attractions") {
+          router.push(`/attractions/${data.id}`);
+        } else if (page === "Trails") {
+          router.push(`/trails/${data.id}`);
+        }
+      }}
       className="col-span-1 cursor-pointer group z-10"
     >
       <div className="flex flex-col w-full relative">

@@ -19,6 +19,10 @@ const ImageUpload = ({ onChange, value }) => {
       uploadPreset={uploadPreset}
       options={{
         maxFiles: 1,
+        resourceType: "image",
+        sources: ["local", "url", "camera"],
+        clientAllowedFormats: ["png", "gif", "jpeg"],
+        showPoweredBy: false,
       }}
     >
       {({ open }) => {
