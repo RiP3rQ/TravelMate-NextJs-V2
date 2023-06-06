@@ -21,7 +21,7 @@ const ImageUpload = ({ onChange, value }) => {
         maxFiles: 1,
         resourceType: "image",
         sources: ["local", "url", "camera"],
-        clientAllowedFormats: ["png", "gif", "jpeg"],
+        clientAllowedFormats: ["png", "gif", "jpeg", "jpg", "webp"],
         showPoweredBy: false,
       }}
     >
