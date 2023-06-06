@@ -6,6 +6,11 @@ import LargeCard from "../../components/LargeCard";
 import MediumCard from "../../components/MediumCard";
 import SmallCard from "../../components/SmallCard";
 
+// get data from prisma
+import getListingsMini from "../../actions/getListingsMini";
+import getAttractionsMini from "../../actions/getAttractionsMini";
+import getTrailsMini from "../../actions/getTrailsMini";
+
 import {
   FaLeaf,
   FaMonument,
@@ -269,7 +274,7 @@ export const TrailTypes = [
   },
 ];
 
-export default function Home({ exploreData, cardsData }) {
+export default function Home({ listings, attractions, trails }) {
   return (
     <div className="overflow-x-hidden">
       <Head>
@@ -287,16 +292,19 @@ export default function Home({ exploreData, cardsData }) {
       {/* Nearby places */}
       <main className="max-w-7xl mx-auto px-8 sm:px-16">
         <section className="pt-6">
-          <h2 className="text-4xl font-semibold pb-5">Atrakcje w pobliżu</h2>
+          <h2 className="text-4xl font-semibold pb-5">
+            Niesamowite przeżycia zagwarantują Ci atrakcje w naszej ofercie
+          </h2>
 
           {/* Pull exploreData from a server - API endpoints */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {exploreData?.map((item, index) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            {attractions?.map((item, index) => (
               <SmallCard
                 key={index}
-                img={item.img}
-                location={item.location}
-                distance={item.distance}
+                img={item.imageSrc}
+                title={item.title}
+                star={item.star}
+                routerId={item.id}
               />
             ))}
           </div>
@@ -313,8 +321,39 @@ export default function Home({ exploreData, cardsData }) {
           scrollbar scrollbar-thumb-[#3F9337] scrollbar-track-red-100 
           scrollbar-thumb-rounded-xl scrollbar-track-rounded-xl"
           >
-            {cardsData?.map((item, index) => (
-              <MediumCard key={index} img={item.img} title={item.title} />
+            {listings?.map((item, index) => (
+              <MediumCard
+                key={index}
+                img={item.imageSrc}
+                title={item.title}
+                star={item.star}
+                page="listings"
+                routerId={item.id}
+              />
+            ))}
+          </div>
+        </section>
+
+        <section>
+          <h2 className="text-4xl font-semibold py-8">
+            Znajdź szlak dla siebie
+          </h2>
+
+          {/* Pull cardsData from a server - API endpoints */}
+          <div
+            className="flex space-x-3 overflow-scroll p-3 -ml-3 overflow-y-hidden 
+          scrollbar scrollbar-thumb-[#3F9337] scrollbar-track-red-100 
+          scrollbar-thumb-rounded-xl scrollbar-track-rounded-xl"
+          >
+            {trails?.map((item, index) => (
+              <MediumCard
+                key={index}
+                img={item.imageSrc}
+                title={item.title}
+                star={item.star}
+                page="trails"
+                routerId={item.id}
+              />
             ))}
           </div>
         </section>
@@ -332,20 +371,16 @@ export default function Home({ exploreData, cardsData }) {
   );
 }
 
-export async function getStaticProps() {
-  // 1:19:45 structure of the data
-  const exploreData = await fetch(
-    "https://api.npoint.io/046c5a3ae2b2d2b42a46"
-  ).then((res) => res.json());
-
-  const cardsData = await fetch(
-    "https://api.npoint.io/990f5033b327717ec38a"
-  ).then((res) => res.json());
+export async function getServerSideProps(context) {
+  const listings = await getListingsMini();
+  const attractions = await getAttractionsMini();
+  const trails = await getTrailsMini();
 
   return {
     props: {
-      exploreData,
-      cardsData,
-    },
+      listings,
+      attractions,
+      trails,
+    }, // will be passed to the page component as props
   };
 }
