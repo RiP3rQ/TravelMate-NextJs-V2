@@ -53,7 +53,10 @@ const Reservations = () => {
 
   const fetchTrips = async () => {
     const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_URL}/api/trips/getAllTripsMinimum`
+      `${process.env.NEXT_PUBLIC_URL}/api/trips/getAllTripsMinimum`,
+      {
+        email: currentUser?.email,
+      }
     );
     if (res.data.message === "No trips found!") {
       return;

@@ -17,19 +17,6 @@ const SearchAttractions = ({ attractions }) => {
   const [newAttractions, setNewAttractions] = useState([]);
   const [trips, setTrips] = useState(null);
 
-  // ----------------------------- Fetching Trips ----------------------------- //
-
-  const fetchTrips = async () => {
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_URL}/api/trips/getAllTripsMinimum`
-    );
-    if (res.data.message === "No trips found!") {
-      return;
-    } else {
-      setTrips(res.data);
-    }
-  };
-
   // sorting modal
   const sortingModal = useSortingModal();
 
@@ -45,10 +32,30 @@ const SearchAttractions = ({ attractions }) => {
     }
   };
 
-  useEffect(() => {
+  useMemo(() => {
     user();
-    fetchTrips();
   }, []);
+
+  // ----------------------------- Fetching Trips ----------------------------- //
+
+  const fetchTrips = async () => {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_URL}/api/trips/getAllTripsMinimum`,
+      {
+        email: currentUser?.email,
+      }
+    );
+    if (res.data.message === "No trips found!") {
+      return;
+    } else {
+      setTrips(res.data);
+    }
+  };
+
+  useEffect(() => {
+    if (!currentUser) return;
+    fetchTrips();
+  }, [currentUser]);
 
   const refetchUser = useCallback(() => {
     user();

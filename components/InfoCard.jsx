@@ -172,9 +172,7 @@ const InfoCard = ({
                         setShowDropdownTripsMenu((prev) => !prev);
                       }}
                     >
-                      <span>
-                        {trip.name ? trip.name : `Wycieczka nr.${index + 1}`}
-                      </span>
+                      <span>{trip.name ? trip.name : `Nowa wycieczka`}</span>
                     </div>
                   </div>
                 ))}

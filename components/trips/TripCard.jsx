@@ -16,7 +16,7 @@ const TripCard = ({ trip, index, handleDelete, handleChangeTripName }) => {
         className={`w-full h-80 bg-green-400 flex items-center justify-center cursor-pointer text-white font-bold text-3xl rounded-xl border-4 border-transparent
 hover:bg-white hover:text-green-400 hover:border-green-400 hover:animate-pulse transition duration-300 ease-in-out z-10`}
       >
-        {trip.name ? trip.name : `Wycieczka nr.${index + 1}`}
+        {trip.name ? trip.name : `Nowa wycieczka`}
       </div>
       <div
         className="absolute -top-4 -right-3 bg-red-400 py-2 px-3 rounded-xl text-white text-2xl z-20 cursor-pointer
